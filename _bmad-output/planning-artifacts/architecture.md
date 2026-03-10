@@ -27,7 +27,7 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 ### Requirements Overview
 
 **Functional Requirements:**
-The project defines 45 functional requirements across nine capability groups: identity and professional positioning, project discovery and proof of work, resume and evaluation support, contact and conversion, cross-device access, discoverability, accessibility, content management and ownership, and trust protection.
+The project defines 46 functional requirements across nine capability groups: identity and professional positioning, project discovery and proof of work, resume and evaluation support, contact and conversion, cross-device access, discoverability, accessibility, content management and ownership, and trust protection.
 
 Architecturally, these requirements resolve into a small number of high-value product capabilities rather than a broad application platform. The system must support:
 - a trust-forming homepage and identity layer
@@ -378,11 +378,11 @@ No. This is an infrastructure architecture decision.
 **Implementation Sequence:**
 1. Initialize the Astro project and add Tailwind.
 2. Establish TypeScript strictness and content collection schemas.
-3. Define the core content model for profile, projects, and resume-oriented content.
-4. Build the design-token and component foundation.
-5. Implement page templates and routes using content-driven composition.
-6. Add performance, accessibility, metadata, and SEO guardrails.
-7. Set up AWS deployment via `S3 + CloudFront` and CI/CD automation.
+3. Set up the bounded CI/build/deploy foundation for `S3 + CloudFront` so feature work starts on a repeatable baseline.
+4. Define the core content model for profile, projects, and resume-oriented content.
+5. Build the design-token and component foundation.
+6. Implement page templates and routes using content-driven composition.
+7. Add performance, accessibility, metadata, and SEO guardrails.
 8. Add only narrowly justified future integrations after the static core is stable.
 
 **Cross-Component Dependencies:**

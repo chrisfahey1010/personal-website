@@ -213,7 +213,7 @@ So that implementation begins from the intended architectural baseline for the s
 **Given** the starter setup is complete
 **When** the repository is reviewed
 **Then** only the foundation needed for the launch implementation is present
-**And** no unnecessary runtime services, database setup, or unrelated scaffolding is introduced
+**And** no unnecessary runtime services, deployment automation, database setup, or unrelated scaffolding is introduced
 
 ### Story 1.2: Establish CI/CD and Deployment Baseline
 
@@ -239,6 +239,11 @@ So that implementation happens on top of a repeatable, validated, production-sha
 **When** the repository and planning artifacts are checked
 **Then** the CI/CD and deployment setup matches the static-first architecture
 **And** it does not introduce unnecessary runtime services, databases, or optional integrations
+
+**Given** Story 1.2 is complete
+**When** later implementation stories begin
+**Then** they can rely on a working local build and CI validation baseline
+**And** they do not need to redefine deployment strategy, hosting shape, or pipeline ownership
 
 ### Story 1.3: Home Page Hero and Identity Introduction
 
@@ -683,7 +688,7 @@ So that projects are easier to find now and future writing or case-study content
 
 **Given** project and core site content is modeled for the MVP
 **When** metadata and page structure are defined
-**Then** the implementation supports project-specific discoverability cues such as meaningful headings, summaries, and page-level metadata
+**Then** each launch page and project page includes a meaningful page title, page description, canonical path, and visible heading structure aligned to its content
 **And** any future writing or case-study discoverability remains explicitly extension-ready rather than launch-required
 
 **Given** Chris adds future publishing content after launch
@@ -770,5 +775,10 @@ So that the product can evolve cleanly while preserving performance, clarity, an
 **When** Chris continues to add or refine content and features
 **Then** core trust signals remain visible and understandable
 **And** future additions do not materially compromise core performance or maintainability
+
+**Given** implementation work is planned for MVP only
+**When** stories are selected for sprint planning
+**Then** reserved future-writing routes, content types, and UI sections are treated as post-launch seams rather than required deliverables
+**And** sprint scope remains limited to homepage, projects, resume, contact, accessibility, SEO, and deployment-ready foundations
 
 <!-- End story repeat -->

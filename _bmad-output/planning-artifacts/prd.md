@@ -356,73 +356,73 @@ Phase 3 should only expand after the core trust-building product is proven and s
 - FR1: Visitors can understand who Chris is from the site.
 - FR2: Visitors can understand Chris's professional role and focus from the site.
 - FR3: Visitors can access a professional introduction that presents Chris clearly and credibly.
-- FR3: Visitors can access a professional introduction that presents Chris's background, role, and relevance.
-- FR4: Visitors can view profile information that presents Chris as an identifiable individual rather than an anonymous profile.
-- FR5: Hiring audiences can identify Chris's professional relevance without relying only on project content.
-- FR6: Non-technical visitors can understand Chris's background and work without requiring insider knowledge.
+- FR4: Visitors can access a professional introduction that presents Chris's background, role, and relevance.
+- FR5: Visitors can view profile information that presents Chris as an identifiable individual rather than an anonymous profile.
+- FR6: Hiring audiences can identify Chris's professional relevance without relying only on project content.
+- FR7: Non-technical visitors can understand Chris's background and work without requiring insider knowledge.
 
 ### Project Discovery & Proof of Work
 
-- FR7: Visitors can access a projects collection from the site.
-- FR8: Visitors can review project entries that describe what Chris has built.
-- FR9: Project content can communicate enough substance to support evaluation of Chris's technical capability.
-- FR10: Technical evaluators can use project content together with the site experience as evidence of Chris's craft.
-- FR11: The product can support richer project storytelling in future phases without changing its core purpose.
+- FR8: Visitors can access a projects collection from the site.
+- FR9: Visitors can review project entries that describe what Chris has built.
+- FR10: Project content can communicate enough substance to support evaluation of Chris's technical capability.
+- FR11: Technical evaluators can use project content together with the site experience as evidence of Chris's craft.
+- FR12: The product can support richer project storytelling in future phases without changing its core purpose.
 
 ### Resume & Professional Evaluation
 
-- FR12: Visitors can access Chris's resume from the site.
-- FR13: Hiring audiences can use the site to evaluate Chris before initiating direct outreach.
-- FR14: Hiring audiences can move from profile understanding to project review to resume access within one visit.
-- FR15: Visitors can use the site to evaluate Chris through profile, project, and resume content in one place.
+- FR13: Visitors can access Chris's resume from the site.
+- FR14: Hiring audiences can use the site to evaluate Chris before initiating direct outreach.
+- FR15: Hiring audiences can move from profile understanding to project review to resume access within one visit.
+- FR16: Visitors can use the site to evaluate Chris through profile, project, and resume content in one place.
 
 ### Contact & Next-Step Conversion
 
-- FR16: Visitors can find a clear way to contact Chris.
-- FR17: Hiring audiences can identify the next step for outreach or continued evaluation.
-- FR18: Visitors can complete the core professional evaluation path without confusion about how to follow up.
-- FR19: The site can support professional outreach without requiring advanced communication features at launch.
+- FR17: Visitors can find a clear way to contact Chris.
+- FR18: Hiring audiences can identify the next step for outreach or continued evaluation.
+- FR19: Visitors can complete the core professional evaluation path without confusion about how to follow up.
+- FR20: The site can support professional outreach without requiring advanced communication features at launch.
 
 ### Cross-Device Access & Browsing
 
-- FR20: Visitors can use the site effectively on supported desktop browsers.
-- FR21: Visitors can use the site effectively on supported mobile browsers.
-- FR22: Visitors can complete core tasks while skimming or under time pressure.
-- FR23: Visitors can access core content and next steps without depending on desktop-only interaction patterns.
-- FR24: The site can preserve the core trust and evaluation path across supported browsers.
+- FR21: Visitors can use the site effectively on supported desktop browsers.
+- FR22: Visitors can use the site effectively on supported mobile browsers.
+- FR23: Visitors can complete core tasks while skimming or under time pressure.
+- FR24: Visitors can access core content and next steps without depending on desktop-only interaction patterns.
+- FR25: The site can preserve the core trust and evaluation path across supported browsers.
 
 ### Discoverability & Search Presence
 
-- FR25: Search engines can discover and index the site's primary public content.
-- FR26: The site can support name-based discovery of Chris and his professional identity.
-- FR27: The site can support discoverability of project content.
-- FR28: The site can support future discoverability of writing or case-study content.
-- FR29: Public content can communicate meaning clearly to search engines through structured page content.
+- FR26: Search engines can discover and index the site's primary public content.
+- FR27: The site can support name-based discovery of Chris and his professional identity.
+- FR28: The site can support discoverability of project content.
+- FR29: The site can support future discoverability of writing or case-study content.
+- FR30: Public content can communicate meaning clearly to search engines through structured page content.
 
 ### Accessibility & Inclusive Use
 
-- FR30: Visitors can access and use the site's core content and navigation with accessibility support aligned to the launch standard.
-- FR31: Keyboard users can navigate and use core site interactions.
-- FR32: Visitors using assistive technologies can access meaningful content structure and interactive elements.
-- FR33: Non-technical visitors can understand the site's core content without depending on technical jargon.
-- FR34: The site can support explicit accessibility evaluation against a defined launch standard.
+- FR31: Visitors can access and use the site's core content and navigation with accessibility support aligned to the launch standard.
+- FR32: Keyboard users can navigate and use core site interactions.
+- FR33: Visitors using assistive technologies can access meaningful content structure and interactive elements.
+- FR34: Non-technical visitors can understand the site's core content without depending on technical jargon.
+- FR35: The site can support explicit accessibility evaluation against a defined launch standard.
 
 ### Content Management & Long-Term Ownership
 
-- FR35: Chris can update core profile content over time.
-- FR36: Chris can update resume access over time.
-- FR37: Chris can add, revise, or remove project content over time.
-- FR38: Chris can maintain the site as a long-term owned professional asset.
-- FR39: The site can evolve into future phases without redefining the product concept.
-- FR40: The product can remain maintainable enough for Chris to preserve quality over time.
+- FR36: Chris can update core profile content over time.
+- FR37: Chris can update resume access over time.
+- FR38: Chris can add, revise, or remove project content over time.
+- FR39: Chris can maintain the site as a long-term owned professional asset.
+- FR40: The site can evolve into future phases without redefining the product concept.
+- FR41: The product can remain maintainable enough for Chris to preserve quality over time.
 
 ### Trust, Integrity & Reputation Protection
 
-- FR41: The site can communicate that it is a distinct professional website rather than a generic profile or template page.
-- FR42: Visitors can access professional information about Chris that is maintained and presented as current.
-- FR43: The product can minimize dependence on unnecessary third-party systems for its core value.
-- FR44: The site can support privacy-conscious handling of contact pathways and personal information exposure.
-- FR45: The product can keep core trust signals visible and understandable as the site evolves.
+- FR42: The site can communicate that it is a distinct professional website rather than a generic profile or template page.
+- FR43: Visitors can access professional information about Chris that is maintained and presented as current.
+- FR44: The product can minimize dependence on unnecessary third-party systems for its core value.
+- FR45: The site can support privacy-conscious handling of contact pathways and personal information exposure.
+- FR46: The product can keep core trust signals visible and understandable as the site evolves.
 
 ## Non-Functional Requirements
 
