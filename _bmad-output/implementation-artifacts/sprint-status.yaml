@@ -42,7 +42,7 @@ story_location: /home/chris/repos/personal-website/_bmad-output/implementation-a
 development_status:
   epic-1: in-progress
   1-1-set-up-initial-project-from-starter-template: done
-  1-2-establish-ci-cd-and-deployment-baseline: backlog
+  1-2-establish-ci-cd-and-deployment-baseline: done
   1-3-home-page-hero-and-identity-introduction: backlog
   1-4-global-navigation-and-first-visit-orientation: backlog
   1-5-responsive-layout-and-mobile-first-behavior: backlog
