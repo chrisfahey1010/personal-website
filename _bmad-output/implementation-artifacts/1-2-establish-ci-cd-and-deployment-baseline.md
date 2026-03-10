@@ -35,6 +35,7 @@ so that implementation happens on top of a repeatable, validated, production-sha
   - [x] Add a narrowly scoped CloudFront note under `infrastructure/cloudfront/` that captures cache behavior, immutable asset strategy, HTML invalidation guidance, and header-policy ownership without introducing infrastructure-as-code scope
 - [x] Extend verification so future stories inherit a reliable baseline (AC: 1, 4)
   - [x] Add or update tests to assert CI/deploy workflow files exist and enforce the static-first baseline: `npm ci`, `npm run check`, `npm test`, `npm run build`, protected-branch deploy gating, exact validated-commit checkout, immutable action pinning, OIDC auth, minimal permissions, wildcard baseline invalidation, and no public S3 website endpoint usage or committed AWS secret keys
+  - [x] Fix the `npm test` script so CI discovers Story 1.2 guardrail tests without relying on a literal recursive glob in GitHub Actions shells
   - [x] Run `npm test` and `npm run build` locally after workflow-related changes
   - [x] Review the final diff to confirm no runtime services, database scaffolding, auth, or optional integrations were added
   - [x] Ensure deploy failure modes are explicit and readable when required GitHub or AWS inputs are missing
@@ -174,12 +175,15 @@ openai/gpt-5.4
 - Added failing test coverage for deploy gating, OIDC usage, and concurrency before implementing `.github/workflows/deploy.yml`.
 - Added failing test coverage for deployment documentation boundaries and `.env.example` separation before updating infrastructure docs.
 - Ran the full local verification pass with `npm test`, `npm run build`, and a targeted final diff review for scope drift.
+- Reproduced the GitHub Actions regression locally by asserting the `npm test` script must not rely on a literal `**` glob in CI shells.
+- Revalidated the baseline after changing the test script to `node --test tests/*.test.mjs` and reran `npm run check`, `npm test`, and `npm run build`.
 
 ### Implementation Plan
 
 - Add the CI workflow first with explicit Node pinning, minimal permissions, and no deployment credentials.
 - Extend the existing foundation test file with workflow guardrails before each workflow/doc change.
 - Add the deploy workflow, deployment docs, and environment examples in the story task order while preserving the static-first baseline.
+- Replace the recursive test glob with a CI-safe pattern and lock the regression down with a package-script assertion in the existing guardrail test file.
 
 ### Completion Notes List
 
@@ -192,19 +196,16 @@ openai/gpt-5.4
 - Added a minimal `.env.example` with no AWS deployment values and documented the canonical CloudFront-first hosting boundaries in `infrastructure/README.md` and `infrastructure/cloudfront/README.md`.
 - Extended the foundation guardrail tests to cover deploy input validation, AWS secret-key absence, protected-branch gating, and continued static-only scope boundaries.
 - Final validation passed with `npm test` and `npm run build`, and the resulting baseline remains static-first with no runtime services, database scaffolding, auth, analytics, CMS wiring, or serverless endpoints added.
+- Fixed the `npm test` script for GitHub Actions by replacing the literal recursive glob with `node --test tests/*.test.mjs` and added a regression assertion so the CI-safe pattern stays in place.
 
 ### File List
 
 - `_bmad-output/implementation-artifacts/1-2-establish-ci-cd-and-deployment-baseline.md`
 - `_bmad-output/implementation-artifacts/sprint-status.yaml`
-- `.github/workflows/ci.yml`
 - `.github/workflows/deploy.yml`
-- `.env.example`
-- `infrastructure/README.md`
-- `infrastructure/cloudfront/README.md`
 - `package.json`
-- `package-lock.json`
 - `tests/story-1-1-foundation.test.mjs`
+- `_bmad-output/implementation-artifacts/tests/test-summary.md`
 
 ## Senior Developer Review (AI)
 
@@ -222,10 +223,10 @@ openai/gpt-5.4
 
 ### Findings Summary
 
-- Hardened CI/CD by pinning third-party GitHub Actions to immutable SHAs in both workflows.
-- Kept deploy bound to the exact CI-validated commit and expanded baseline CloudFront invalidation to avoid stale future static routes.
-- Replaced `astro check` with `astro sync && tsc --noEmit` so validation stays effective without introducing dependency audit debt.
-- Re-ran `npm run check`, `npm test`, `npm run build`, and `npm audit --json`; all checks passed and the audit is clean.
+- Fixed a production-safety gap in `.github/workflows/deploy.yml` by requiring the triggering `CI` run to come from a successful `push`, not just any successful `workflow_run` on `main`.
+- Extended `tests/story-1-1-foundation.test.mjs` so the deployment guardrails fail if deploy can follow a pull-request CI run.
+- Reconciled the story File List with the actual current workspace changes and documented the generated test summary artifact.
+- After the review fixes, Story 1.2 now satisfies the deploy gating expectation from the acceptance criteria and remains within the static-first architecture boundary.
 
 ### Change Log
 
@@ -236,3 +237,5 @@ openai/gpt-5.4
 - 2026-03-10: Hardened the review fixes by pinning third-party actions, replacing `astro check` with a zero-audit-debt validation script, and broadening baseline CloudFront invalidation coverage.
 - 2026-03-10: Senior developer review approved the story after verification passed and no HIGH or MEDIUM issues remained.
 - 2026-03-10: Completed final verification, marked Story 1.2 ready for review, and confirmed the implementation stayed within the static-first architecture boundary.
+- 2026-03-10: Reopened Story 1.2 to fix GitHub Actions test discovery by replacing the literal recursive Node test glob and revalidating the CI baseline.
+- 2026-03-10: Review fix: restricted deploy to successful push-triggered CI runs, extended the guardrail tests for that gate, and reconciled the story File List with the current workspace state.

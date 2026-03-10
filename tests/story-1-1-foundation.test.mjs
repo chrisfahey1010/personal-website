@@ -8,6 +8,13 @@ const root = process.cwd();
 
 const exists = (target) => fs.existsSync(path.join(root, target));
 const read = (target) => fs.readFileSync(path.join(root, target), 'utf8');
+const ciEnv = {
+  ...process.env,
+  CI: 'true',
+  GITHUB_ACTIONS: 'true',
+  GITHUB_REF: 'refs/heads/main',
+  GITHUB_SHA: '0123456789abcdef0123456789abcdef01234567',
+};
 
 test('story 1.1 task 1: Astro starter files exist in repo root', () => {
   assert.equal(exists('personal-website'), false, 'must not create a nested app directory');
@@ -97,8 +104,10 @@ test('story 1.2 task 1: CI workflow validates install, test, and build on push a
   assert.match(workflow, /permissions:\s*[\s\S]*contents:\s*read/, 'CI should keep permissions minimal');
   assert.doesNotMatch(workflow, /AWS_(ACCESS_KEY_ID|SECRET_ACCESS_KEY)|configure-aws-credentials|id-token:\s*write/, 'CI-only workflow should not include deploy credentials');
   assert.equal(typeof packageJson.scripts.check, 'string', 'package.json should expose a validation script');
+  assert.equal(typeof packageJson.scripts.test, 'string', 'package.json should expose a test script');
   assert.match(packageJson.scripts.check, /astro sync/, 'check script should refresh Astro generated types');
   assert.match(packageJson.scripts.check, /tsc --noEmit/, 'check script should run TypeScript validation without emitting files');
+  assert.doesNotMatch(packageJson.scripts.test, /\*\*/, 'test script should not rely on an unexpanded recursive glob in CI');
 });
 
 test('story 1.2 task 2: deploy workflow stays gated behind successful CI on main', () => {
@@ -110,6 +119,7 @@ test('story 1.2 task 2: deploy workflow stays gated behind successful CI on main
   assert.match(workflow, /workflows:\s*\[[^\]]*CI[^\]]*\]/, 'deploy should depend on the CI workflow');
   assert.match(workflow, /branches:\s*[\s\S]*-\s*main/, 'deploy should be limited to the protected branch');
   assert.match(workflow, /github\.event\.workflow_run\.conclusion\s*==\s*'success'/, 'deploy should require successful CI');
+  assert.match(workflow, /github\.event\.workflow_run\.event\s*==\s*'push'/, 'deploy should only follow successful push-based CI runs');
   assert.match(workflow, /ref:\s*\$\{\{\s*github\.event\.workflow_run\.head_sha\s*\}\}/, 'deploy should check out the exact CI-validated commit');
   assert.match(workflow, /actions\/checkout@[0-9a-f]{40}/, 'deploy should pin checkout to an immutable commit SHA');
   assert.match(workflow, /actions\/setup-node@[0-9a-f]{40}/, 'deploy should pin setup-node to an immutable commit SHA');
@@ -163,6 +173,7 @@ test('story 1.2 task 4: verification guardrails protect the static-first deploym
   assert.match(ciWorkflow, /npm run build/, 'CI must run the production build');
   assert.match(deployWorkflow, /workflow_run:/, 'deploy must remain gated behind CI completion');
   assert.match(deployWorkflow, /github\.event\.workflow_run\.conclusion\s*==\s*'success'/, 'deploy must require successful CI');
+  assert.match(deployWorkflow, /github\.event\.workflow_run\.event\s*==\s*'push'/, 'deploy must only follow successful push-based CI runs');
   assert.match(deployWorkflow, /ref:\s*\$\{\{\s*github\.event\.workflow_run\.head_sha\s*\}\}/, 'deploy must publish the exact CI-validated commit');
   assert.match(ciWorkflow, /actions\/checkout@[0-9a-f]{40}/, 'CI must pin checkout to an immutable commit SHA');
   assert.match(ciWorkflow, /actions\/setup-node@[0-9a-f]{40}/, 'CI must pin setup-node to an immutable commit SHA');
@@ -177,4 +188,22 @@ test('story 1.2 task 4: verification guardrails protect the static-first deploym
   assert.equal(exists('src/pages/api'), false, 'runtime API scaffolding should remain out of scope');
   assert.equal(exists('src/db'), false, 'database scaffolding should remain out of scope');
   assert.equal(exists('src/auth'), false, 'authentication scaffolding should remain out of scope');
+});
+
+test('story 1.2 task 5: check and build scripts succeed in a GitHub-like CI environment', () => {
+  execFileSync('npm', ['run', 'check'], { cwd: root, stdio: 'pipe', env: ciEnv });
+  fs.rmSync(path.join(root, 'dist'), { recursive: true, force: true });
+  execFileSync('npm', ['run', 'build'], { cwd: root, stdio: 'pipe', env: ciEnv });
+
+  assert.equal(exists('dist/index.html'), true, 'CI-like validation should produce a deployable homepage');
+});
+
+test('story 1.2 task 6: production build output preserves the homepage contract', () => {
+  const builtIndex = read('dist/index.html');
+
+  assert.match(builtIndex, /<!doctype html>/i, 'built output should remain a valid HTML document');
+  assert.match(builtIndex, /<title>Chris Fahey<\/title>/, 'homepage title should survive the production build');
+  assert.match(builtIndex, /<h1[^>]*>Chris Fahey<\/h1>/, 'homepage heading should survive the production build');
+  assert.match(builtIndex, /Baseline Astro foundation for upcoming story implementation\./, 'homepage body copy should survive the production build');
+  assert.doesNotMatch(builtIndex, /Welcome to Astro/i, 'starter demo copy should not reappear in production output');
 });
