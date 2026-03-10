@@ -1,10 +1,46 @@
 ---
+import { getEntry, render } from 'astro:content';
+
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import SocialProofSection from '../components/sections/SocialProofSection.astro';
+
+const homePage = await getEntry('pages', 'home');
+
+if (!homePage) {
+  throw new Error('Missing home page content entry.');
+}
+
+const { Content } = await render(homePage);
+
+const {
+  title,
+  description,
+  heroName,
+  heroRole,
+  heroIntro,
+  trustTags,
+  primaryCtaLabel,
+  primaryCtaHref,
+  portraitSrc,
+  portraitAlt,
+} = homePage.data;
 ---
 
-<BaseLayout title="Chris Fahey">
-  <main>
-    <h1>Chris Fahey</h1>
-    <p>Baseline Astro foundation for upcoming story implementation.</p>
+<BaseLayout title={title} description={description}>
+  <main class="home-page">
+    <HeroSection
+      heroName={heroName}
+      heroRole={heroRole}
+      heroIntro={heroIntro}
+      trustTags={trustTags}
+      primaryCtaLabel={primaryCtaLabel}
+      primaryCtaHref={primaryCtaHref}
+      portraitSrc={portraitSrc}
+      portraitAlt={portraitAlt}
+    />
+    <SocialProofSection sectionId="proof" title="Selected proof points">
+      <Content />
+    </SocialProofSection>
   </main>
 </BaseLayout>

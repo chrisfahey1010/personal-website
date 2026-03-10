@@ -1,0 +1,50 @@
+---
+interface Props {
+  heroName: string;
+  heroRole: string;
+  heroIntro: string;
+  trustTags: string[];
+  primaryCtaLabel: string;
+  primaryCtaHref: string;
+  portraitSrc?: string;
+  portraitAlt?: string;
+}
+
+const {
+  heroName,
+  heroRole,
+  heroIntro,
+  trustTags,
+  primaryCtaLabel,
+  primaryCtaHref,
+  portraitSrc,
+  portraitAlt,
+} = Astro.props;
+---
+
+<section class="hero-section" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="hero-eyebrow">Editorial portfolio</p>
+    <h1 id="hero-title">{heroName}</h1>
+    <p class="hero-role">{heroRole}</p>
+    <p class="hero-intro">{heroIntro}</p>
+    <a class="hero-cta" href={primaryCtaHref}>{primaryCtaLabel}</a>
+  </div>
+
+  <aside class="hero-signal" aria-label="Professional signal">
+    {
+      portraitSrc && portraitAlt ? (
+        <img class="hero-portrait" src={portraitSrc} alt={portraitAlt} width="320" height="400" loading="eager" />
+      ) : (
+        <div class="hero-monogram" aria-hidden="true">CF</div>
+      )
+    }
+
+    <p class="hero-signal-label">Professional signal</p>
+    <p class="hero-signal-copy">Product judgment, hands-on delivery, and content clarity shaped into one visible first impression.</p>
+
+    <ul class="trust-tags" aria-label="Trust signals">
+      {trustTags.map((tag) => <li>{tag}</li>)}
+    </ul>
+  </aside>
+</section>

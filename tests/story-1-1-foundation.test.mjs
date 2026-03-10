@@ -192,7 +192,6 @@ test('story 1.2 task 4: verification guardrails protect the static-first deploym
 
 test('story 1.2 task 5: check and build scripts succeed in a GitHub-like CI environment', () => {
   execFileSync('npm', ['run', 'check'], { cwd: root, stdio: 'pipe', env: ciEnv });
-  fs.rmSync(path.join(root, 'dist'), { recursive: true, force: true });
   execFileSync('npm', ['run', 'build'], { cwd: root, stdio: 'pipe', env: ciEnv });
 
   assert.equal(exists('dist/index.html'), true, 'CI-like validation should produce a deployable homepage');
@@ -202,8 +201,10 @@ test('story 1.2 task 6: production build output preserves the homepage contract'
   const builtIndex = read('dist/index.html');
 
   assert.match(builtIndex, /<!doctype html>/i, 'built output should remain a valid HTML document');
-  assert.match(builtIndex, /<title>Chris Fahey<\/title>/, 'homepage title should survive the production build');
+  assert.match(builtIndex, /<title>Chris Fahey \| Product-minded software engineer<\/title>/, 'homepage title should survive the production build');
   assert.match(builtIndex, /<h1[^>]*>Chris Fahey<\/h1>/, 'homepage heading should survive the production build');
-  assert.match(builtIndex, /Baseline Astro foundation for upcoming story implementation\./, 'homepage body copy should survive the production build');
+  assert.match(builtIndex, /Product-minded software engineer/, 'homepage role or focus copy should survive the production build');
+  assert.match(builtIndex, /See proof of fit/, 'homepage CTA should survive the production build');
   assert.doesNotMatch(builtIndex, /Welcome to Astro/i, 'starter demo copy should not reappear in production output');
+  assert.doesNotMatch(builtIndex, /Baseline Astro foundation for upcoming story implementation\./, 'baseline placeholder copy should not reappear in production output');
 });
