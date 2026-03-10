@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Website UX Design Directions</title>
+  <style>
+    :root {
+      --bg: #FFF4EA;
+      --surface: #EDDCC6;
+      --accent-primary: #BF4646;
+      --accent-secondary: #7EACB5;
+      --ink: #2d241f;
+      --muted: #6d625c;
+      --line: rgba(45, 36, 31, 0.14);
+      --shadow: 0 18px 45px rgba(72, 46, 34, 0.12);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+      --space-1: 8px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --space-4: 32px;
+      --space-5: 48px;
+      --space-6: 72px;
+      --max: 1200px;
+      --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+      --sans: "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background: linear-gradient(180deg, #fff8f1 0%, var(--bg) 100%);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; }
+
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 244, 234, 0.9);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-inner,
+    .section-inner,
+    .footer-inner {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+      padding: 14px 0;
+    }
+
+    .brand {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+    }
+
+    .jump-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .jump-nav a {
+      text-decoration: none;
+      font-size: 0.88rem;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.45);
+    }
+
+    .intro {
+      padding: var(--space-5) 0 var(--space-4);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.82rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .intro h1,
+    .direction-card h2 {
+      font-family: var(--serif);
+      line-height: 0.95;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .intro h1 {
+      font-size: clamp(2.7rem, 8vw, 5.8rem);
+      max-width: 10ch;
+      margin-bottom: var(--space-3);
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.9fr;
+      gap: var(--space-4);
+      align-items: start;
+    }
+
+    .intro p,
+    .direction-meta,
+    .notes,
+    .mock-body,
+    li {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .direction-list {
+      display: grid;
+      gap: var(--space-4);
+      padding: 0 0 var(--space-6);
+    }
+
+    .direction-card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.55);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .direction-card header {
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: var(--space-2);
+      background: linear-gradient(180deg, rgba(255,255,255,0.48), rgba(237,220,198,0.22));
+    }
+
+    .direction-card h2 {
+      font-size: clamp(2rem, 5vw, 3.6rem);
+    }
+
+    .direction-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .direction-meta strong {
+      display: block;
+      color: var(--ink);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .mockup {
+      padding: var(--space-4);
+      background: radial-gradient(circle at top right, rgba(126,172,181,0.12), transparent 24%), var(--bg);
+    }
+
+    .mock-browser {
+      background: #fffdf9;
+      border: 1px solid rgba(45,36,31,0.08);
+      border-radius: 22px;
+      min-height: 560px;
+      overflow: hidden;
+    }
+
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(237,220,198,0.35);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(45,36,31,0.18);
+    }
+
+    .dot.red { background: var(--accent-primary); }
+    .dot.blue { background: var(--accent-secondary); }
+
+    .mock-body {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .mock-grid-2,
+    .mock-grid-3 {
+      display: grid;
+      gap: 16px;
+    }
+
+    .mock-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mock-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .block,
+    .hero,
+    .card,
+    .sidebar,
+    .pill,
+    .rail {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(45,36,31,0.08);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(191,70,70,0.16), rgba(126,172,181,0.16));
+      padding: 28px;
+      min-height: 180px;
+      display: grid;
+      align-content: space-between;
+      gap: 14px;
+    }
+
+    .hero h3,
+    .card h4,
+    .sidebar h4,
+    .block h4 {
+      margin: 0;
+      color: var(--ink);
+    }
+
+    .hero h3 { font-family: var(--serif); font-size: 2rem; line-height: 1; }
+
+    .block,
+    .card,
+    .sidebar,
+    .rail {
+      background: rgba(255,255,255,0.82);
+      padding: 18px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+    }
+
+    .accent-line {
+      height: 3px;
+      width: 64px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    }
+
+    .footer-inner {
+      padding: 0 0 var(--space-6);
+    }
+
+    .notes {
+      border: 1px dashed var(--line);
+      border-radius: 20px;
+      padding: var(--space-3);
+      background: rgba(255,255,255,0.4);
+    }
+
+    @media (max-width: 900px) {
+      .intro-grid,
+      .direction-meta,
+      .mock-grid-2,
+      .mock-grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .jump-nav {
+        justify-content: flex-start;
+      }
+
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="header-inner">
+      <div class="brand">Chris Personal Website - Design Directions</div>
+      <nav class="jump-nav">
+        <a href="#d1">01 Editorial Hero</a>
+        <a href="#d2">02 Resume Rail</a>
+        <a href="#d3">03 Narrative Scroll</a>
+        <a href="#d4">04 Grid Portfolio</a>
+        <a href="#d5">05 Minimal Proof</a>
+        <a href="#d6">06 Warm Magazine</a>
+      </nav>
+    </div>
+  </div>
+
+  <section class="intro">
+    <div class="section-inner intro-grid">
+      <div>
+        <div class="eyebrow">Step 9 · Design Direction Mockups</div>
+        <h1>Six directions for a calm, polished, trust-first personal site.</h1>
+        <p>Each direction uses the same palette, spacing logic, and core interaction principles, but shifts the layout, density, emphasis, and motion character. The goal is not to pick a final UI pixel-for-pixel, but to discover which visual language feels most like your site.</p>
+      </div>
+      <div class="notes">
+        <strong>How to evaluate</strong>
+        <ul>
+          <li>Which version makes identity and qualifications easiest to grasp in seconds?</li>
+          <li>Which one feels most custom without becoming fussy?</li>
+          <li>Where does motion feel supportive rather than decorative?</li>
+          <li>Which balance of warmth, professionalism, and proof feels most like you?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <main class="section-inner direction-list">
+    <section class="direction-card" id="d1">
+      <header>
+        <div class="eyebrow">Direction 01</div>
+        <h2>Editorial Hero</h2>
+        <div class="direction-meta">
+          <div><strong>Layout</strong>Large serif-led hero with calm supporting modules</div>
+          <div><strong>Visual Weight</strong>Light to medium, strong first impression</div>
+          <div><strong>Best For</strong>Immediate identity, elegant credibility, strong intro</div>
+        </div>
+      </header>
+      <div class="mockup">
+        <div class="mock-browser">
+          <div class="browser-bar"><span class="dot red"></span><span class="dot"></span><span class="dot blue"></span></div>
+          <div class="mock-body">
+            <div class="hero">
+              <div class="pill-row"><span class="pill">Backend engineer</span><span class="pill">Builder</span><span class="pill">Available for consulting</span></div>
+              <h3>Clean first impression. Strong qualifications. No nonsense.</h3>
+              <div class="accent-line"></div>
+            </div>
+            <div class="mock-grid-2">
+              <div class="card"><h4>Selected projects</h4><p>Three proof-rich project entries with concise context and clear next clicks.</p></div>
+              <div class="card"><h4>Resume and experience</h4><p>Fast-access credentials block with restrained call-to-action treatment.</p></div>
+            </div>
+            <div class="block"><h4>Why it works</h4><p>Feels authored and premium right away while keeping scanning effortless.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="direction-card" id="d2">
+      <header>
+        <div class="eyebrow">Direction 02</div>
+        <h2>Resume Rail</h2>
+        <div class="direction-meta">
+          <div><strong>Layout</strong>Persistent side rail with profile, nav, and quick facts</div>
+          <div><strong>Visual Weight</strong>Structured and professional</div>
+          <div><strong>Best For</strong>Recruiter skim paths and fast information retrieval</div>
+        </div>
+      </header>
+      <div class="mockup">
+        <div class="mock-browser">
+          <div class="browser-bar"><span class="dot red"></span><span class="dot"></span><span class="dot blue"></span></div>
+          <div class="mock-body" style="grid-template-columns: 280px 1fr;">
+            <div class="sidebar">
+              <h4>Chris</h4>
+              <p>Professional snapshot, links, availability, and anchor navigation.</p>
+              <div class="pill-row"><span class="pill">Resume</span><span class="pill">Projects</span><span class="pill">Contact</span></div>
+            </div>
+            <div class="mock-grid-2">
+              <div class="block"><h4>Experience timeline</h4><p>Scrolling center column with high-signal, low-noise qualifications.</p></div>
+              <div class="block"><h4>Project evidence</h4><p>Cards that deepen into details without losing the overall site rhythm.</p></div>
+              <div class="card" style="grid-column: 1 / -1;"><h4>Why it works</h4><p>Strongest for users who want immediate orientation and little ambiguity.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="direction-card" id="d3">
+      <header>
+        <div class="eyebrow">Direction 03</div>
+        <h2>Narrative Scroll</h2>
+        <div class="direction-meta">
+          <div><strong>Layout</strong>Long-form scrolling story with layered section reveals</div>
+          <div><strong>Visual Weight</strong>Atmospheric and cinematic</div>
+          <div><strong>Best For</strong>Scroll-led discovery and tasteful motion experiments</div>
+        </div>
+      </header>
+      <div class="mockup">
+        <div class="mock-browser">
+          <div class="browser-bar"><span class="dot red"></span><span class="dot"></span><span class="dot blue"></span></div>
+          <div class="mock-body">
+            <div class="hero" style="min-height: 220px;"><h3>As you scroll, the story sharpens.</h3><p>Section transitions, gentle offsets, and image motion support orientation.</p></div>
+            <div class="block"><h4>Opening identity chapter</h4><p>One strong statement, profile image treatment, subtle parallax or shift.</p></div>
+            <div class="mock-grid-3">
+              <div class="card"><h4>Background</h4></div>
+              <div class="card"><h4>Projects</h4></div>
+              <div class="card"><h4>Resume</h4></div>
+            </div>
+            <div class="block"><h4>Why it works</h4><p>Best fit if scroll-feel itself should become part of the memorable signature.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="direction-card" id="d4">
+      <header>
+        <div class="eyebrow">Direction 04</div>
+        <h2>Grid Portfolio</h2>
+        <div class="direction-meta">
+          <div><strong>Layout</strong>Modular cards with strong preview hierarchy</div>
+          <div><strong>Visual Weight</strong>Balanced and contemporary</div>
+          <div><strong>Best For</strong>Project visibility and quick comparison</div>
+        </div>
+      </header>
+      <div class="mockup">
+        <div class="mock-browser">
+          <div class="browser-bar"><span class="dot red"></span><span class="dot"></span><span class="dot blue"></span></div>
+          <div class="mock-body">
+            <div class="mock-grid-3">
+              <div class="hero" style="grid-column: span 2;"><h3>Selected work with confidence-first framing.</h3><p>Project-led homepage with profile context integrated above and between cards.</p></div>
+              <div class="sidebar"><h4>Quick profile</h4><p>Headline, resume link, contact, and profile image.</p></div>
+              <div class="card"><h4>Case study 01</h4></div>
+              <div class="card"><h4>Case study 02</h4></div>
+              <div class="card"><h4>Case study 03</h4></div>
+            </div>
+            <div class="block"><h4>Why it works</h4><p>Projects become the strongest evidence while still preserving a personal homepage feel.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="direction-card" id="d5">
+      <header>
+        <div class="eyebrow">Direction 05</div>
+        <h2>Minimal Proof</h2>
+        <div class="direction-meta">
+          <div><strong>Layout</strong>Ultra-restrained, sparse, confidence-through-simplicity</div>
+          <div><strong>Visual Weight</strong>Lightest and most severe</div>
+          <div><strong>Best For</strong>Calm authority and very low interface noise</div>
+        </div>
+      </header>
+      <div class="mockup">
+        <div class="mock-browser">
+          <div class="browser-bar"><span class="dot red"></span><span class="dot"></span><span class="dot blue"></span></div>
+          <div class="mock-body">
+            <div class="block" style="background: transparent; border-style: dashed;">
+              <h4>Chris - backend engineer, builder, thoughtful problem solver.</h4>
+              <p>Large margins, extremely selective color, minimal decoration, precise copy.</p>
+            </div>
+            <div class="rail">Resume</div>
+            <div class="rail">Projects</div>
+            <div class="rail">About</div>
+            <div class="block"><h4>Why it works</h4><p>Lets restraint itself signal confidence, but requires excellent typography and copy.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="direction-card" id="d6">
+      <header>
+        <div class="eyebrow">Direction 06</div>
+        <h2>Warm Magazine</h2>
+        <div class="direction-meta">
+          <div><strong>Layout</strong>Editorial sections with softer surfaces and human warmth</div>
+          <div><strong>Visual Weight</strong>Warm and approachable</div>
+          <div><strong>Best For</strong>Balancing professionalism with personality</div>
+        </div>
+      </header>
+      <div class="mockup">
+        <div class="mock-browser">
+          <div class="browser-bar"><span class="dot red"></span><span class="dot"></span><span class="dot blue"></span></div>
+          <div class="mock-body">
+            <div class="mock-grid-2">
+              <div class="hero"><h3>A personal site that still feels rigorously professional.</h3><p>Soft surfaces, photo moments, and editorial pacing.</p></div>
+              <div class="card"><h4>Portrait / profile interaction</h4><p>Expandable image moment integrated without overwhelming the page.</p></div>
+            </div>
+            <div class="mock-grid-3">
+              <div class="card"><h4>Work</h4></div>
+              <div class="card"><h4>Resume</h4></div>
+              <div class="card"><h4>Writing / notes</h4></div>
+            </div>
+            <div class="block"><h4>Why it works</h4><p>Feels the most human and inviting while still staying within the trust-first brief.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="notes">
+        <strong>Suggested next move</strong>
+        <p>Pick one direction as the base, or name 2-3 directions to combine. A strong likely path for this project is a blend of `01 Editorial Hero`, `02 Resume Rail`, and `06 Warm Magazine`.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
