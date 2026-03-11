@@ -7,13 +7,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="An orientation-forward resume entry point that explains what this section covers before deeper experience detail arrives."
 >
   <main id="main-content" class="route-page">
-    <section class="route-shell">
-      <p class="route-eyebrow">Resume</p>
+    <section class="route-shell editorial-reveal">
+      <div class="route-shell-accent">
+        <p class="route-eyebrow">Resume</p>
+        <p class="route-kicker">Experience framing</p>
+      </div>
       <h1>Experience and scope, framed for evaluators.</h1>
-      <p class="route-intro">
+      <p class="route-intro route-lede">
         Use this page to scan experience highlights, understand delivery scope, and move into the full resume with context already established.
         The goal is fast orientation for hiring teams without forcing them to leave the broader evaluation flow.
       </p>
+      <ul class="route-meta" aria-label="Resume page context">
+        <li>Experience presented with the same editorial pacing as the homepage</li>
+        <li>Scope and outcomes surfaced before dense chronology takes over</li>
+        <li>Ready to connect profile, proof, and resume into one hiring journey</li>
+      </ul>
     </section>
   </main>
 </BaseLayout>

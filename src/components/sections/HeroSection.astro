@@ -22,12 +22,21 @@ const {
 } = Astro.props;
 ---
 
-<section class="hero-section" aria-labelledby="hero-title">
+<section class="hero-section editorial-reveal" aria-labelledby="hero-title">
   <div class="hero-copy">
-    <p class="hero-eyebrow">Editorial portfolio</p>
+    <div class="hero-context">
+      <p class="hero-eyebrow">Warm editorial portfolio</p>
+      <p class="hero-kicker">Designed to help evaluators form trust quickly, without template noise.</p>
+    </div>
     <h1 id="hero-title">{heroName}</h1>
     <p class="hero-role">{heroRole}</p>
     <p class="hero-intro">{heroIntro}</p>
+
+    <ul class="hero-credibility-list" aria-label="Professional context">
+      <li>Product engineering shaped for senior IC and staff-level evaluation</li>
+      <li>Content, UX, and implementation decisions carried through one authored system</li>
+      <li>Calm delivery signals that stay legible under skim-heavy review</li>
+    </ul>
 
     <div class="hero-actions">
       <a class="hero-cta" href={primaryCtaHref}>{primaryCtaLabel}</a>
@@ -49,7 +58,10 @@ const {
       }
     </div>
 
+    <p class="hero-signal-kicker">First impression</p>
     <p class="hero-signal-label">Professional signal</p>
-    <p class="hero-signal-copy">Product judgment, hands-on delivery, and content clarity shaped into one visible first impression.</p>
+    <p class="hero-signal-copy">
+      Product judgment, hands-on delivery, and content clarity shaped into one visible first impression that feels deliberate instead of generic.
+    </p>
   </aside>
 </section>

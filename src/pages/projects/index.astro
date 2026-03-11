@@ -7,13 +7,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   description="A guided projects overview showing where to go next for proof of execution, product judgment, and implementation detail."
 >
   <main id="main-content" class="route-page">
-    <section class="route-shell">
-      <p class="route-eyebrow">Projects</p>
+    <section class="route-shell editorial-reveal">
+      <div class="route-shell-accent">
+        <p class="route-eyebrow">Projects</p>
+        <p class="route-kicker">Proof path</p>
+      </div>
       <h1>Proof of execution, organized for quick evaluation.</h1>
-      <p class="route-intro">
+      <p class="route-intro route-lede">
         Review the work through delivery context, product judgment, and implementation detail. Each project summary is designed to help evaluators
         decide quickly which proof is worth opening next.
       </p>
+      <ul class="route-meta" aria-label="Projects page context">
+        <li>Structured to reward quick scanning before deeper reading</li>
+        <li>Calm shell treatment that matches the homepage instead of resetting visually</li>
+        <li>Built to support credible proof pages as Epic 2 expands the project library</li>
+      </ul>
     </section>
   </main>
 </BaseLayout>
