@@ -28,23 +28,28 @@ const {
     <h1 id="hero-title">{heroName}</h1>
     <p class="hero-role">{heroRole}</p>
     <p class="hero-intro">{heroIntro}</p>
-    <a class="hero-cta" href={primaryCtaHref}>{primaryCtaLabel}</a>
+
+    <div class="hero-actions">
+      <a class="hero-cta" href={primaryCtaHref}>{primaryCtaLabel}</a>
+
+      <ul class="trust-tags" aria-label="Trust signals">
+        {trustTags.map((tag) => <li>{tag}</li>)}
+      </ul>
+    </div>
   </div>
 
   <aside class="hero-signal" aria-label="Professional signal">
-    {
-      portraitSrc && portraitAlt ? (
-        <img class="hero-portrait" src={portraitSrc} alt={portraitAlt} width="320" height="400" loading="eager" />
-      ) : (
-        <div class="hero-monogram" aria-hidden="true">CF</div>
-      )
-    }
+    <div class="hero-signal-media">
+      {
+        portraitSrc && portraitAlt ? (
+          <img class="hero-portrait" src={portraitSrc} alt={portraitAlt} width="320" height="400" loading="eager" />
+        ) : (
+          <div class="hero-monogram" aria-hidden="true">CF</div>
+        )
+      }
+    </div>
 
     <p class="hero-signal-label">Professional signal</p>
     <p class="hero-signal-copy">Product judgment, hands-on delivery, and content clarity shaped into one visible first impression.</p>
-
-    <ul class="trust-tags" aria-label="Trust signals">
-      {trustTags.map((tag) => <li>{tag}</li>)}
-    </ul>
   </aside>
 </section>

@@ -78,7 +78,7 @@ test('story 1.4 task 4: mobile navigation stays native and lightweight', () => {
   assert.match(siteHeader, /<nav\b[^>]*aria-label="Primary"/, 'mobile navigation should remain semantic and directly reachable');
   assert.doesNotMatch(siteHeader, /<details\b[^>]*\sopen(?:\s|>)/, 'mobile navigation should not ship an always-expanded disclosure');
   assert.match(globalStyles, /min-height:\s*44px/, 'nav controls should keep target sizes large enough on mobile');
-  assert.match(globalStyles, /@media \(max-width: 48rem\)/, 'mobile navigation should switch at the documented 48rem breakpoint');
+  assert.match(globalStyles, /@media \(max-width: 47\.999rem\)/, 'mobile navigation should switch just below the 48rem tablet breakpoint to avoid overlap');
   assert.doesNotMatch(siteHeader, /client:load|client:idle|client:visible|client:only/, 'mobile nav should not hydrate the whole header');
   assert.doesNotMatch(siteNav, /onClick|addEventListener/, 'mobile nav should not rely on custom JS interception');
 });

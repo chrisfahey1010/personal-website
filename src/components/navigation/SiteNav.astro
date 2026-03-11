@@ -15,7 +15,7 @@ const currentPathname = normalizePathname(pathname);
       const isCurrent = currentPathname === item.href;
 
       return (
-        <li>
+        <li class="site-nav-item">
           <a
             href={item.href}
             aria-current={isCurrent ? 'page' : undefined}
