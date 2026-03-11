@@ -22,7 +22,7 @@ const currentPathname = normalizePathname(pathname);
             class:list={['site-nav-link', { 'is-current': isCurrent }]}
           >
             <span>{item.label}</span>
-            {isCurrent && <span class="site-nav-current-marker">Current page</span>}
+            {isCurrent && <span aria-hidden="true" class="site-nav-current-marker">Current page</span>}
           </a>
         </li>
       );

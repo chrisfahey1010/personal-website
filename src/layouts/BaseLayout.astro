@@ -21,6 +21,7 @@ const pathname = Astro.url.pathname;
     <title>{title}</title>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <SiteHeader pathname={pathname} />
     <slot />
   </body>

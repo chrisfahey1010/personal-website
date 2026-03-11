@@ -3,11 +3,13 @@
 :root {
   color-scheme: light;
   --color-ink: #241816;
-  --color-muted: #6a5850;
+  --color-muted: #59463e;
   --color-surface: #fff4ea;
   --color-surface-strong: #eddcc6;
   --color-accent: #bf4646;
   --color-accent-soft: #7eacb5;
+  --color-focus: #0e5564;
+  --color-focus-contrast: rgba(255, 248, 241, 0.94);
   --color-border: rgba(36, 24, 22, 0.12);
   --shadow-soft: 0 24px 60px rgba(77, 47, 34, 0.12);
   --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
@@ -17,6 +19,7 @@
   --page-gutter: clamp(1rem, 2vw, 1.5rem);
   --section-space: clamp(1.5rem, 4vw, 4rem);
   --shell-padding: clamp(1.35rem, 3vw, 3rem);
+  --scroll-target-offset: 8rem;
 }
 
 html {
@@ -43,13 +46,40 @@ body::before {
   pointer-events: none;
 }
 
+.skip-link {
+  position: fixed;
+  top: 0.9rem;
+  left: 50%;
+  z-index: 30;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.1rem;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: #fff8f1;
+  text-decoration: none;
+  box-shadow: var(--shadow-soft);
+  transform: translate(-50%, -180%);
+}
+
+.skip-link:focus-visible {
+  transform: translate(-50%, 0);
+}
+
 a {
   color: inherit;
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-accent);
-  outline-offset: 4px;
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--color-focus-contrast);
+}
+
+#main-content {
+  scroll-margin-top: var(--scroll-target-offset);
 }
 
 .home-page {
@@ -176,19 +206,20 @@ a {
 }
 
 .site-nav-link.is-current {
-  border-color: rgba(36, 24, 22, 0.12);
+  border-color: rgba(36, 24, 22, 0.22);
   background: rgba(255, 255, 255, 0.78);
   color: var(--color-ink);
   text-decoration: underline;
   text-decoration-thickness: 0.14em;
   text-underline-offset: 0.22em;
+  text-decoration-color: currentColor;
 }
 
 .site-nav-current-marker {
-  border: 1px solid rgba(191, 70, 70, 0.18);
+  border: 1px solid rgba(36, 24, 22, 0.16);
   border-radius: 999px;
-  background: rgba(191, 70, 70, 0.08);
-  color: var(--color-accent);
+  background: rgba(255, 248, 241, 0.96);
+  color: var(--color-ink);
   padding: 0.15rem 0.45rem;
   font-size: 0.72rem;
   font-weight: 700;
@@ -367,6 +398,7 @@ ul {
 }
 
 .proof-section {
+  scroll-margin-top: var(--scroll-target-offset);
   padding: max(1rem, calc(var(--section-space) * 0.35)) 0 max(2rem, calc(var(--section-space) * 0.6));
 }
 
@@ -408,6 +440,7 @@ ul {
   :root {
     --page-gutter: 2rem;
     --content-max-width: 56rem;
+    --scroll-target-offset: 9rem;
   }
 
   .site-header-inner {
@@ -449,6 +482,7 @@ ul {
     --page-gutter: 1.25rem;
     --content-max-width: 100%;
     --section-space: 3rem;
+    --scroll-target-offset: 11rem;
   }
 
   .site-header {
@@ -512,11 +546,28 @@ ul {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
   html {
     scroll-behavior: auto;
   }
 
   .hero-cta {
     transition: none;
+  }
+
+  .hero-cta:is(:hover, :focus-visible),
+  .skip-link:focus-visible {
+    transform: translate(-50%, 0);
+  }
+
+  .hero-cta:is(:hover, :focus-visible) {
+    transform: none;
   }
 }
