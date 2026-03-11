@@ -1,0 +1,42 @@
+---
+import type { ProjectRecord } from '../../lib/content/get-projects';
+
+interface Props {
+  projects: ProjectRecord[];
+}
+
+const { projects } = Astro.props;
+---
+
+<ol class="projects-list" aria-label="Project comparison list">
+  {
+    projects.map((project) => (
+      <li>
+        <article class="project-card">
+          <div class="project-card-heading">
+            <p class="project-card-label">Project</p>
+            <h2>{project.title}</h2>
+          </div>
+          <p class="project-card-summary">{project.summary}</p>
+          <dl class="project-card-context-list">
+            <div>
+              <dt>Context</dt>
+              <dd>{project.context}</dd>
+            </div>
+            <div>
+              <dt>Why it matters</dt>
+              <dd>
+                <ul class="project-card-cues" aria-label={`${project.title} relevance cues`}>
+                  {project.relevanceCues.map((cue) => <li>{cue}</li>)}
+                </ul>
+              </dd>
+            </div>
+          </dl>
+          <a class="project-card-link" href={`/projects/${project.slug}/`}>
+            Review {project.title} proof
+          </a>
+        </article>
+      </li>
+    ))
+  }
+</ol>

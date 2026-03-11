@@ -1,0 +1,69 @@
+---
+import { render } from 'astro:content';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjectBySlug, getProjects } from '../../lib/content/get-projects';
+
+export const getStaticPaths = async () => {
+  const projects = await getProjects();
+
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+  }));
+};
+
+const slug = Astro.params.slug;
+
+if (!slug) {
+  throw new Error('Project detail route requires a slug parameter.');
+}
+
+const project = await getProjectBySlug(slug);
+
+if (!project) {
+  throw new Error(`Unknown project slug: ${slug}`);
+}
+
+const { Content } = await render(project.entry);
+---
+
+<BaseLayout title={project.seoTitle} description={project.seoDescription} canonicalPath={`/projects/${project.slug}/`}>
+  <main id="main-content" class="route-page projects-page">
+    <section class="route-shell editorial-reveal">
+      <div class="route-shell-accent">
+        <p class="route-eyebrow">Project proof</p>
+        <p class="route-kicker">Evaluation handoff</p>
+      </div>
+      <h1>{project.title}</h1>
+      <p class="route-intro route-lede">{project.summary}</p>
+      <ul class="route-meta" aria-label={`${project.title} evaluation context`}>
+        <li>{project.context}</li>
+        <li>Built as a static, crawlable page so browser navigation remains dependable.</li>
+        <li>Expanded case-study depth is intentionally reserved for the next story.</li>
+      </ul>
+    </section>
+
+    <section class="project-detail-shell editorial-reveal" aria-labelledby="project-detail-heading">
+      <div class="projects-section-heading">
+        <p class="route-eyebrow">Why review this</p>
+        <h2 id="project-detail-heading">The strongest reasons to open this proof trail.</h2>
+      </div>
+
+      <ul class="project-detail-cues" aria-label={`${project.title} relevance cues`}>
+        {project.relevanceCues.map((cue) => <li>{cue}</li>)}
+      </ul>
+
+      <div class="proof-shell project-detail-proof">
+        <div class="proof-copy">
+          <Content />
+        </div>
+      </div>
+
+      <nav class="project-detail-actions" aria-label="Project detail next steps">
+        <a class="project-card-link" href="/projects/">Back to all projects</a>
+        <a class="project-card-link project-card-link-secondary" href="/resume/">Continue to resume</a>
+        <a class="project-card-link project-card-link-secondary" href="/contact/">Start a conversation</a>
+      </nav>
+    </section>
+  </main>
+</BaseLayout>

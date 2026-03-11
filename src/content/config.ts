@@ -3,7 +3,6 @@ import { defineCollection, z } from 'astro:content';
 import { isBuiltPageRoute } from '../config/navigation';
 
 const nonEmptyString = z.string().trim().min(1);
-
 const pages = defineCollection({
   type: 'content',
   schema: z
@@ -38,6 +37,25 @@ const pages = defineCollection({
     }),
 });
 
+const projects = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: nonEmptyString,
+    summary: nonEmptyString,
+    context: nonEmptyString,
+    relevanceCues: z.array(nonEmptyString).min(1).max(4),
+    seoTitle: nonEmptyString,
+    seoDescription: nonEmptyString,
+    slug: nonEmptyString
+      .optional()
+      .refine(
+        (value) => value === undefined || /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value),
+        'slug must be lowercase kebab-case',
+      ),
+  }),
+});
+
 export const collections = {
   pages,
+  projects,
 };

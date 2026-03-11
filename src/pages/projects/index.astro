@@ -1,12 +1,17 @@
 ---
+import ProjectIndexList from '../../components/projects/ProjectIndexList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects } from '../../lib/content/get-projects';
+
+const projects = await getProjects();
 ---
 
 <BaseLayout
   title="Projects | Chris Fahey"
-  description="A guided projects overview showing where to go next for proof of execution, product judgment, and implementation detail."
+  description="A scannable project index that helps evaluators compare context, relevance, and where to go next for deeper proof."
+  canonicalPath="/projects/"
 >
-  <main id="main-content" class="route-page">
+  <main id="main-content" class="route-page projects-page">
     <section class="route-shell editorial-reveal">
       <div class="route-shell-accent">
         <p class="route-eyebrow">Projects</p>
@@ -14,14 +19,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
       <h1>Proof of execution, organized for quick evaluation.</h1>
       <p class="route-intro route-lede">
-        Review the work through delivery context, product judgment, and implementation detail. Each project summary is designed to help evaluators
-        decide quickly which proof is worth opening next.
+        Scan the work by delivery context, product judgment, and implementation relevance. Each summary is designed to help evaluators decide
+        quickly which proof to open next.
       </p>
       <ul class="route-meta" aria-label="Projects page context">
-        <li>Structured to reward quick scanning before deeper reading</li>
-        <li>Calm shell treatment that matches the homepage instead of resetting visually</li>
-        <li>Built to support credible proof pages as Epic 2 expands the project library</li>
+        <li>Consistent summary structure supports side-by-side comparison under time pressure</li>
+        <li>Each project points to a normal detail page without relying on client-side routing</li>
+        <li>The surrounding navigation keeps resume and contact pathways visible throughout the evaluation journey</li>
       </ul>
+    </section>
+
+    <section class="projects-comparison-shell editorial-reveal" aria-labelledby="projects-comparison-heading">
+      <div class="projects-section-heading">
+        <p class="route-eyebrow">Comparison</p>
+        <h2 id="projects-comparison-heading">Choose the proof trail that best matches the conversation.</h2>
+        <p class="route-intro">
+          Start with the project that feels most relevant, then continue through the normal site navigation to resume review or direct contact.
+        </p>
+      </div>
+
+      <ProjectIndexList projects={projects} />
     </section>
   </main>
 </BaseLayout>
