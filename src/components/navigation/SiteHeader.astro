@@ -1,0 +1,22 @@
+---
+import SiteNav from './SiteNav.astro';
+
+interface Props {
+  pathname: string;
+}
+
+const { pathname } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-identity" href="/">
+      <span class="site-identity-mark">Chris Fahey</span>
+      <span class="site-identity-copy">Product-minded software engineer</span>
+    </a>
+
+    <nav aria-label="Primary" class="site-header-nav">
+      <SiteNav pathname={pathname} />
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,31 @@
+---
+import { launchNavigationItems, normalizePathname } from '../../config/navigation';
+
+interface Props {
+  pathname: string;
+}
+
+const { pathname } = Astro.props;
+const currentPathname = normalizePathname(pathname);
+---
+
+<ul class="site-nav-list">
+  {
+    launchNavigationItems.map((item) => {
+      const isCurrent = currentPathname === item.href;
+
+      return (
+        <li>
+          <a
+            href={item.href}
+            aria-current={isCurrent ? 'page' : undefined}
+            class:list={['site-nav-link', { 'is-current': isCurrent }]}
+          >
+            <span>{item.label}</span>
+            {isCurrent && <span class="site-nav-current-marker">Current page</span>}
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>

@@ -1,7 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 
+import { isBuiltPageRoute } from '../config/navigation';
+
 const nonEmptyString = z.string().trim().min(1);
-const builtPageRoutes = new Set(['/']);
 
 const pages = defineCollection({
   type: 'content',
@@ -17,7 +18,7 @@ const pages = defineCollection({
       trustTags: z.array(nonEmptyString).min(1).max(4),
       primaryCtaLabel: nonEmptyString,
       primaryCtaHref: nonEmptyString.refine(
-        (value) => value.startsWith('#') || builtPageRoutes.has(value),
+        (value) => value.startsWith('#') || isBuiltPageRoute(value),
         'CTA href must be a same-page anchor or an existing built route',
       ),
       portraitSrc: nonEmptyString.optional(),

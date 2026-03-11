@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import SiteHeader from '../components/navigation/SiteHeader.astro';
 
 interface Props {
   title: string;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const pathname = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -19,6 +21,7 @@ const { title, description } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
+    <SiteHeader pathname={pathname} />
     <slot />
   </body>
 </html>
