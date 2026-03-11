@@ -38,6 +38,10 @@ so that I can quickly judge whether the site is relevant to my evaluation.
   - [x] Update the existing lightweight Node-based test coverage so the built homepage contract validates the new hero title/content and rejects regressions to baseline placeholder copy.
   - [x] Run `npm run check`, `npm test`, and `npm run build` after implementation.
 
+### Review Follow-ups (AI)
+
+- [ ] [AI-Review][Low] Replace the hardcoded `builtPageRoutes` set in `src/content/config.ts` with a validation source that can grow with real site routes so CTA validation does not drift as future built destinations like `/resume` or `/projects` are introduced. [src/content/config.ts:4]
+
 ## Dev Notes
 
 ### Developer Context
@@ -121,8 +125,8 @@ so that I can quickly judge whether the site is relevant to my evaluation.
 
 ### Story Completion Status
 
-- Status: `ready-for-dev`
-- Completion note: Ultimate context engine analysis completed - comprehensive developer guide created.
+- Status: `done`
+- Completion note: Implementation, review follow-up fixes, and final workflow status sync are complete.
 
 ### Project Structure Notes
 
@@ -175,10 +179,11 @@ openai/gpt-5.4
 - Repo state reviewed through `git log -5 --oneline`, `git status --short`, `package.json`, current `src/` files, and CI/deploy workflow files.
 - Additional research gathered for Astro 5, Tailwind 4, and lightweight hero-motion best practices.
 - Advanced elicitation was run on the `## Story` section, and the accepted refinement updated the user-story wording.
-- Story moved from `ready-for-dev` to `in-progress` in `_bmad-output/implementation-artifacts/sprint-status.yaml` before implementation and to `review` after validations passed.
+- Story moved from `ready-for-dev` to `in-progress` in `_bmad-output/implementation-artifacts/sprint-status.yaml` before implementation, to `review` after validations passed, and to `done` after review follow-up fixes were applied and revalidated.
 - Red phase: added failing Node-based Story 1.3 contract tests for schema/content ownership and built homepage output before implementing hero changes.
 - Green/refactor phase: implemented content-driven homepage loading, reusable `HeroSection.astro` and `SocialProofSection.astro`, warm editorial styling, and updated baseline tests for the new homepage contract.
 - Validation phase: `npm run check`, `npm test`, and `npm run build` all passed after serializing the test runner's build execution to avoid concurrent `dist/` races.
+- Dev-story continuation addressed post-push CI failure by replacing the unsupported `--test-concurrency=1` CLI flag with a repo-owned sequential Node test runner that stays compatible with the pinned CI Node version.
 
 ### Implementation Plan
 
@@ -197,31 +202,41 @@ openai/gpt-5.4
 - Added reusable `HeroSection.astro` and `SocialProofSection.astro` components, keeping `src/pages/index.astro` route-thin while introducing a visible same-page evaluation pathway via `#proof`.
 - Reworked `src/styles/global.css` and `src/layouts/BaseLayout.astro` to support the warm editorial direction, accessible focus states, and descriptive metadata without introducing hydration or global client state.
 - Extended Node-based regression coverage with `tests/story-1-3-homepage-hero.test.mjs`, updated existing homepage assertions, serialized test execution for build stability, and confirmed `npm run check`, `npm test`, and `npm run build` all pass.
+- Replaced the `npm test` script's unsupported Node CLI concurrency flag with `tests/run-node-tests.mjs` and added regression coverage so the pinned GitHub Actions Node version can execute the suite reliably.
 
 ### File List
 
-- `_bmad-output/implementation-artifacts/1-3-home-page-hero-and-identity-introduction.md`
-- `_bmad-output/implementation-artifacts/sprint-status.yaml`
-- `package.json`
-- `src/components/sections/HeroSection.astro`
-- `src/components/sections/SocialProofSection.astro`
-- `src/content/config.ts`
-- `src/content/pages/home.md`
-- `src/layouts/BaseLayout.astro`
-- `src/pages/index.astro`
-- `src/styles/global.css`
-- `tests/story-1-1-foundation.test.mjs`
-- `tests/story-1-3-homepage-hero.test.mjs`
+- Historical implementation files for Story 1.3:
+  - `package.json`
+  - `src/components/sections/HeroSection.astro`
+  - `src/components/sections/SocialProofSection.astro`
+  - `src/content/config.ts`
+  - `src/content/pages/home.md`
+  - `src/layouts/BaseLayout.astro`
+  - `src/pages/index.astro`
+  - `src/styles/global.css`
+  - `tests/story-1-1-foundation.test.mjs`
+  - `tests/story-1-3-homepage-hero.test.mjs`
+  - `tests/run-node-tests.mjs`
+- Current review-follow-up working tree files:
+  - `_bmad-output/implementation-artifacts/1-3-home-page-hero-and-identity-introduction.md`
+  - `_bmad-output/implementation-artifacts/sprint-status.yaml`
+  - `package.json`
+  - `tests/story-1-1-foundation.test.mjs`
+  - `tests/run-node-tests.mjs`
 
 ## Senior Developer Review (AI)
 
 - Outcome: Approve
 - Reviewer: Chris
-- Date: 2026-03-10
+- Date: 2026-03-11
 - Findings addressed:
   - Tightened `primaryCtaHref` validation in `src/content/config.ts` so homepage CTA values must be a same-page anchor or an existing built route.
   - Stabilized Node build validation by removing unnecessary `dist/` deletion before repeated Astro builds in `tests/story-1-1-foundation.test.mjs`.
   - Extended `tests/story-1-3-homepage-hero.test.mjs` with negative contract coverage for invalid CTA routes and mismatched portrait metadata.
+  - Split the story's file accounting between historical implementation files and current review-follow-up working-tree files so git reality is documented explicitly.
+  - Updated `tests/run-node-tests.mjs` to discover nested `.test.mjs` files recursively instead of silently skipping subdirectories.
+  - Updated story status metadata and completion notes so the artifact no longer contradicts its approved review outcome.
 - Validation rerun after fixes:
   - `npm run check` ✅
   - `npm test` ✅
@@ -231,3 +246,5 @@ openai/gpt-5.4
 
 - 2026-03-10: Implemented Story 1.3 by moving homepage identity content into the Astro content layer, adding reusable hero and proof sections, refreshing editorial styling, and expanding regression coverage for the new homepage contract.
 - 2026-03-10: Fixed code review findings by tightening CTA route validation, stabilizing repeated build tests, and adding negative schema contract coverage.
+- 2026-03-10: Fixed post-push CI validation for Story 1.3 by replacing the unsupported Node test concurrency flag with a sequential test runner shim and locking that compatibility into regression coverage.
+- 2026-03-11: Fixed review follow-up issues by documenting the current working-tree change set explicitly, making the Node test runner recurse into nested suites, and syncing story metadata to the approved done state.

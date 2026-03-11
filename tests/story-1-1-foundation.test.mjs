@@ -107,7 +107,15 @@ test('story 1.2 task 1: CI workflow validates install, test, and build on push a
   assert.equal(typeof packageJson.scripts.test, 'string', 'package.json should expose a test script');
   assert.match(packageJson.scripts.check, /astro sync/, 'check script should refresh Astro generated types');
   assert.match(packageJson.scripts.check, /tsc --noEmit/, 'check script should run TypeScript validation without emitting files');
+  assert.equal(exists('tests/run-node-tests.mjs'), true, 'test runner shim should exist for CI-compatible execution');
+  assert.match(packageJson.scripts.test, /tests\/run-node-tests\.mjs/, 'test script should delegate to the repo test runner shim');
+  assert.doesNotMatch(packageJson.scripts.test, /--test-concurrency\b/, 'test script should stay compatible with the CI Node version');
   assert.doesNotMatch(packageJson.scripts.test, /\*\*/, 'test script should not rely on an unexpanded recursive glob in CI');
+
+  const testRunner = read('tests/run-node-tests.mjs');
+
+  assert.match(testRunner, /withFileTypes:\s*true/, 'test runner should inspect test directories recursively');
+  assert.match(testRunner, /entry\.isDirectory\(\)/, 'test runner should descend into nested test folders');
 });
 
 test('story 1.2 task 2: deploy workflow stays gated behind successful CI on main', () => {
