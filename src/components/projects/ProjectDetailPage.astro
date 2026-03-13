@@ -1,0 +1,127 @@
+---
+import type { ProjectRecord } from '../../lib/content/get-projects';
+
+type MarkdownContentComponent = (...args: any[]) => any;
+
+interface Props {
+  project: ProjectRecord;
+  Content?: MarkdownContentComponent;
+}
+
+const { project, Content } = Astro.props as Props;
+
+const optionalReferences = [
+  ...project.externalArtifacts,
+  ...(project.liveUrl ? [{ label: 'Live site', href: project.liveUrl }] : []),
+  ...(project.repositoryUrl ? [{ label: 'Repository', href: project.repositoryUrl }] : []),
+].filter((artifact, index, artifacts) =>
+  artifacts.findIndex((candidate) => candidate.label === artifact.label && candidate.href === artifact.href) === index,
+);
+---
+
+<section class="project-detail-shell editorial-reveal" aria-labelledby="project-detail-heading">
+  <div class="projects-section-heading">
+    <p class="route-eyebrow">Why review this</p>
+    <h2 id="project-detail-heading">Proof that explains the work, the pressure, and the judgment behind it.</h2>
+  </div>
+
+  <ul class="project-detail-cues" aria-label={`${project.title} relevance cues`}>
+    {project.relevanceCues.map((cue) => <li>{cue}</li>)}
+  </ul>
+
+  <div class="project-detail-grid">
+    <section class="proof-shell project-detail-proof" aria-labelledby="project-overview-heading">
+      <div class="project-detail-section-heading">
+        <p class="project-detail-section-label">What this project is</p>
+        <h3 id="project-overview-heading">Evaluator-ready context before you inspect the proof.</h3>
+      </div>
+      <div class="proof-copy project-detail-prose">
+        <p>{project.overview}</p>
+      </div>
+    </section>
+
+    <section class="proof-shell project-detail-proof" aria-labelledby="project-problem-heading">
+      <div class="project-detail-section-heading">
+        <p class="project-detail-section-label">Problem framing</p>
+        <h3 id="project-problem-heading">What had to change, and why it mattered.</h3>
+      </div>
+      <div class="proof-copy project-detail-prose">
+        <p>{project.problem}</p>
+      </div>
+    </section>
+  </div>
+
+  <section class="proof-shell project-detail-proof" aria-labelledby="project-role-heading">
+    <div class="project-detail-section-heading">
+      <p class="project-detail-section-label">Role and contribution</p>
+      <h3 id="project-role-heading">Where Chris was directly accountable.</h3>
+    </div>
+    <div class="proof-copy project-detail-prose">
+      <p>{project.role}</p>
+    </div>
+  </section>
+
+  <section class="project-proof-stack" aria-labelledby="project-proof-sections-heading">
+    <div class="projects-section-heading">
+      <p class="route-eyebrow">Proof in practice</p>
+      <h3 id="project-proof-sections-heading">Concrete evidence, decisions, and outcomes.</h3>
+    </div>
+
+    <ol class="project-proof-sections">
+      {
+        project.proofSections.map((section) => (
+          <li>
+            <article class="project-proof-card">
+              <h4>{section.title}</h4>
+              <p>{section.summary}</p>
+              <ul class="project-proof-evidence" aria-label={`${section.title} evidence`}>
+                {section.evidence.map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  {
+    Content && (
+      <section class="proof-shell project-detail-proof" aria-labelledby="project-notes-heading">
+        <div class="project-detail-section-heading">
+          <p class="project-detail-section-label">Implementation evidence</p>
+          <h3 id="project-notes-heading">Additional notes that deepen the proof trail.</h3>
+        </div>
+        <div class="proof-copy project-detail-prose">
+          <Content />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    optionalReferences.length > 0 && (
+      <section class="proof-shell project-detail-proof" aria-labelledby="project-references-heading">
+        <div class="project-detail-section-heading">
+          <p class="project-detail-section-label">Optional references</p>
+          <h3 id="project-references-heading">External artifacts for deeper evaluation, not for basic understanding.</h3>
+        </div>
+        <ul class="project-reference-list" aria-label={`${project.title} optional references`}>
+          {optionalReferences.map((artifact) => (
+            <li>
+              <a class="project-reference-link" href={artifact.href} rel="noreferrer" target="_blank">
+                {artifact.label}
+              </a>
+              {artifact.note && <p>{artifact.note}</p>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <nav class="project-detail-actions" aria-label="Project detail next steps">
+    <a class="project-card-link" href="/projects/">Back to all projects</a>
+    <a class="project-card-link project-card-link-secondary" href="/resume/">Continue to resume</a>
+    <a class="project-card-link project-card-link-secondary" href="/contact/">Start a conversation</a>
+  </nav>
+</section>
