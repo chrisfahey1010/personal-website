@@ -68,7 +68,6 @@ const projects = defineCollection({
     repositoryUrl: optionalExternalUrl,
     seoTitle: nonEmptyString,
     seoDescription: nonEmptyString,
-    slug: nonEmptyString.refine((value) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value), 'slug must be lowercase kebab-case'),
   }),
 });
 
