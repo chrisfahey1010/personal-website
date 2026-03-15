@@ -96,9 +96,9 @@ NFR19: Future additions such as analytics, CMS capabilities, or richer content s
 - Use Astro with file-based routing, Astro content collections, and Zod-validated schemas as the canonical content model.
 - Treat build-time content loading as the default communication pattern; future dynamic capabilities must be isolated, narrow seams.
 - Structure the implementation around reusable design tokens, UI primitives, section components, content-driven layouts, and thin route files.
-- Deploy production via Amazon S3 plus Amazon CloudFront with restricted origin access, HTTPS-only delivery, secure headers, cache invalidation, and Git-based CI/CD.
+- Deploy production via `Cloudflare Pages` for the static Astro site, using secure transport, managed global delivery, and a simple Git-based CI/CD path.
 - Enforce hydration-by-exception, optimized images and typography, minimal non-essential JavaScript, stable layout, and progressive enhancement.
-- Keep authored content in source control and make content/schema validation a build gate.
+- Keep authored content in source control and in the repository wherever practical, and make content/schema validation a build gate.
 - Reserve future seams for CMS, analytics, newsletter, external feeds, and contact form backends without making them launch dependencies.
 - Support latest stable Chrome, Safari, Firefox, and Edge on desktop, plus modern Chrome and Safari-class mobile browsers.
 - Use a mobile-first responsive strategy with meaningful breakpoints around 320-767px, 768-1023px, and 1024px+.
@@ -232,7 +232,7 @@ So that implementation happens on top of a repeatable, validated, production-sha
 
 **Given** the production hosting approach is part of the approved architecture
 **When** deployment foundations are configured
-**Then** the project includes a bounded setup for `Amazon S3 + Amazon CloudFront` deployment
+**Then** the project includes a bounded setup for `Cloudflare Pages` deployment for the static Astro site
 **And** secrets and environment responsibilities are separated from application content and code
 
 **Given** the deployment path is reviewed before feature work expands

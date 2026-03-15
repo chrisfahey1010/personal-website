@@ -127,15 +127,15 @@ These risks do not suggest a more complex architecture. They suggest the opposit
 - Use no authentication or authorization at launch.
 - Expose no public application API at launch.
 - Use local component state only and avoid global client state infrastructure.
-- Deploy the production site via `Amazon S3 + Amazon CloudFront`.
+- Deploy the production site via `Cloudflare Pages`.
 
 **Important Decisions (Shape Architecture):**
 - Use build-time content loading as the default communication pattern.
 - Defer form handling, analytics, newsletter, CMS, and external content feeds to future integration seams.
 - Use a design-system-oriented component architecture with composable sections and page primitives.
 - Enforce performance through hydration-by-exception, asset optimization, and strict third-party script discipline.
-- Use Git-based CI/CD to build, publish, and invalidate CDN caches.
-- Prefer a CloudFront-first private-origin setup over a casually public bucket configuration.
+- Use a simple Git-based validation and deployment flow appropriate for `Cloudflare Pages`.
+- Prefer platform-managed static hosting over self-managed storage-plus-CDN infrastructure for MVP launch.
 
 **Deferred Decisions (Post-MVP):**
 - CMS choice, because launch content volume does not justify editorial platform complexity yet.
@@ -165,7 +165,7 @@ Use `Zod 4` schemas for collection validation and type inference. This provides 
 No database migration strategy is needed at launch. Content evolution will happen through schema versioning and source updates. If a CMS or backend store is introduced later, migration planning can be scoped around the validated collection model.
 
 **Caching Strategy:**
-Use static asset fingerprinting from the build pipeline plus `CloudFront` edge caching for published assets and pages. Cache behavior should favor long-lived immutable assets and controlled invalidation for changed HTML/content paths.
+Use static asset fingerprinting from the build pipeline plus managed edge caching on the hosting platform for published assets and pages. Cache behavior should favor long-lived immutable assets for build outputs while keeping HTML updates straightforward through platform deployment behavior.
 
 **Cross-Functional Implication:**
 - Product: content changes remain deliberate and reviewable through Git.
@@ -195,16 +195,16 @@ Not applicable at launch because there are no protected user areas or admin-faci
 **Security Middleware / Baseline:**
 Adopt a static-site security baseline:
 - HTTPS-only delivery
-- `CloudFront`-based delivery layer
+- managed static hosting delivery layer
 - secure response headers
 - conservative `Content-Security-Policy` where practical
 - minimal exposure of personal data
 - strict review of third-party scripts and embeds
 - no client secrets in shipped code
-- restricted AWS origin access between `CloudFront` and `S3`
+- platform-managed HTTPS and edge delivery
 
 **Data Encryption Approach:**
-Rely on AWS-managed transport and storage protections. Use standard encrypted AWS storage defaults where appropriate, but no app-layer encryption design is needed for MVP content because there is no user account or sensitive application data model.
+Rely on hosting-platform-managed transport and storage protections where applicable. No app-layer encryption design is needed for MVP content because there is no user account or sensitive application data model.
 
 **API Security Strategy:**
 No public API exists at launch. If future write endpoints or integration endpoints are introduced, they should use isolated serverless functions with explicit validation, secrets management, spam protection, rate limiting, and narrow IAM permissions.
@@ -213,7 +213,7 @@ No public API exists at launch. If future write endpoints or integration endpoin
 Primary launch risks are:
 - accidental overexposure of personal/contact information
 - risky third-party embeds or analytics scripts
-- misconfigured S3/CloudFront origin access
+- misconfigured hosting, domain, or deployment settings
 - weak header/CSP policy
 - future serverless add-ons expanding attack surface without matching controls
 
@@ -316,17 +316,16 @@ Partially. Astro provides routing and the low-JS foundation; the state, componen
 ### Infrastructure & Deployment
 
 **ADR Summary:**
-Use a private static origin plus CDN delivery on AWS as the default production shape, with Git-driven deployments and minimal operational moving parts.
+Use `Cloudflare Pages` as the default production hosting shape for the static Astro site, with Git-driven deployments and minimal operational moving parts.
 
 **Hosting Strategy:**
-Use `Amazon S3` as the static origin and `Amazon CloudFront` as the CDN and HTTPS delivery layer for production.
+Use `Cloudflare Pages` for managed static hosting, HTTPS delivery, preview environments, and production deployment.
 
 **CI/CD Pipeline Approach:**
 Use a Git-based pipeline to:
 - install dependencies
 - run validation/build steps
-- publish `dist/` to S3
-- invalidate relevant CloudFront cache paths after deployment
+- deploy the static site through `Cloudflare Pages` using either native Git integration or a minimal deployment workflow only if needed
 
 **Environment Configuration:**
 Keep environment configuration minimal. Separate only what is actually needed:
@@ -341,7 +340,7 @@ Focus on static-site operational signals:
 - deployment success/failure notifications
 - basic uptime monitoring
 - Lighthouse/Core Web Vitals checks
-- `CloudFront`/`S3` access visibility as needed
+- hosting-platform deployment visibility and basic availability checks as needed
 
 Avoid application-observability platforms unless dynamic behavior justifies them.
 
@@ -349,7 +348,7 @@ Avoid application-observability platforms unless dynamic behavior justifies them
 Scale primarily through static delivery and CDN caching. This architecture scales well by default for public traffic. Future serverless integrations should scale independently and remain optional.
 
 **Origin Security Implication:**
-Prefer a `CloudFront`-first `S3` architecture with restricted origin access rather than treating the bucket as an openly exposed website endpoint. This keeps the deployment aligned with secure static delivery practices and allows stronger control over caching and headers.
+Prefer platform-managed static hosting with straightforward domain and HTTPS configuration rather than self-managed storage-and-CDN infrastructure for MVP launch. This keeps the deployment aligned with secure static delivery practices while minimizing infrastructure overhead.
 
 **Pre-Mortem Risks:**
 This deployment choice is most likely to fail if:
@@ -365,7 +364,7 @@ This deployment choice is most likely to fail if:
 - Engineering: deployment discipline matters more than platform novelty.
 
 **Rationale:**
-`S3 + CloudFront` gives strong AWS alignment, predictable static hosting behavior, low operational overhead, and excellent performance characteristics for a public content-led website.
+`Cloudflare Pages` gives low-friction static hosting, simple domain alignment for `fahey.vip`, preview-friendly deployment, low operational overhead, and excellent performance characteristics for a public content-led website.
 
 **Affects:**
 Deployment pipeline, DNS/TLS setup, cache behavior, security posture, future integration seams.
@@ -378,7 +377,7 @@ No. This is an infrastructure architecture decision.
 **Implementation Sequence:**
 1. Initialize the Astro project and add Tailwind.
 2. Establish TypeScript strictness and content collection schemas.
-3. Set up the bounded CI/build/deploy foundation for `S3 + CloudFront` so feature work starts on a repeatable baseline.
+3. Set up the bounded CI/build/deploy foundation for `Cloudflare Pages` so feature work starts on a repeatable baseline.
 4. Define the core content model for profile, projects, and resume-oriented content.
 5. Build the design-token and component foundation.
 6. Implement page templates and routes using content-driven composition.
@@ -388,7 +387,7 @@ No. This is an infrastructure architecture decision.
 **Cross-Component Dependencies:**
 - The no-database decision depends on disciplined content modeling and schema validation.
 - The no-auth and no-API decisions reduce infrastructure and frontend complexity, which reinforces the static-first hosting choice.
-- The `S3 + CloudFront` deployment choice reinforces the decision to avoid runtime-heavy features at launch.
+- The `Cloudflare Pages` deployment choice reinforces the decision to avoid runtime-heavy features at launch.
 - The local-state-only frontend decision depends on preserving hydration discipline and resisting unnecessary client-side feature growth.
 - Deferred integrations such as forms, CMS, analytics, or external feeds should preserve the content-collection model as the system’s stable core rather than displacing it.
 - Security posture depends on infrastructure decisions being implemented correctly, especially origin restriction, secrets handling, and third-party script governance.

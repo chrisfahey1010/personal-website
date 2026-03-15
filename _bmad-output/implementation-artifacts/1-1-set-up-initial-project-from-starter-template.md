@@ -63,7 +63,7 @@ so that implementation begins from the intended architectural baseline for the s
 - Respect the architecture's restraint-first model: no runtime-heavy patterns, no speculative backend, no service layer beyond the documented seams, and no feature work disguised as scaffolding.
 - Keep pages route-thin, preserve `src/content/` as the future system of record, and avoid building parallel data/content systems.
 - Treat accessibility, metadata, and performance as definition-of-done constraints even in the starter baseline.
-- Do not implement Story 1.2 concerns here: CI workflows, deploy workflows, S3 publishing, CloudFront invalidation, cache/header policy automation, or secret management.
+- Do not implement Story 1.2 concerns here: CI workflows, production deployment configuration, hosting-specific cache/header policy decisions, or secret management.
 
 ### Library / Framework Requirements
 
@@ -103,7 +103,7 @@ so that implementation begins from the intended architectural baseline for the s
 
 - Do not create a second nested Astro repo inside the current repo.
 - Do not add a database, auth provider, CMS, analytics platform, server runtime, or public API.
-- Do not add AWS deploy automation yet; that belongs to Story 1.2.
+- Do not add production deploy automation yet; that belongs to Story 1.2.
 - Do not scaffold blog/writing features beyond minimal reserved boundaries.
 - Do not leave starter demo branding, sample content, or placeholder sections that conflict with the personal-site information architecture.
 

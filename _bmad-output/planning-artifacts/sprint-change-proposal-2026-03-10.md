@@ -366,3 +366,7 @@ This change does not require a fundamental replan, but it does require backlog r
 - Routed to: Product Owner / Scrum Master for backlog and artifact updates before implementation
 - Follow-on recipients: UX/planning owner for `ux-design-specification.md` alignment, then development for implementation after planning updates are complete
 - `sprint-status.yaml`: not updated because no such file exists in the repository
+
+## Later Correction Note
+
+This proposal introduced an AWS-oriented deployment baseline that was later superseded by an approved `Cloudflare Pages` hosting direction after domain and platform constraints changed.

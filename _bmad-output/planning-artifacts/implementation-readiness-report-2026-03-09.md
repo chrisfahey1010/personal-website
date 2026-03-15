@@ -315,7 +315,7 @@ This assessment identified 5 issues across 3 categories: MVP scope control, impl
 
 - `/_bmad-output/planning-artifacts/prd.md` now uses a unique FR numbering sequence through `FR46`, removing the duplicated `FR3` label.
 - `/_bmad-output/planning-artifacts/ux-design-specification.md` now states more explicitly that future writing/blog content stays out of launch navigation as well as launch scope.
-- `/_bmad-output/planning-artifacts/architecture.md` now reflects the corrected `46`-FR count and places CI/CD plus `S3 + CloudFront` foundation work earlier in the implementation sequence.
+- `/_bmad-output/planning-artifacts/architecture.md` now reflects the corrected `46`-FR count and places CI/CD plus the static hosting deployment foundation earlier in the implementation sequence, now aligned to `Cloudflare Pages`.
 - `/_bmad-output/planning-artifacts/epics.md` now keeps foundation work tightly bounded, clarifies that later stories should rely on the established CI/build/deploy baseline, and makes MVP-only sprint scope explicit for future-writing seams.
 
 ### Current Handoff Status

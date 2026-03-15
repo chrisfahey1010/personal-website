@@ -415,6 +415,9 @@ Phase 3 should only expand after the core trust-building product is proven and s
 - FR39: Chris can maintain the site as a long-term owned professional asset.
 - FR40: The site can evolve into future phases without redefining the product concept.
 - FR41: The product can remain maintainable enough for Chris to preserve quality over time.
+- Core site content and normal static assets should remain repository-hosted wherever practical.
+- MVP hosting should favor a managed static deployment platform aligned with low operational friction and simple domain ownership.
+- External object storage is not a launch requirement for normal site content unless future media scale materially changes.
 
 ### Trust, Integrity & Reputation Protection
 
@@ -446,6 +449,8 @@ Phase 3 should only expand after the core trust-building product is proven and s
 - NFR10: Resume access, project links, and other core trust assets must remain current and reachable.
 - NFR11: Failure of a non-core external dependency must not make the core site unusable.
 - NFR12: Routine content updates must not break core public browsing paths.
+- The deployment baseline should support simple Git-based production releases and low-friction rollback suitable for a solo-maintained Astro website.
+- Hosting choices should minimize infrastructure ownership burden while preserving secure transport, reliable delivery, and static-first performance.
 
 ### Accessibility
 

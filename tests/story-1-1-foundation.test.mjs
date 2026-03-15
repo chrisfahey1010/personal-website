@@ -118,81 +118,62 @@ test('story 1.2 task 1: CI workflow validates install, test, and build on push a
   assert.match(testRunner, /entry\.isDirectory\(\)/, 'test runner should descend into nested test folders');
 });
 
-test('story 1.2 task 2: deploy workflow stays gated behind successful CI on main', () => {
-  assert.equal(exists('.github/workflows/deploy.yml'), true, 'deploy workflow should exist');
+test('story 1.2 task 2: deployment baseline stays simple and Cloudflare-oriented', () => {
+  assert.equal(exists('.github/workflows/deploy.yml'), false, 'deploy workflow should not exist when Cloudflare Pages Git deployment is the baseline');
+  assert.equal(exists('infrastructure/cloudflare/README.md'), true, 'Cloudflare deployment note should exist');
 
-  const workflow = read('.github/workflows/deploy.yml');
+  const cloudflareReadme = read('infrastructure/cloudflare/README.md');
 
-  assert.match(workflow, /workflow_run:/, 'deploy should be triggered from CI completion');
-  assert.match(workflow, /workflows:\s*\[[^\]]*CI[^\]]*\]/, 'deploy should depend on the CI workflow');
-  assert.match(workflow, /branches:\s*[\s\S]*-\s*main/, 'deploy should be limited to the protected branch');
-  assert.match(workflow, /github\.event\.workflow_run\.conclusion\s*==\s*'success'/, 'deploy should require successful CI');
-  assert.match(workflow, /github\.event\.workflow_run\.event\s*==\s*'push'/, 'deploy should only follow successful push-based CI runs');
-  assert.match(workflow, /ref:\s*\$\{\{\s*github\.event\.workflow_run\.head_sha\s*\}\}/, 'deploy should check out the exact CI-validated commit');
-  assert.match(workflow, /actions\/checkout@[0-9a-f]{40}/, 'deploy should pin checkout to an immutable commit SHA');
-  assert.match(workflow, /actions\/setup-node@[0-9a-f]{40}/, 'deploy should pin setup-node to an immutable commit SHA');
-  assert.match(workflow, /aws-actions\/configure-aws-credentials@[0-9a-f]{40}/, 'deploy should pin AWS credentials action to an immutable commit SHA');
-  assert.match(workflow, /permissions:\s*[\s\S]*contents:\s*read/, 'deploy should only read repository contents');
-  assert.match(workflow, /permissions:\s*[\s\S]*id-token:\s*write/, 'deploy should request OIDC token access');
-  assert.match(workflow, /concurrency:\s*[\s\S]*group:/, 'deploy should protect against overlapping runs');
-  assert.match(workflow, /npm ci/, 'deploy should install dependencies');
-  assert.match(workflow, /npm run build/, 'deploy should build the site');
-  assert.match(workflow, /aws s3 sync dist\/ s3:\/\//, 'deploy should sync dist to S3');
-  assert.match(workflow, /aws cloudfront create-invalidation/, 'deploy should invalidate CloudFront');
-  assert.match(workflow, /--paths\s+"\/\*"/, 'deploy should invalidate all baseline HTML routes until route-aware invalidation exists');
-  assert.doesNotMatch(workflow, /s3-website[.-]/, 'deploy must not use the public S3 website endpoint');
+  assert.match(cloudflareReadme, /Cloudflare Pages/i, 'deployment note should identify Cloudflare Pages as the host');
+  assert.match(cloudflareReadme, /native Git integration|Git integration/i, 'deployment note should prefer Cloudflare Git deployment for MVP');
+  assert.match(cloudflareReadme, /fahey\.vip/i, 'deployment note should cover the production domain');
+  assert.doesNotMatch(cloudflareReadme, /Amazon S3|CloudFront/i, 'deployment note should not preserve AWS hosting assumptions');
 });
 
 test('story 1.2 task 3: deployment responsibilities stay out of application env files', () => {
   assert.equal(exists('.env.example'), true, '.env.example should exist');
-  assert.equal(exists('infrastructure/cloudfront/README.md'), true, 'CloudFront note should exist');
+  assert.equal(exists('infrastructure/cloudflare/README.md'), true, 'Cloudflare note should exist');
 
   const envExample = read('.env.example');
   const infraReadme = read('infrastructure/README.md');
-  const cloudfrontReadme = read('infrastructure/cloudfront/README.md');
+  const cloudflareReadme = read('infrastructure/cloudflare/README.md');
 
-  assert.doesNotMatch(envExample, /AWS_REGION|AWS_ROLE_TO_ASSUME|AWS_S3_BUCKET|AWS_CLOUDFRONT_DISTRIBUTION_ID/, '.env.example must not include deployment-only AWS inputs');
-  assert.doesNotMatch(envExample, /AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY/, '.env.example must not include AWS secret keys');
-  assert.match(infraReadme, /private S3 origin behind CloudFront/i, 'infrastructure README should describe private S3 behind CloudFront');
-  assert.match(infraReadme, /restricted origin access/i, 'infrastructure README should require restricted origin access');
-  assert.match(infraReadme, /HTTPS|certificate/i, 'infrastructure README should describe HTTPS certificate ownership');
-  assert.match(infraReadme, /secure headers/i, 'infrastructure README should describe header ownership');
-  assert.match(infraReadme, /AWS_REGION|AWS_ROLE_TO_ASSUME|AWS_S3_BUCKET|AWS_CLOUDFRONT_DISTRIBUTION_ID/, 'infrastructure README should document canonical deployment inputs');
+  assert.doesNotMatch(envExample, /AWS_REGION|AWS_ROLE_TO_ASSUME|AWS_S3_BUCKET|AWS_CLOUDFRONT_DISTRIBUTION_ID|CLOUDFLARE_API_TOKEN/i, '.env.example must not include deployment-only hosting inputs');
+  assert.doesNotMatch(envExample, /AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY/i, '.env.example must not include AWS secret keys');
+  assert.match(infraReadme, /Cloudflare Pages/i, 'infrastructure README should describe Cloudflare Pages hosting');
+  assert.match(infraReadme, /fahey\.vip/i, 'infrastructure README should cover the production domain');
+  assert.match(infraReadme, /HTTPS/i, 'infrastructure README should describe HTTPS ownership');
+  assert.match(infraReadme, /secure-header|secure header/i, 'infrastructure README should describe header ownership');
+  assert.match(infraReadme, /repository wherever practical/i, 'infrastructure README should preserve repository-hosted content');
   assert.match(infraReadme, /versioned asset/i, 'infrastructure README should prefer versioned assets');
   assert.match(infraReadme, /protected-branch rules|branch protection/i, 'infrastructure README should document branch protection ownership');
-  assert.match(infraReadme, /exact commit SHA|exact commit/i, 'infrastructure README should document validated-commit deployment');
+  assert.match(infraReadme, /exact commit SHA|exact commit/i, 'infrastructure README should document validated-commit deployment for any future custom workflow');
   assert.match(infraReadme, /immutable commit SHAs?|commit SHAs/i, 'infrastructure README should document immutable action pinning');
-  assert.match(infraReadme, /\`\/\*\`|\/\*/i, 'infrastructure README should document the baseline wildcard invalidation');
-  assert.match(cloudfrontReadme, /cache behavior/i, 'CloudFront note should describe cache behavior');
-  assert.match(cloudfrontReadme, /immutable asset/i, 'CloudFront note should describe immutable asset strategy');
-  assert.match(cloudfrontReadme, /HTML invalidation/i, 'CloudFront note should describe HTML invalidation guidance');
-  assert.match(cloudfrontReadme, /header policy/i, 'CloudFront note should describe header policy ownership');
+  assert.match(cloudflareReadme, /Cloudflare Pages/i, 'Cloudflare note should describe the hosting target');
+  assert.match(cloudflareReadme, /preview deployment/i, 'Cloudflare note should describe preview deployment behavior');
+  assert.match(cloudflareReadme, /repository/i, 'Cloudflare note should describe repository-hosted content ownership');
+  assert.match(cloudflareReadme, /Workers|Functions/i, 'Cloudflare note should document that dynamic features remain optional');
 });
 
 test('story 1.2 task 4: verification guardrails protect the static-first deployment baseline', () => {
   const ciWorkflow = read('.github/workflows/ci.yml');
-  const deployWorkflow = read('.github/workflows/deploy.yml');
   const envExample = read('.env.example');
-  const inspectedFiles = [ciWorkflow, deployWorkflow, envExample, read('infrastructure/README.md'), read('infrastructure/cloudfront/README.md')].join('\n');
+  const cloudflareReadme = read('infrastructure/cloudflare/README.md');
+  const inspectedFiles = [ciWorkflow, envExample, read('infrastructure/README.md'), cloudflareReadme].join('\n');
 
   assert.match(ciWorkflow, /npm ci/, 'CI must install with npm ci');
   assert.match(ciWorkflow, /npm run check/, 'CI must run Astro validation checks');
   assert.match(ciWorkflow, /npm test/, 'CI must run tests');
   assert.match(ciWorkflow, /npm run build/, 'CI must run the production build');
-  assert.match(deployWorkflow, /workflow_run:/, 'deploy must remain gated behind CI completion');
-  assert.match(deployWorkflow, /github\.event\.workflow_run\.conclusion\s*==\s*'success'/, 'deploy must require successful CI');
-  assert.match(deployWorkflow, /github\.event\.workflow_run\.event\s*==\s*'push'/, 'deploy must only follow successful push-based CI runs');
-  assert.match(deployWorkflow, /ref:\s*\$\{\{\s*github\.event\.workflow_run\.head_sha\s*\}\}/, 'deploy must publish the exact CI-validated commit');
   assert.match(ciWorkflow, /actions\/checkout@[0-9a-f]{40}/, 'CI must pin checkout to an immutable commit SHA');
   assert.match(ciWorkflow, /actions\/setup-node@[0-9a-f]{40}/, 'CI must pin setup-node to an immutable commit SHA');
-  assert.match(deployWorkflow, /aws-actions\/configure-aws-credentials@[0-9a-f]{40}/, 'deploy must pin AWS credentials action to an immutable commit SHA');
-  assert.match(deployWorkflow, /--paths\s+"\/\*"/, 'deploy must invalidate the full baseline route set');
-  assert.match(deployWorkflow, /Missing required GitHub variable: AWS_REGION/, 'deploy should fail clearly when AWS_REGION is missing');
-  assert.match(deployWorkflow, /Missing required GitHub variable: AWS_ROLE_TO_ASSUME/, 'deploy should fail clearly when AWS_ROLE_TO_ASSUME is missing');
-  assert.match(deployWorkflow, /Missing required GitHub variable: AWS_S3_BUCKET/, 'deploy should fail clearly when AWS_S3_BUCKET is missing');
-  assert.match(deployWorkflow, /Missing required GitHub variable: AWS_CLOUDFRONT_DISTRIBUTION_ID/, 'deploy should fail clearly when AWS_CLOUDFRONT_DISTRIBUTION_ID is missing');
+  assert.equal(exists('.github/workflows/deploy.yml'), false, 'AWS deployment workflow should be absent under the Cloudflare Pages baseline');
+  assert.match(cloudflareReadme, /Cloudflare Pages/i, 'deployment documentation must describe Cloudflare Pages');
+  assert.match(cloudflareReadme, /Git integration|Git-connected/i, 'deployment documentation must prefer Git-connected deployment');
+  assert.match(cloudflareReadme, /fahey\.vip/i, 'deployment documentation must cover the production domain');
   assert.doesNotMatch(inspectedFiles, /AKIA[0-9A-Z]{16}/, 'committed AWS access key ids must not appear in tracked baseline files');
   assert.doesNotMatch(inspectedFiles, /aws_secret_access_key|AWS_SECRET_ACCESS_KEY/i, 'committed AWS secret key references must not appear in baseline files');
+  assert.doesNotMatch(inspectedFiles, /Amazon S3|CloudFront/i, 'tracked deployment baseline files should not preserve AWS hosting guidance');
   assert.equal(exists('src/pages/api'), false, 'runtime API scaffolding should remain out of scope');
   assert.equal(exists('src/db'), false, 'database scaffolding should remain out of scope');
   assert.equal(exists('src/auth'), false, 'authentication scaffolding should remain out of scope');
