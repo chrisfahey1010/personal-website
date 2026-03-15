@@ -27,6 +27,13 @@
 - Keep GitHub Actions focused on validation unless a later need justifies a custom deploy workflow.
 - If a custom deploy workflow is introduced later, keep it minimal and separate its credentials from application env files.
 
+## Wrangler fallback for Workers deploys
+
+- This repo now includes a committed `wrangler.jsonc` so non-interactive `wrangler deploy` runs do not attempt `astro add cloudflare` during deployment.
+- Use `npm run deploy` to rebuild the static site before publishing, or `npm run deploy:dry-run` to validate the Worker static-assets config without releasing.
+- Authenticate Wrangler with `wrangler login` for local use or provide the usual Cloudflare deploy token/account configuration in CI.
+- Keep this path aligned with the current static Astro output in `dist/`; the checked-in compatibility date was validated with the current deploy setup on `2026-03-15`.
+
 ## Content ownership
 
 - Keep authored site content and normal static assets in the repository wherever practical.
