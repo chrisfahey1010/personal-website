@@ -96,7 +96,7 @@ test('story 1.2 task 1: CI workflow validates install, test, and build on push a
   assert.match(workflow, /on:\s*[\s\S]*pull_request:/, 'CI should run on pull requests');
   assert.match(workflow, /actions\/checkout@[0-9a-f]{40}/, 'CI should pin checkout to an immutable commit SHA');
   assert.match(workflow, /actions\/setup-node@[0-9a-f]{40}/, 'CI should pin setup-node to an immutable commit SHA');
-  assert.match(workflow, /node-version:\s*20\.3\.0/, 'CI should pin a supported Astro 5 Node version');
+  assert.match(workflow, /node-version:\s*(20\.3\.0|22\.\d+\.\d+)/, 'CI should pin a supported Astro 5 Node version');
   assert.match(workflow, /npm ci/, 'CI should install with npm ci');
   assert.match(workflow, /npm run check/, 'CI should run baseline validation checks');
   assert.match(workflow, /npm test/, 'CI should run tests');

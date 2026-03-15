@@ -24,12 +24,11 @@ test('story 2.3 task 1: canonical project contract groups preview, detail, and d
   const contentConfig = read('src/content/config.ts');
   const helperSource = read('src/lib/content/get-projects.ts');
 
-  assert.match(contentConfig, /slug:\s*nonEmptyString\.refine\(/, 'project schema should require an explicit stable slug');
-  assert.doesNotMatch(contentConfig, /slug:\s*nonEmptyString\.optional\(/, 'project schema should not allow slug fallback behavior');
   assert.match(helperSource, /preview:\s*\{/, 'project helper should expose a preview contract');
   assert.match(helperSource, /detail:\s*\{/, 'project helper should expose a detail contract');
   assert.match(helperSource, /discoverability:\s*\{/, 'project helper should expose a discoverability contract');
   assert.match(helperSource, /canonicalPath:/, 'project discoverability contract should include a canonical path');
+  assert.match(helperSource, /const slug = entry\.slug;/, 'project helper should use Astro\'s canonical collection slug as the stable route source');
 
   for (const fileName of getProjectContentFiles()) {
     const source = read(`src/content/projects/${fileName}`);

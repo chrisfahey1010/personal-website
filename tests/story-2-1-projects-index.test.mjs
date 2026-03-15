@@ -30,7 +30,6 @@ test('story 2.1 task 1: canonical projects content model exists', () => {
   assert.match(contentConfig, /relevanceCues:\s*z\.array\(nonEmptyString\)\.min\(1\)/, 'project schema should require at least one relevance cue');
   assert.match(contentConfig, /seoTitle:\s*nonEmptyString/, 'project schema should require seoTitle');
   assert.match(contentConfig, /seoDescription:\s*nonEmptyString/, 'project schema should require seoDescription');
-  assert.match(contentConfig, /slug:\s*nonEmptyString(?:\.optional\(\))?/, 'project schema should define a stable slug source');
   assert.match(contentConfig, /export const collections = \{[\s\S]*projects/m, 'projects collection should be exported for Astro content loading');
 });
 
@@ -54,6 +53,7 @@ test('story 2.1 task 1: canonical projects content and helper exist', () => {
     assert.match(source, /^---[\s\S]*relevanceCues:/m, `${fileName} should define relevance cues`);
     assert.match(source, /^---[\s\S]*seoTitle:/m, `${fileName} should define seoTitle`);
     assert.match(source, /^---[\s\S]*seoDescription:/m, `${fileName} should define seoDescription`);
+    assert.match(source, /^---[\s\S]*slug:/m, `${fileName} should define a stable slug in frontmatter`);
   }
 });
 
