@@ -656,6 +656,53 @@ h2 {
   line-height: 1.7;
 }
 
+.project-structure-list {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+}
+
+.project-structure-list > div {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.project-structure-list dt {
+  color: var(--color-ink);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.project-structure-list dd {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.project-structure-list-detail {
+  padding: clamp(1.1rem, 2.4vw, 1.5rem);
+  border: 1px solid var(--color-border);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.55)),
+    var(--color-surface-raised);
+  box-shadow: var(--shadow-card);
+}
+
+.project-structure-proof-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.project-structure-proof-list li {
+  line-height: 1.65;
+}
+
 .project-card-context-list {
   display: grid;
   gap: 0.9rem;

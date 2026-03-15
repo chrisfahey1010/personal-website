@@ -54,26 +54,21 @@ const pages = defineCollection({
 
 const projects = defineCollection({
   type: 'content',
-    schema: z.object({
-      title: nonEmptyString,
-      summary: nonEmptyString,
-      context: nonEmptyString,
-      overview: nonEmptyString,
-      problem: nonEmptyString,
-      role: nonEmptyString,
-      relevanceCues: z.array(nonEmptyString).min(1).max(4),
-      proofSections: z.array(proofSectionSchema).min(2),
-      externalArtifacts: z.array(externalArtifactSchema).optional(),
-      liveUrl: optionalExternalUrl,
-      repositoryUrl: optionalExternalUrl,
-      seoTitle: nonEmptyString,
-      seoDescription: nonEmptyString,
-      slug: nonEmptyString
-      .optional()
-      .refine(
-        (value) => value === undefined || /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value),
-        'slug must be lowercase kebab-case',
-      ),
+  schema: z.object({
+    title: nonEmptyString,
+    summary: nonEmptyString,
+    context: nonEmptyString,
+    overview: nonEmptyString,
+    problem: nonEmptyString,
+    role: nonEmptyString,
+    relevanceCues: z.array(nonEmptyString).min(1).max(4),
+    proofSections: z.array(proofSectionSchema).min(2),
+    externalArtifacts: z.array(externalArtifactSchema).optional(),
+    liveUrl: optionalExternalUrl,
+    repositoryUrl: optionalExternalUrl,
+    seoTitle: nonEmptyString,
+    seoDescription: nonEmptyString,
+    slug: nonEmptyString.refine((value) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value), 'slug must be lowercase kebab-case'),
   }),
 });
 

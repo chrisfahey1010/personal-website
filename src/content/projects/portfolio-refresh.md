@@ -32,8 +32,9 @@ externalArtifacts:
   - label: Repository
     href: https://github.com/chrisfahey/personal-website
     note: Optional if you want to inspect the implementation details and commit history behind the current site.
-seoTitle: Personal Website Refresh | Chris Fahey Projects
-seoDescription: A portfolio rebuild focused on evaluator clarity, static delivery, and credible proof navigation.
+seoTitle: "Personal Website Refresh | Chris Fahey Projects"
+seoDescription: "A portfolio rebuild focused on evaluator clarity, static delivery, and credible proof navigation."
+slug: "portfolio-refresh"
 ---
 
 One of the central decisions was to make credibility come from coherence. That meant the content model, route structure, metadata, and visual system all had to reinforce the same story: this is work shaped by clear tradeoffs, not just assembled screens.

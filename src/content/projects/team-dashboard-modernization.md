@@ -28,8 +28,9 @@ proofSections:
       - Prioritized changes that improved scanning and trust before considering broader expansion work.
       - Sequenced frontend updates around the most consequential workflow pain points rather than cosmetic inconsistencies.
       - Used implementation decisions to reinforce credibility, so the dashboard felt more dependable immediately after release.
-seoTitle: Team Dashboard Modernization | Chris Fahey Projects
-seoDescription: An internal dashboard modernization focused on clarity, workflow confidence, and operational decision support.
+seoTitle: "Team Dashboard Modernization | Chris Fahey Projects"
+seoDescription: "An internal dashboard modernization focused on clarity, workflow confidence, and operational decision support."
+slug: "team-dashboard-modernization"
 ---
 
 The strongest signal from this project was not a flashy interface change. It was the shift in how quickly people could understand whether work was healthy, blocked, or at risk, and what they should do next.

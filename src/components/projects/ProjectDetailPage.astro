@@ -1,5 +1,6 @@
 ---
 import type { ProjectRecord } from '../../lib/content/get-projects';
+import ProjectStructureSummary from './ProjectStructureSummary.astro';
 
 type MarkdownContentComponent = (...args: any[]) => any;
 
@@ -25,39 +26,31 @@ const optionalReferences = [
     <h2 id="project-detail-heading">Proof that explains the work, the pressure, and the judgment behind it.</h2>
   </div>
 
-  <ul class="project-detail-cues" aria-label={`${project.title} relevance cues`}>
-    {project.relevanceCues.map((cue) => <li>{cue}</li>)}
-  </ul>
+  <ProjectStructureSummary project={project} variant="detail" />
 
   <div class="project-detail-grid">
-    <section class="proof-shell project-detail-proof" aria-labelledby="project-overview-heading">
-      <div class="project-detail-section-heading">
-        <p class="project-detail-section-label">What this project is</p>
-        <h3 id="project-overview-heading">Evaluator-ready context before you inspect the proof.</h3>
-      </div>
-      <div class="proof-copy project-detail-prose">
-        <p>{project.overview}</p>
-      </div>
-    </section>
-
-    <section class="proof-shell project-detail-proof" aria-labelledby="project-problem-heading">
-      <div class="project-detail-section-heading">
-        <p class="project-detail-section-label">Problem framing</p>
-        <h3 id="project-problem-heading">What had to change, and why it mattered.</h3>
-      </div>
-      <div class="proof-copy project-detail-prose">
-        <p>{project.problem}</p>
-      </div>
-    </section>
+    {
+      project.detail.narrativeSections.slice(0, 2).map((section) => (
+        <section class="proof-shell project-detail-proof" aria-labelledby={`project-${section.id}-heading`}>
+          <div class="project-detail-section-heading">
+            <p class="project-detail-section-label">{section.label}</p>
+            <h3 id={`project-${section.id}-heading`}>{section.heading}</h3>
+          </div>
+          <div class="proof-copy project-detail-prose">
+            <p>{section.content}</p>
+          </div>
+        </section>
+      ))
+    }
   </div>
 
   <section class="proof-shell project-detail-proof" aria-labelledby="project-role-heading">
     <div class="project-detail-section-heading">
-      <p class="project-detail-section-label">Role and contribution</p>
-      <h3 id="project-role-heading">Where Chris was directly accountable.</h3>
+      <p class="project-detail-section-label">{project.detail.narrativeSections[2].label}</p>
+      <h3 id="project-role-heading">{project.detail.narrativeSections[2].heading}</h3>
     </div>
     <div class="proof-copy project-detail-prose">
-      <p>{project.role}</p>
+      <p>{project.detail.narrativeSections[2].content}</p>
     </div>
   </section>
 
@@ -69,7 +62,7 @@ const optionalReferences = [
 
     <ol class="project-proof-sections">
       {
-        project.proofSections.map((section) => (
+        project.detail.proofSections.map((section) => (
           <li>
             <article class="project-proof-card">
               <h4>{section.title}</h4>

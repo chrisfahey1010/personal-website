@@ -25,6 +25,7 @@ const canonicalHref = canonicalPath
     <meta name="generator" content={Astro.generator} />
     {description && <meta name="description" content={description} />}
     {canonicalHref && <link rel="canonical" href={canonicalHref} />}
+    <slot name="head" />
     <title>{title}</title>
   </head>
   <body>

@@ -66,8 +66,8 @@ test('story 2.1 task 2 and 3: route source stays thin and links to static detail
   assert.match(indexSource, /ProjectIndexList/, 'projects index should stay thin and delegate rendering to a shared component');
   assert.match(listComponentSource, /<ol|<ul/, 'projects list component should render a semantic list for scanning');
   assert.match(listComponentSource, /<article/, 'projects list component should render each project inside an article');
-  assert.match(listComponentSource, /href=\{`\/projects\/\$\{/, 'projects list component should render explicit links to project detail pages');
-  assert.match(listComponentSource, /Review \{project\.title\} proof/, 'project links should expose project-specific labels');
+  assert.match(listComponentSource, /href=\{project\.preview\.href\}/, 'projects list component should render explicit links to project detail pages');
+  assert.match(listComponentSource, /project\.preview\.ctaLabel/, 'project links should expose project-specific labels');
   assert.match(helperSource, /Duplicate project slug detected/, 'projects helper should guard against duplicate slugs');
 
   assert.equal(exists('src/pages/projects/[slug].astro'), true, 'project detail route should exist');
