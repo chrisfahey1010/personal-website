@@ -1,5 +1,5 @@
 ---
-import type { ProjectRecord } from '../../lib/content/get-projects';
+import type { ProjectMediaStoryModule, ProjectRecord } from '../../lib/content/get-projects';
 import ProjectStructureSummary from './ProjectStructureSummary.astro';
 
 type MarkdownContentComponent = (...args: any[]) => any;
@@ -18,6 +18,10 @@ const optionalReferences = [
 ].filter((artifact, index, artifacts) =>
   artifacts.findIndex((candidate) => candidate.label === artifact.label && candidate.href === artifact.href) === index,
 );
+
+const mediaStoryModules: ProjectMediaStoryModule[] = project.detail.storyModules.filter(
+  (module): module is ProjectMediaStoryModule => module.type === 'media',
+);
 ---
 
 <section class="project-detail-shell editorial-reveal" aria-labelledby="project-detail-heading">
@@ -30,29 +34,19 @@ const optionalReferences = [
 
   <div class="project-detail-grid">
     {
-      project.detail.narrativeSections.slice(0, 2).map((section) => (
+      project.detail.narrativeSections.map((section) => (
         <section class="proof-shell project-detail-proof" aria-labelledby={`project-${section.id}-heading`}>
           <div class="project-detail-section-heading">
             <p class="project-detail-section-label">{section.label}</p>
             <h3 id={`project-${section.id}-heading`}>{section.heading}</h3>
           </div>
           <div class="proof-copy project-detail-prose">
-            <p>{section.content}</p>
+            {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
           </div>
         </section>
       ))
     }
   </div>
-
-  <section class="proof-shell project-detail-proof" aria-labelledby="project-role-heading">
-    <div class="project-detail-section-heading">
-      <p class="project-detail-section-label">{project.detail.narrativeSections[2].label}</p>
-      <h3 id="project-role-heading">{project.detail.narrativeSections[2].heading}</h3>
-    </div>
-    <div class="proof-copy project-detail-prose">
-      <p>{project.detail.narrativeSections[2].content}</p>
-    </div>
-  </section>
 
   <section class="project-proof-stack" aria-labelledby="project-proof-sections-heading">
     <div class="projects-section-heading">
@@ -76,6 +70,39 @@ const optionalReferences = [
       }
     </ol>
   </section>
+
+  {
+    mediaStoryModules.length > 0 && (
+      <section class="project-story-module-stack" aria-label={`${project.title} additional storytelling modules`}>
+        {mediaStoryModules.map((module: ProjectMediaStoryModule) => (
+          <section class="proof-shell project-detail-proof" aria-labelledby={`project-${module.id}-heading`}>
+            <div class="project-detail-section-heading">
+              <p class="project-detail-section-label">{module.label}</p>
+              <h3 id={`project-${module.id}-heading`}>{module.heading}</h3>
+            </div>
+            {module.summary && <p class="proof-copy project-story-module-summary">{module.summary}</p>}
+            <ul class="project-story-media-list" aria-label={`${module.heading} media`}>
+              {module.items.map((item) => (
+                <li>
+                  <figure class="project-story-media-card">
+                    <img
+                      class="project-story-media-image"
+                      src={item.src}
+                      alt={item.alt}
+                      width={item.width}
+                      height={item.height}
+                      loading="lazy"
+                    />
+                    {item.caption && <figcaption>{item.caption}</figcaption>}
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </section>
+    )
+  }
 
   {
     Content && (

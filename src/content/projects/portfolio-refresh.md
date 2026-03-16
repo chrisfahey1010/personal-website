@@ -28,6 +28,25 @@ proofSections:
       - Added Node-based regression tests that validate content contracts, built HTML output, and static-first behavior.
       - Preserved keyboard access, visible focus states, reduced-motion handling, and semantic page structure as implementation constraints.
       - Kept deployment verification aligned with `npm run check`, `npm test`, and `npm run build` to prevent silent regressions.
+storyModules:
+  - type: narrative
+    id: implementation-timeline
+    label: Implementation timeline
+    heading: How the project evolved from baseline cleanup to evaluator-ready proof.
+    content:
+      - Started by tightening the content contract and route boundaries so every project page could keep one stable source of truth.
+      - Refined the information hierarchy and validation guardrails together so the final site communicated judgment through both structure and implementation discipline.
+  - type: media
+    id: proof-map-snapshot
+    label: Proof map snapshot
+    heading: A quick visual of how the final storytelling system connects summary, proof, and onward action.
+    summary: The media seam stays optional and static-first, so richer proof can be added later without forcing a gallery pattern on every project.
+    items:
+      - src: /images/projects/portfolio-refresh-proof-map.svg
+        alt: Annotated proof map showing how the portfolio routes connect summary, proof, and next steps.
+        caption: Reserved under the static project media boundary so richer visuals can stay truthful, lightweight, and optional.
+        width: 960
+        height: 640
 externalArtifacts:
   - label: Repository
     href: https://github.com/chrisfahey/personal-website

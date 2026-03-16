@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 import { defineCollection, z } from 'astro:content';
 
 import { isBuiltPageRoute } from '../config/navigation';
@@ -5,6 +8,7 @@ import { isBuiltPageRoute } from '../config/navigation';
 const nonEmptyString = z.string().trim().min(1);
 const externalUrl = z.string().trim().url();
 const optionalExternalUrl = externalUrl.optional();
+const reservedNarrativeSectionIds = new Set(['overview', 'problem', 'role']);
 
 const proofSectionSchema = z.object({
   title: nonEmptyString,
@@ -16,6 +20,37 @@ const externalArtifactSchema = z.object({
   label: nonEmptyString,
   href: externalUrl,
   note: nonEmptyString.optional(),
+});
+
+const storyModuleId = nonEmptyString.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Story module ids must be kebab-case');
+const projectAssetRoot = path.join(process.cwd(), 'public');
+
+const projectMediaItemSchema = z.object({
+  src: nonEmptyString.refine(
+    (value) => value.startsWith('/images/projects/') && fs.existsSync(path.join(projectAssetRoot, value.slice(1))),
+    'Project media must use the /images/projects/ static asset boundary and point to a real static asset',
+  ),
+  alt: nonEmptyString,
+  caption: nonEmptyString.optional(),
+  width: z.number().int().positive(),
+  height: z.number().int().positive(),
+});
+
+const storyModuleNarrativeSchema = z.object({
+  type: z.literal('narrative'),
+  id: storyModuleId,
+  label: nonEmptyString,
+  heading: nonEmptyString,
+  content: z.union([nonEmptyString, z.array(nonEmptyString).min(1)]),
+});
+
+const storyModuleMediaSchema = z.object({
+  type: z.literal('media'),
+  id: storyModuleId,
+  label: nonEmptyString,
+  heading: nonEmptyString,
+  summary: nonEmptyString.optional(),
+  items: z.array(projectMediaItemSchema).min(1),
 });
 
 const pages = defineCollection({
@@ -54,21 +89,49 @@ const pages = defineCollection({
 
 const projects = defineCollection({
   type: 'content',
-  schema: z.object({
-    title: nonEmptyString,
-    summary: nonEmptyString,
-    context: nonEmptyString,
-    overview: nonEmptyString,
-    problem: nonEmptyString,
-    role: nonEmptyString,
-    relevanceCues: z.array(nonEmptyString).min(1).max(4),
-    proofSections: z.array(proofSectionSchema).min(2),
-    externalArtifacts: z.array(externalArtifactSchema).optional(),
-    liveUrl: optionalExternalUrl,
-    repositoryUrl: optionalExternalUrl,
-    seoTitle: nonEmptyString,
-    seoDescription: nonEmptyString,
-  }),
+  schema: z
+    .object({
+      title: nonEmptyString,
+      summary: nonEmptyString,
+      context: nonEmptyString,
+      overview: nonEmptyString,
+      problem: nonEmptyString,
+      role: nonEmptyString,
+      relevanceCues: z.array(nonEmptyString).min(1).max(4),
+      proofSections: z.array(proofSectionSchema).min(2),
+      storyModules: z
+        .array(z.discriminatedUnion('type', [storyModuleNarrativeSchema, storyModuleMediaSchema]))
+        .optional(),
+      externalArtifacts: z.array(externalArtifactSchema).optional(),
+      liveUrl: optionalExternalUrl,
+      repositoryUrl: optionalExternalUrl,
+      seoTitle: nonEmptyString,
+      seoDescription: nonEmptyString,
+    })
+    .superRefine((value, ctx) => {
+      const storyModules = value.storyModules ?? [];
+      const seenIds = new Set<string>();
+
+      storyModules.forEach((module, index) => {
+        if (reservedNarrativeSectionIds.has(module.id)) {
+          ctx.addIssue({
+            code: 'custom',
+            message: `Story module id "${module.id}" is reserved for built-in narrative sections`,
+            path: ['storyModules', index, 'id'],
+          });
+        }
+
+        if (seenIds.has(module.id)) {
+          ctx.addIssue({
+            code: 'custom',
+            message: `Story module id "${module.id}" must be unique within a project`,
+            path: ['storyModules', index, 'id'],
+          });
+        }
+
+        seenIds.add(module.id);
+      });
+    }),
 });
 
 export const collections = {

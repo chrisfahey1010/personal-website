@@ -814,8 +814,18 @@ h2 {
   gap: 1rem;
 }
 
+.project-story-module-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.project-story-module-summary {
+  margin-top: 0.9rem;
+}
+
 .project-proof-sections,
-.project-reference-list {
+.project-reference-list,
+.project-story-media-list {
   display: grid;
   gap: 1rem;
   margin: 0;
@@ -824,7 +834,8 @@ h2 {
 }
 
 .project-proof-card,
-.project-reference-list li {
+.project-reference-list li,
+.project-story-media-card {
   display: grid;
   gap: 0.85rem;
   padding: clamp(1.1rem, 2.4vw, 1.5rem);
@@ -869,6 +880,23 @@ h2 {
   font-weight: 700;
   text-decoration-thickness: 0.14em;
   text-underline-offset: 0.22em;
+}
+
+.project-story-media-card {
+  margin: 0;
+}
+
+.project-story-media-image {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.project-story-media-card figcaption {
+  color: var(--color-muted);
+  line-height: 1.65;
 }
 
 .project-detail-actions {

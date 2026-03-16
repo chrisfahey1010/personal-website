@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Portfolio refresh proof map</title>
+  <desc id="desc">Diagram showing a summary layer feeding proof sections and onward next steps.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fffaf4"/>
+      <stop offset="100%" stop-color="#f1e3d2"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#bf4646"/>
+      <stop offset="100%" stop-color="#7eacb5"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="640" rx="36" fill="#fff8f1"/>
+  <rect x="36" y="36" width="888" height="568" rx="28" fill="url(#panel)" stroke="#dcc7b3"/>
+  <g font-family="Avenir Next, Segoe UI, Helvetica, Arial, sans-serif" fill="#241816">
+    <text x="76" y="92" font-size="26" font-weight="700">Evaluator-ready project storytelling</text>
+    <text x="76" y="124" font-size="16" fill="#59463e">A static-first map of summary, proof, and next-step continuity.</text>
+  </g>
+  <g>
+    <rect x="76" y="172" width="232" height="140" rx="22" fill="#fffdf9" stroke="#d8c4b0"/>
+    <rect x="364" y="172" width="232" height="140" rx="22" fill="#fffdf9" stroke="#d8c4b0"/>
+    <rect x="652" y="172" width="232" height="140" rx="22" fill="#fffdf9" stroke="#d8c4b0"/>
+    <rect x="220" y="404" width="232" height="140" rx="22" fill="#fffdf9" stroke="#d8c4b0"/>
+    <rect x="508" y="404" width="232" height="140" rx="22" fill="#fffdf9" stroke="#d8c4b0"/>
+  </g>
+  <g font-family="Avenir Next, Segoe UI, Helvetica, Arial, sans-serif">
+    <text x="104" y="214" font-size="15" font-weight="700" fill="#bf4646">Summary</text>
+    <text x="104" y="252" font-size="24" font-weight="700" fill="#241816">Orientation first</text>
+    <text x="104" y="284" font-size="15" fill="#59463e">Context and relevance cues frame the work before deeper inspection.</text>
+
+    <text x="392" y="214" font-size="15" font-weight="700" fill="#bf4646">Proof</text>
+    <text x="392" y="252" font-size="24" font-weight="700" fill="#241816">Structured evidence</text>
+    <text x="392" y="284" font-size="15" fill="#59463e">Narrative sections and proof cards explain pressure, decisions, and outcomes.</text>
+
+    <text x="680" y="214" font-size="15" font-weight="700" fill="#bf4646">Extensions</text>
+    <text x="680" y="252" font-size="24" font-weight="700" fill="#241816">Optional modules</text>
+    <text x="680" y="284" font-size="15" fill="#59463e">Media and deeper narrative can be added without a second project system.</text>
+
+    <text x="248" y="446" font-size="15" font-weight="700" fill="#7eacb5">Trust</text>
+    <text x="248" y="484" font-size="24" font-weight="700" fill="#241816">Static delivery</text>
+    <text x="248" y="516" font-size="15" fill="#59463e">Server-rendered HTML, stable navigation, and no required runtime interactions.</text>
+
+    <text x="536" y="446" font-size="15" font-weight="700" fill="#7eacb5">Next steps</text>
+    <text x="536" y="484" font-size="24" font-weight="700" fill="#241816">Resume and contact</text>
+    <text x="536" y="516" font-size="15" fill="#59463e">Visitors can keep moving through the evaluation journey after reviewing proof.</text>
+  </g>
+  <g stroke="url(#accent)" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M308 242H348"/>
+    <path d="M596 242H636"/>
+    <path d="M480 312V370"/>
+    <path d="M420 404H372"/>
+    <path d="M540 404H588"/>
+  </g>
+  <g fill="url(#accent)">
+    <circle cx="348" cy="242" r="8"/>
+    <circle cx="636" cy="242" r="8"/>
+    <circle cx="480" cy="370" r="8"/>
+    <circle cx="372" cy="404" r="8"/>
+    <circle cx="588" cy="404" r="8"/>
+  </g>
+</svg>

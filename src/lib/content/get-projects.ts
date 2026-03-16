@@ -21,11 +21,38 @@ export interface ProjectPreview {
 }
 
 export interface ProjectDetailNarrativeSection {
-  id: 'overview' | 'problem' | 'role';
+  id: string;
   label: string;
   heading: string;
-  content: string;
+  paragraphs: string[];
 }
+
+export interface ProjectMediaItem {
+  src: string;
+  alt: string;
+  caption?: string;
+  width: number;
+  height: number;
+}
+
+export interface ProjectNarrativeStoryModule {
+  type: 'narrative';
+  id: string;
+  label: string;
+  heading: string;
+  paragraphs: string[];
+}
+
+export interface ProjectMediaStoryModule {
+  type: 'media';
+  id: string;
+  label: string;
+  heading: string;
+  summary?: string;
+  items: ProjectMediaItem[];
+}
+
+export type ProjectStoryModule = ProjectNarrativeStoryModule | ProjectMediaStoryModule;
 
 export interface ProjectDetail {
   overview: string;
@@ -33,6 +60,7 @@ export interface ProjectDetail {
   role: string;
   narrativeSections: ProjectDetailNarrativeSection[];
   proofSections: ProjectProofSection[];
+  storyModules: ProjectStoryModule[];
   externalArtifacts: ProjectExternalArtifact[];
 }
 
@@ -47,21 +75,52 @@ const createNarrativeSections = (entry: CollectionEntry<'projects'>): ProjectDet
     id: 'overview',
     label: 'What this project is',
     heading: 'Evaluator-ready context before you inspect the proof.',
-    content: entry.data.overview,
+    paragraphs: [entry.data.overview],
   },
   {
     id: 'problem',
     label: 'Problem framing',
     heading: 'What had to change, and why it mattered.',
-    content: entry.data.problem,
+    paragraphs: [entry.data.problem],
   },
   {
     id: 'role',
     label: 'Role and contribution',
     heading: 'Where Chris was directly accountable.',
-    content: entry.data.role,
+    paragraphs: [entry.data.role],
   },
+  ...createNarrativeExtensions(entry),
 ];
+
+const createNarrativeExtensions = (entry: CollectionEntry<'projects'>): ProjectDetailNarrativeSection[] =>
+  (entry.data.storyModules ?? [])
+    .filter((module) => module.type === 'narrative')
+    .map((module) => ({
+      id: module.id,
+      label: module.label,
+      heading: module.heading,
+      paragraphs: Array.isArray(module.content) ? module.content : [module.content],
+    }));
+
+const createStoryModules = (entry: CollectionEntry<'projects'>): ProjectStoryModule[] =>
+  (entry.data.storyModules ?? []).map((module) =>
+    module.type === 'narrative'
+      ? {
+          type: 'narrative',
+          id: module.id,
+          label: module.label,
+          heading: module.heading,
+          paragraphs: Array.isArray(module.content) ? module.content : [module.content],
+        }
+      : {
+          type: 'media',
+          id: module.id,
+          label: module.label,
+          heading: module.heading,
+          summary: module.summary,
+          items: module.items,
+        },
+  );
 
 export interface ProjectRecord {
   entry: CollectionEntry<'projects'>;
@@ -130,6 +189,7 @@ export const getProjects = async (): Promise<ProjectRecord[]> => {
           role: entry.data.role,
           narrativeSections: createNarrativeSections(entry),
           proofSections: entry.data.proofSections,
+          storyModules: createStoryModules(entry),
           externalArtifacts: entry.data.externalArtifacts ?? [],
         },
         discoverability: {
