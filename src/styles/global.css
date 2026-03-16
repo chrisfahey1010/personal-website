@@ -587,6 +587,77 @@ h2 {
   gap: 1.5rem;
 }
 
+.resume-page {
+  gap: 1.5rem;
+}
+
+.resume-action-grid,
+.resume-summary-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.resume-summary-shell {
+  display: grid;
+  gap: 1.25rem;
+  width: min(100%, var(--content-max-width));
+}
+
+.resume-fallback-box {
+  display: grid;
+  gap: 0.6rem;
+  padding: clamp(1rem, 2.4vw, 1.3rem);
+  border: 1px solid var(--color-border);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.55)),
+    var(--color-surface-raised);
+  box-shadow: var(--shadow-card);
+}
+
+.resume-fallback-title {
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.resume-fallback-copy {
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+
+.resume-summary-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resume-summary-item {
+  display: grid;
+  gap: 0.65rem;
+  padding: clamp(1.1rem, 2.4vw, 1.5rem);
+  border: 1px solid var(--color-border);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.55)),
+    var(--color-surface-raised);
+  box-shadow: var(--shadow-card);
+}
+
+.resume-summary-item h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.8vw, 1.7rem);
+  line-height: 1.1;
+}
+
+.resume-summary-item p,
+.resume-fallback {
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+
 .projects-comparison-shell,
 .project-detail-shell {
   display: grid;
@@ -906,6 +977,15 @@ h2 {
 }
 
 @media (min-width: 64rem) {
+  .resume-action-grid,
+  .resume-summary-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .resume-summary-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .projects-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -935,6 +1015,11 @@ h2 {
 
   .route-meta {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .resume-action-grid,
+  .resume-summary-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .site-header-nav {
@@ -1014,6 +1099,10 @@ h2 {
   .project-card-link {
     width: 100%;
     justify-content: center;
+  }
+
+  .resume-summary-item {
+    padding: 1.15rem;
   }
 
   .project-detail-actions {

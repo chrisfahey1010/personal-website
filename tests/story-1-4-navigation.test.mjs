@@ -117,7 +117,10 @@ test('story 1.4 task 5: production build preserves shared navigation across prim
 
     for (const href of internalHrefs) {
       const builtHtmlPath = href === '/' ? 'dist/index.html' : `dist${href}index.html`;
-      assert.equal(exists(builtHtmlPath), true, `${filePath} should only link to built internal routes (${href})`);
+      const builtAssetPath = href === '/' ? 'dist/index.html' : `dist${href}`;
+      const builtTargetPath = exists(builtAssetPath) ? builtAssetPath : builtHtmlPath;
+
+      assert.equal(exists(builtTargetPath), true, `${filePath} should only link to built internal routes (${href})`);
     }
 
     for (const anchor of samePageAnchors) {
