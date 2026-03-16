@@ -96,6 +96,9 @@ test('story 2.1 task 4 and 5: build output preserves scannable structure and sta
   assert.match(indexHtml, /<article\b/, 'projects index should preserve semantic article markup');
   assert.match(indexHtml, /Projects/, 'projects index should preserve clear project framing');
   assert.match(indexHtml, /Review [^<]+ proof/, 'projects index should preserve project-specific link labels');
+  assert.match(indexHtml, /Continue to the resume/, 'projects index should include an explicit onward handoff to the resume route');
+  assert.match(indexHtml, /href="\/resume\/"/, 'projects index should expose a real built route to the resume page');
+  assert.match(indexHtml, /formal experience|resume review/i, 'projects index should explain the value of the next step instead of showing an isolated utility link');
   assert.doesNotMatch(indexHtml, /client:load|client:idle|client:visible|client:only/, 'projects index should not require hydration for browsing');
 
   for (const filePath of detailFiles) {

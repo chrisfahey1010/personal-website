@@ -352,6 +352,13 @@ h2 {
   align-items: start;
 }
 
+.hero-next-step {
+  max-width: 34rem;
+  color: var(--color-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
 .hero-eyebrow,
 .proof-eyebrow,
 .hero-signal-kicker,
@@ -653,13 +660,26 @@ h2 {
 }
 
 .resume-summary-item p,
-.resume-fallback {
+.resume-fallback,
+.resume-next-step-copy {
   color: var(--color-muted);
   line-height: 1.7;
 }
 
+.contact-direct-line {
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.contact-direct-link {
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.22em;
+}
+
 .projects-comparison-shell,
-.project-detail-shell {
+.project-detail-shell,
+.journey-next-step {
   display: grid;
   gap: 1.25rem;
   width: min(100%, var(--content-max-width));

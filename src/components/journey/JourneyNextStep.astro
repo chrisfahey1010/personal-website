@@ -1,0 +1,33 @@
+---
+interface JourneyAction {
+  href: string;
+  label: string;
+  variant?: 'primary' | 'secondary';
+}
+
+interface Props {
+  ariaLabel: string;
+  title: string;
+  intro: string;
+  eyebrow?: string;
+  actions: JourneyAction[];
+}
+
+const { ariaLabel, title, intro, eyebrow = 'Next step', actions } = Astro.props as Props;
+---
+
+<section class="proof-shell journey-next-step editorial-reveal" aria-label={ariaLabel}>
+  <div class="projects-section-heading">
+    <p class="route-eyebrow">{eyebrow}</p>
+    <h2>{title}</h2>
+    <p class="route-intro">{intro}</p>
+  </div>
+
+  <nav class="project-detail-actions" aria-label={ariaLabel}>
+    {
+      actions.map((action) => (
+        <a class:list={['project-card-link', action.variant === 'secondary' && 'project-card-link-secondary']} href={action.href}>{action.label}</a>
+      ))
+    }
+  </nav>
+</section>

@@ -1,5 +1,7 @@
 ---
+import JourneyNextStep from '../journey/JourneyNextStep.astro';
 import type { ProjectMediaStoryModule, ProjectRecord } from '../../lib/content/get-projects';
+import { launchRoutes } from '../../config/navigation';
 import ProjectStructureSummary from './ProjectStructureSummary.astro';
 
 type MarkdownContentComponent = (...args: any[]) => any;
@@ -139,9 +141,14 @@ const mediaStoryModules: ProjectMediaStoryModule[] = project.detail.storyModules
     )
   }
 
-  <nav class="project-detail-actions" aria-label="Project detail next steps">
-    <a class="project-card-link" href="/projects/">Back to all projects</a>
-    <a class="project-card-link project-card-link-secondary" href="/resume/">Continue to resume</a>
-    <a class="project-card-link project-card-link-secondary" href="/contact/">Start a conversation</a>
-  </nav>
+  <JourneyNextStep
+    ariaLabel="Project detail next steps"
+    title="Continue the evaluation path once this proof matches the conversation."
+    intro="When this project feels relevant, continue to the latest resume for the formal experience behind the work, or move straight into contact if you already have enough signal to talk."
+    actions={[
+      { href: launchRoutes.resume, label: 'Continue to resume' },
+      { href: launchRoutes.contact, label: 'Start a conversation', variant: 'secondary' },
+      { href: launchRoutes.projects, label: 'Back to all projects', variant: 'secondary' },
+    ]}
+  />
 </section>

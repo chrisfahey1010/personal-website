@@ -10,6 +10,13 @@ export const launchNavigationItems: NavigationItem[] = [
   { label: 'Contact', href: '/contact/' },
 ];
 
+export const launchRoutes = {
+  home: launchNavigationItems[0].href,
+  projects: launchNavigationItems[1].href,
+  resume: launchNavigationItems[2].href,
+  contact: launchNavigationItems[3].href,
+} as const;
+
 export const builtPageRoutes = new Set(launchNavigationItems.map((item) => item.href));
 
 export const normalizePathname = (pathname: string) => {

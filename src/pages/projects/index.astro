@@ -1,5 +1,7 @@
 ---
+import JourneyNextStep from '../../components/journey/JourneyNextStep.astro';
 import ProjectIndexList from '../../components/projects/ProjectIndexList.astro';
+import { launchRoutes } from '../../config/navigation';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getProjects } from '../../lib/content/get-projects';
 
@@ -34,11 +36,22 @@ const projects = await getProjects();
         <p class="route-eyebrow">Comparison</p>
         <h2 id="projects-comparison-heading">Choose the proof trail that best matches the conversation.</h2>
         <p class="route-intro">
-          Start with the project that feels most relevant, then continue through the normal site navigation to resume review or direct contact.
+          Start with the project that feels most relevant, then use the page-level handoff below to continue into resume review without relying
+          on global navigation alone.
         </p>
       </div>
 
       <ProjectIndexList projects={projects} />
     </section>
+
+    <JourneyNextStep
+      ariaLabel="Projects index next steps"
+      title="Continue to the resume when you want the formal experience behind the proof."
+      intro="If the index already gives you enough confidence, the resume is the next clean handoff for role history, scope, and the concise professional record behind these projects."
+      actions={[
+        { href: launchRoutes.resume, label: 'Continue to the resume' },
+        { href: launchRoutes.contact, label: 'Start a conversation', variant: 'secondary' },
+      ]}
+    />
   </main>
 </BaseLayout>

@@ -52,13 +52,13 @@ test('story 1.3 task 1: homepage content schema and authored entry define the he
   assert.match(homeContent, /^heroName:\s+Chris Fahey$/m);
   assert.match(homeContent, /^heroRole:\s+Product-minded software engineer$/m);
   assert.match(homeContent, /^heroIntro:\s+.+$/m);
-  assert.match(homeContent, /^primaryCtaLabel:\s+See proof of fit$/m);
-  assert.match(homeContent, /^primaryCtaHref:\s+"?#proof"?$/m);
+  assert.match(homeContent, /^primaryCtaLabel:\s+Review project proof$/m);
+  assert.match(homeContent, /^primaryCtaHref:\s+"?\/projects\/"?$/m);
   assert.match(homeContent, /^trustTags:\s*$/m);
 });
 
 test('story 1.3 task 1: homepage schema rejects CTA routes that are not actually built', () => {
-  const invalidHomeContent = read('src/content/pages/home.md').replace('#proof', '/not-a-built-route');
+  const invalidHomeContent = read('src/content/pages/home.md').replace('/projects/', '/not-a-built-route');
 
   withTemporaryHomeContent(invalidHomeContent, () => {
     const failureOutput = runCheckFailure();
@@ -69,8 +69,8 @@ test('story 1.3 task 1: homepage schema rejects CTA routes that are not actually
 
 test('story 1.3 task 1: homepage schema rejects drifting portrait metadata', () => {
   const invalidHomeContent = read('src/content/pages/home.md').replace(
-    'primaryCtaHref: "#proof"',
-    'primaryCtaHref: "#proof"\nportraitSrc: /images/chris-portrait.jpg',
+      'primaryCtaHref: "/projects/"',
+      'primaryCtaHref: "/projects/"\nportraitSrc: /images/chris-portrait.jpg',
   );
 
   withTemporaryHomeContent(invalidHomeContent, () => {
@@ -94,9 +94,10 @@ test('story 1.3 tasks 2-4: production build renders an editorial hero with a rea
   assert.match(builtIndex, /Product-minded software engineer/, 'hero should expose role or focus copy');
   assert.match(builtIndex, /I design and ship calm, credible web experiences that help teams explain complex work clearly\./, 'hero should include concise evaluator-friendly introduction copy');
   assert.match(builtIndex, /Available for senior IC and staff-level product engineering/, 'hero should include a visible trust-oriented cue');
-  assert.match(builtIndex, /See proof of fit/, 'hero should include a visible next-step label');
-  assert.match(builtIndex, /href="#proof"/, 'CTA should point to a real same-page section');
-  assert.match(builtIndex, /id="proof"/, 'same-page CTA target should exist in the rendered homepage');
+  assert.match(builtIndex, /Review project proof/, 'hero should include a visible next-step label');
+  assert.match(builtIndex, /href="\/projects\/"/, 'CTA should point to the projects route as the next evaluation step');
+  assert.match(builtIndex, /Continue into project proof/, 'hero should explain why projects are the next stop in the evaluation journey');
+  assert.match(builtIndex, /id="proof"/, 'homepage proof section should still exist in the rendered homepage');
   assert.match(builtIndex, /Selected proof points/, 'below-hero evaluative section should contribute real trust value');
   assert.doesNotMatch(builtIndex, /Baseline Astro foundation for upcoming story implementation\./, 'baseline placeholder copy should be removed');
   assert.doesNotMatch(builtIndex, /client:load|client:idle|client:visible|client:only/, 'hero implementation should remain static-first without broad hydration');

@@ -69,7 +69,7 @@ test('story 1.5 task 5: regression coverage guards responsive shells and built p
   assert.match(baseLayout, /<meta name="viewport" content="width=device-width, initial-scale=1" \/>/, 'viewport meta should preserve a mobile-first baseline');
   assert.match(globalStyles, /\.hero-copy\s*\{[\s\S]*min-width:\s*0;/, 'hero copy should guard against grid overflow');
   assert.match(globalStyles, /\.site-header-nav\s*\{[\s\S]*min-width:\s*0;/, 'shared navigation container should guard against overflow');
-  assert.match(homeContent, /primaryCtaHref:\s*"#proof"/, 'homepage content should keep the proof CTA target aligned to the proof section');
+  assert.match(homeContent, /primaryCtaHref:\s*"\/projects\/"/, 'homepage content should keep the primary CTA aligned to the projects route');
 
   execFileSync('npm', ['run', 'build'], { cwd: root, stdio: 'pipe' });
 

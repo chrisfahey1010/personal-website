@@ -1,4 +1,6 @@
 ---
+import { primaryContactEmail, primaryContactHref } from '../config/contact';
+import { launchRoutes } from '../config/navigation';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
@@ -15,13 +17,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h1>Clear outreach paths, without friction.</h1>
       <p class="route-intro route-lede">
         Reach out when you want to discuss product engineering, consulting, or a role that benefits from calm execution and clear technical
-        communication. This page keeps the next step direct, professional, and easy to trust.
+        communication. This page keeps the final step in the evaluation journey direct, professional, and easy to trust.
       </p>
       <ul class="route-meta" aria-label="Contact page context">
         <li>Signals a thoughtful response path without ornamental urgency</li>
         <li>Keeps outreach aligned with the same warm, professional visual language</li>
-        <li>Maintains a trustworthy handoff from profile and proof into conversation</li>
+        <li>Maintains a trustworthy handoff from profile, proof, and resume review into conversation</li>
       </ul>
+      <div class="resume-action-grid" aria-label="Contact actions">
+        <a class="project-card-link" href={primaryContactHref}>Email Chris</a>
+        <a class="project-card-link project-card-link-secondary" href={launchRoutes.resume}>Review the resume again</a>
+      </div>
+      <p class="route-intro">
+        The simplest next step is a direct email. Send role, project, or consulting context and I will reply with the most useful follow-up.
+      </p>
+      <p class="contact-direct-line">
+        <a class="contact-direct-link" href={primaryContactHref}>{primaryContactEmail}</a>
+      </p>
     </section>
   </main>
 </BaseLayout>

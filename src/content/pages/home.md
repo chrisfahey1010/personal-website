@@ -8,8 +8,8 @@ trustTags:
   - Available for senior IC and staff-level product engineering
   - Product and content systems builder
   - Calm collaborator across product, UX, and engineering
-primaryCtaLabel: See proof of fit
-primaryCtaHref: "#proof"
+primaryCtaLabel: Review project proof
+primaryCtaHref: "/projects/"
 ---
 
 This site is designed to help hiring teams, collaborators, and consulting prospects judge fit quickly without needing insider context.

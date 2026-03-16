@@ -49,10 +49,13 @@ test('story 2.2 task 1: project schema and authored entries support substantive 
 test('story 2.2 task 2 and 3: detail route stays thin and delegates proof rendering', () => {
   const detailRoute = read('src/pages/projects/[slug].astro');
   const helperSource = read('src/lib/content/get-projects.ts');
+  const detailComponent = read('src/components/projects/ProjectDetailPage.astro');
 
   assert.match(detailRoute, /getStaticPaths/, 'detail route should preserve static path generation');
   assert.match(detailRoute, /getProjectBySlug/, 'detail route should use the canonical project helper');
   assert.match(detailRoute, /ProjectDetailPage/, 'detail route should delegate proof rendering to a project component');
+  assert.match(detailComponent, /from '\.\.\/\.\.\/config\/navigation'/, 'project detail handoff should use the canonical route config');
+  assert.match(detailComponent, /launchRoutes\.resume/, 'project detail should keep the resume handoff tied to the canonical route');
   assert.match(helperSource, /overview:\s*entry\.data\.overview/, 'canonical helper should expose project overview copy');
   assert.match(helperSource, /problem:\s*entry\.data\.problem/, 'canonical helper should expose project problem framing');
   assert.match(helperSource, /role:\s*entry\.data\.role/, 'canonical helper should expose project role details');
@@ -87,6 +90,10 @@ test('story 2.2 task 4 and 5: build output shows substantive proof and optional 
     assert.match(html, /Back to all projects/, `${fileName} should preserve onward navigation to the projects index`);
     assert.match(html, /Continue to resume/, `${fileName} should preserve onward navigation to the resume`);
     assert.match(html, /Start a conversation/, `${fileName} should preserve onward navigation to contact`);
+    assert.match(html, /<a class="project-card-link" href="\/resume\/">Continue to resume<\/a>/, `${fileName} should make resume the primary onward action`);
+    assert.match(html, /<a class="project-card-link project-card-link-secondary" href="\/projects\/">Back to all projects<\/a>/, `${fileName} should keep the projects index as a secondary backtrack option`);
+    assert.match(html, />Continue to resume<\/a>[\s\S]*>Start a conversation<\/a>[\s\S]*>Back to all projects<\//, `${fileName} should present next-step actions in onward-first order`);
+    assert.match(html, /Continue the evaluation path|formal experience|latest resume/i, `${fileName} should explain why the resume is the next evaluative step`);
     assert.match(html, /<meta name="description" content="[^"]+"/, `${fileName} should emit metadata`);
     assert.match(html, /<link rel="canonical" href="[^"]+"/, `${fileName} should emit a canonical link`);
     assert.doesNotMatch(html, /client:load|client:idle|client:visible|client:only/, `${fileName} should stay static-first`);

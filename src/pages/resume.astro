@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { launchRoutes } from '../config/navigation';
 import type { ResumeHighlight } from '../lib/content/get-resume';
 import { getResumeAssetPath, getResumeHighlights, getResumeStatus } from '../lib/content/get-resume';
 
@@ -99,9 +100,14 @@ const resumeSummaryIntro = hasResumeAsset
         helps your review.
       </p>
 
+      <p class="resume-next-step-copy">
+        When you are ready to turn project proof and formal experience into an actual conversation, continue to contact for the cleanest
+        final handoff.
+      </p>
+
       <nav class="project-detail-actions" aria-label="Resume page next steps">
-        <a class="project-card-link project-card-link-secondary" href="/projects/">Back to projects</a>
-        <a class="project-card-link project-card-link-secondary" href="/contact/">Continue to contact</a>
+        <a class="project-card-link project-card-link-secondary" href={launchRoutes.projects}>Back to projects</a>
+        <a class="project-card-link project-card-link-secondary" href={launchRoutes.contact}>Continue to contact</a>
       </nav>
     </section>
   </main>
