@@ -6,7 +6,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="Contact | Chris Fahey"
-  description="A calm contact entry point that tells visitors how outreach will fit into the site without introducing the later contact workflow yet."
+  description="A calm, low-friction contact page that tells visitors exactly how to reach out and what context makes the follow-up useful."
 >
   <main id="main-content" class="route-page">
     <section class="route-shell editorial-reveal">
@@ -17,20 +17,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h1>Clear outreach paths, without friction.</h1>
       <p class="route-intro route-lede">
         Reach out when you want to discuss product engineering, consulting, or a role that benefits from calm execution and clear technical
-        communication. This page keeps the final step in the evaluation journey direct, professional, and easy to trust.
+        communication. This page keeps the final step in the evaluation journey direct, professional, and easy to trust, without asking you to
+        navigate a heavier contact workflow.
       </p>
       <ul class="route-meta" aria-label="Contact page context">
-        <li>Signals a thoughtful response path without ornamental urgency</li>
-        <li>Keeps outreach aligned with the same warm, professional visual language</li>
-        <li>Maintains a trustworthy handoff from profile, proof, and resume review into conversation</li>
+        <li>Use one direct email path for outreach instead of guessing between multiple channels</li>
+        <li>Share role, team, project, or timing context so the outreach starts from the right frame</li>
+        <li>Keeps the handoff from profile, proof, and resume review into conversation calm and trustworthy</li>
       </ul>
       <div class="resume-action-grid" aria-label="Contact actions">
         <a class="project-card-link" href={primaryContactHref}>Email Chris</a>
         <a class="project-card-link project-card-link-secondary" href={launchRoutes.resume}>Review the resume again</a>
       </div>
       <p class="route-intro">
-        The simplest next step is a direct email. Send role, project, or consulting context and I will reply with the most useful follow-up.
+        The simplest next step is a direct email. Send the role, team, project, or consulting context you have in mind, plus any timing that
+        matters, so the conversation can begin with the right scope and next step.
       </p>
+      <ul class="contact-guidance-list" aria-label="How to reach out clearly">
+        <li class="contact-guidance-card">
+          <h2>What to send</h2>
+          <p>Include the role, project brief, or consulting context so the conversation can start with the right scope.</p>
+        </li>
+        <li class="contact-guidance-card">
+          <h2>What helps most</h2>
+          <p>Mention timing, team shape, or the decision you are trying to make if you want the reply to be sharper and faster.</p>
+        </li>
+      </ul>
       <p class="contact-direct-line">
         <a class="contact-direct-link" href={primaryContactHref}>{primaryContactEmail}</a>
       </p>

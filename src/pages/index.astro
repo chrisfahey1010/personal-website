@@ -1,6 +1,8 @@
 ---
 import { getEntry, render } from 'astro:content';
 
+import JourneyNextStep from '../components/journey/JourneyNextStep.astro';
+import { launchRoutes } from '../config/navigation';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/sections/HeroSection.astro';
 import SocialProofSection from '../components/sections/SocialProofSection.astro';
@@ -42,5 +44,15 @@ const {
     <SocialProofSection sectionId="proof" title="Selected proof points">
       <Content />
     </SocialProofSection>
+    <JourneyNextStep
+      ariaLabel="Homepage next steps"
+      title="Continue from first impression into proof, resume, or direct outreach."
+      intro="Use the same evaluation handoff pattern across the site: move into project proof for delivery detail, open the resume for formal experience, or go straight to contact when you already have enough signal to start a conversation."
+      actions={[
+        { href: launchRoutes.projects, label: 'Review project proof' },
+        { href: launchRoutes.resume, label: 'Open the resume', variant: 'secondary' },
+        { href: launchRoutes.contact, label: 'Start a conversation', variant: 'secondary' },
+      ]}
+    />
   </main>
 </BaseLayout>

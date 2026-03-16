@@ -672,6 +672,36 @@ h2 {
   font-weight: 700;
 }
 
+.contact-guidance-list {
+  display: grid;
+  gap: 1rem;
+  max-width: var(--content-measure);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.contact-guidance-card {
+  display: grid;
+  gap: 0.5rem;
+  padding: clamp(1rem, 2.4vw, 1.25rem);
+  border: 1px solid var(--color-border);
+  border-radius: 1.35rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.55)),
+    var(--color-surface-raised);
+  box-shadow: var(--shadow-card);
+}
+
+.contact-guidance-card h2 {
+  font-size: clamp(1.35rem, 2.8vw, 1.7rem);
+}
+
+.contact-guidance-card p {
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+
 .contact-direct-link {
   text-decoration-thickness: 0.14em;
   text-underline-offset: 0.22em;
@@ -1153,6 +1183,7 @@ h2 {
 
   .hero-cta {
     width: 100%;
+    justify-self: stretch;
   }
 
   .trust-tags li {
