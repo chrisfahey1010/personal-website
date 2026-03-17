@@ -4,15 +4,13 @@ import ProjectIndexList from '../../components/projects/ProjectIndexList.astro';
 import { launchRoutes } from '../../config/navigation';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getProjects } from '../../lib/content/get-projects';
+import { launchPageMetadata } from '../../lib/seo/site-metadata';
 
 const projects = await getProjects();
+const metadata = launchPageMetadata.projects;
 ---
 
-<BaseLayout
-  title="Projects | Chris Fahey"
-  description="A scannable project index that helps evaluators compare context, relevance, and where to go next for deeper proof."
-  canonicalPath="/projects/"
->
+<BaseLayout metadata={metadata}>
   <main id="main-content" class="route-page projects-page">
     <section class="route-shell editorial-reveal">
       <div class="route-shell-accent">

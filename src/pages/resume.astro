@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { launchRoutes } from '../config/navigation';
 import type { ResumeHighlight } from '../lib/content/get-resume';
 import { getResumeAssetPath, getResumeHighlights, getResumeStatus } from '../lib/content/get-resume';
+import { createPageMetadata } from '../lib/seo/get-page-metadata';
+import { launchPageMetadata } from '../lib/seo/site-metadata';
 
 const resumeDownloadName = 'Chris-Fahey-Resume.pdf';
 const resumeStatus = getResumeStatus();
@@ -32,13 +34,14 @@ const resumeMetaItems = hasResumeAsset
 const resumeSummaryIntro = hasResumeAsset
   ? 'Use the PDF when you want the complete professional record. Use the surrounding links when you want deeper examples or a direct follow-up instead of guessing what comes next.'
   : 'Use this summary when you need the core professional context right now. Use the surrounding links when you want deeper examples or the latest resume copy without guessing what comes next.';
+const metadata = createPageMetadata({
+  title: launchPageMetadata.resume.title,
+  description: pageDescription,
+  canonicalPath: launchPageMetadata.resume.canonicalPath,
+});
 ---
 
-<BaseLayout
-  title="Resume | Chris Fahey"
-  description={pageDescription}
-  canonicalPath="/resume/"
->
+<BaseLayout metadata={metadata}>
   <main id="main-content" class="route-page resume-page">
     <section class="route-shell editorial-reveal">
       <div class="route-shell-accent">

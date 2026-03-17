@@ -2,12 +2,12 @@
 import { primaryContactEmail, primaryContactHref } from '../config/contact';
 import { launchRoutes } from '../config/navigation';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { launchPageMetadata } from '../lib/seo/site-metadata';
+
+const metadata = launchPageMetadata.contact;
 ---
 
-<BaseLayout
-  title="Contact | Chris Fahey"
-  description="A calm, low-friction contact page that tells visitors exactly how to reach out and what context makes the follow-up useful."
->
+<BaseLayout metadata={metadata}>
   <main id="main-content" class="route-page">
     <section class="route-shell editorial-reveal">
       <div class="route-shell-accent">

@@ -1,20 +1,32 @@
 ---
 import '../styles/global.css';
 import SiteHeader from '../components/navigation/SiteHeader.astro';
+import { createPageMetadata, type PageMetadata } from '../lib/seo/get-page-metadata';
 
 interface Props {
-  title: string;
+  metadata?: PageMetadata;
+  title?: string;
   description?: string;
   canonicalPath?: string;
+  openGraphType?: PageMetadata['openGraphType'];
 }
 
-const { title, description, canonicalPath } = Astro.props;
+const { metadata, title, description, canonicalPath: legacyCanonicalPath, openGraphType } = Astro.props;
+const resolvedMetadata =
+  metadata ??
+  (title && description && legacyCanonicalPath
+    ? createPageMetadata({ title, description, canonicalPath: legacyCanonicalPath, openGraphType })
+    : undefined);
+
+if (!resolvedMetadata) {
+  throw new Error('BaseLayout requires either a metadata object or title, description, and canonicalPath props.');
+}
+
+const pageMetadata: PageMetadata = resolvedMetadata;
 const pathname = Astro.url.pathname;
-const canonicalHref = canonicalPath
-  ? Astro.site
-    ? new URL(canonicalPath, Astro.site).toString()
-    : canonicalPath
-  : undefined;
+const { canonicalPath, imageAlt, imagePath } = pageMetadata;
+const canonicalHref = Astro.site ? new URL(canonicalPath, Astro.site).toString() : canonicalPath;
+const socialImageHref = Astro.site ? new URL(imagePath, Astro.site).toString() : imagePath;
 ---
 
 <!doctype html>
@@ -23,10 +35,22 @@ const canonicalHref = canonicalPath
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    {description && <meta name="description" content={description} />}
-    {canonicalHref && <link rel="canonical" href={canonicalHref} />}
+    <meta name="description" content={resolvedMetadata.description} />
+    <meta property="og:title" content={resolvedMetadata.title} />
+    <meta property="og:description" content={resolvedMetadata.description} />
+    <meta property="og:type" content={resolvedMetadata.openGraphType} />
+    <meta property="og:url" content={canonicalHref} />
+    <meta property="og:image" content={socialImageHref} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:site_name" content="Chris Fahey" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={resolvedMetadata.title} />
+    <meta name="twitter:description" content={resolvedMetadata.description} />
+    <meta name="twitter:image" content={socialImageHref} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <link rel="canonical" href={canonicalHref} />
     <slot name="head" />
-    <title>{title}</title>
+    <title>{resolvedMetadata.title}</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>

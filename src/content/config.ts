@@ -59,8 +59,8 @@ const pages = defineCollection({
     .object({
       title: nonEmptyString,
       description: nonEmptyString,
-      seoTitle: nonEmptyString.optional(),
-      seoDescription: nonEmptyString.optional(),
+      seoTitle: nonEmptyString,
+      seoDescription: nonEmptyString,
       heroName: nonEmptyString,
       heroRole: nonEmptyString,
       heroIntro: nonEmptyString,
