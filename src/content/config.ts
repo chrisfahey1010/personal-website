@@ -87,6 +87,17 @@ const pages = defineCollection({
     }),
 });
 
+const posts = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: nonEmptyString,
+    summary: nonEmptyString,
+    seoTitle: nonEmptyString,
+    seoDescription: nonEmptyString,
+    draft: z.boolean().default(false),
+  }),
+});
+
 const projects = defineCollection({
   type: 'content',
   schema: z
@@ -136,5 +147,6 @@ const projects = defineCollection({
 
 export const collections = {
   pages,
+  posts,
   projects,
 };

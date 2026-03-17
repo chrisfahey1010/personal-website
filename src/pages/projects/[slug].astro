@@ -5,6 +5,7 @@ import StructuredData from '../../components/seo/StructuredData.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectDetailPage from '../../components/projects/ProjectDetailPage.astro';
 import { getProjectBySlug, getProjects } from '../../lib/content/get-projects';
+import { createMetadataFromDiscoverability } from '../../lib/seo/get-page-metadata';
 import { getProjectStructuredData } from '../../lib/seo/get-project-structured-data';
 
 export const getStaticPaths = async () => {
@@ -28,14 +29,11 @@ if (!project) {
 }
 
 const { Content } = await render(project.entry);
+const metadata = createMetadataFromDiscoverability(project.discoverability);
 const structuredData = Astro.site ? getProjectStructuredData(project, Astro.site) : undefined;
 ---
 
-<BaseLayout
-  title={project.discoverability.seoTitle}
-  description={project.discoverability.seoDescription}
-  canonicalPath={project.discoverability.canonicalPath}
->
+<BaseLayout metadata={metadata}>
   {structuredData && <StructuredData slot="head" data={structuredData} />}
   <main id="main-content" class="route-page projects-page">
     <section class="route-shell editorial-reveal">

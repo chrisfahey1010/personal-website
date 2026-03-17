@@ -68,6 +68,7 @@ export interface ProjectDiscoverability {
   seoTitle: string;
   seoDescription: string;
   canonicalPath: string;
+  openGraphType: 'website';
 }
 
 const createNarrativeSections = (entry: CollectionEntry<'projects'>): ProjectDetailNarrativeSection[] => [
@@ -196,8 +197,9 @@ export const getProjects = async (): Promise<ProjectRecord[]> => {
           seoTitle: entry.data.seoTitle,
           seoDescription: entry.data.seoDescription,
           canonicalPath: `/projects/${slug}/`,
+          openGraphType: 'website',
         },
-      };
+      } satisfies ProjectRecord;
     })
     .sort(byTitle);
 };

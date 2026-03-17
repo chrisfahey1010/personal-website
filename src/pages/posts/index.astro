@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts } from '../../lib/content/get-posts';
+import { createPageMetadata } from '../../lib/seo/get-page-metadata';
+
+const posts = await getPosts();
+const metadata = createPageMetadata({
+  title: 'Posts | Chris Fahey',
+  description: 'A reserved writing archive that uses the same discoverability contract as the rest of the site without entering launch navigation.',
+  canonicalPath: '/posts/',
+});
+---
+
+<BaseLayout metadata={metadata}>
+  <main id="main-content" class="route-page posts-page">
+    <section class="route-shell editorial-reveal">
+      <div class="route-shell-accent">
+        <p class="route-eyebrow">Posts</p>
+        <p class="route-kicker">Future publishing seam</p>
+      </div>
+      <h1>Writing stays reserved until there is something worth publishing.</h1>
+      <p class="route-intro route-lede">
+        This route exists as an extension seam only. It reuses the same metadata and route-shell pattern as the launch pages without adding
+        writing to the main navigation before real published content exists.
+      </p>
+      {
+        posts.length > 0 ? (
+          <ul class="route-meta" aria-label="Published posts">
+            {posts.map((post) => (
+              <li>
+                <a href={post.discoverability.canonicalPath}>{post.title}</a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <ul class="route-meta" aria-label="Posts seam status">
+            <li>No published posts are live yet, so this surface stays intentionally quiet.</li>
+            <li>Launch navigation remains focused on Home, Projects, Resume, and Contact.</li>
+            <li>Future published entries can plug into this route without redefining the site's discoverability model.</li>
+          </ul>
+        )
+      }
+    </section>
+  </main>
+</BaseLayout>

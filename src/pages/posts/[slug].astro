@@ -1,0 +1,46 @@
+---
+import { render } from 'astro:content';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPostBySlug, getPosts } from '../../lib/content/get-posts';
+import { createMetadataFromDiscoverability } from '../../lib/seo/get-page-metadata';
+
+export const getStaticPaths = async () => {
+  const posts = await getPosts();
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+};
+
+const slug = Astro.params.slug;
+
+if (!slug) {
+  throw new Error('Post detail route requires a slug parameter.');
+}
+
+const post = await getPostBySlug(slug);
+
+if (!post) {
+  throw new Error(`Unknown post slug: ${slug}`);
+}
+
+const { Content } = await render(post.entry);
+const metadata = createMetadataFromDiscoverability(post.discoverability);
+---
+
+<BaseLayout metadata={metadata}>
+  <main id="main-content" class="route-page posts-page">
+    <section class="route-shell editorial-reveal">
+      <div class="route-shell-accent">
+        <p class="route-eyebrow">Post</p>
+        <p class="route-kicker">Future publishing seam</p>
+      </div>
+      <h1>{post.title}</h1>
+      <p class="route-intro route-lede">{post.summary}</p>
+      <div class="proof-copy">
+        <Content />
+      </div>
+    </section>
+  </main>
+</BaseLayout>

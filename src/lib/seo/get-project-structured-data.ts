@@ -15,6 +15,16 @@ export const getProjectStructuredData = (
   const pageUrl = toAbsoluteUrl(project.discoverability.canonicalPath, site);
   const projectsUrl = toAbsoluteUrl('/projects/', site);
   const homeUrl = toAbsoluteUrl('/', site);
+  const creativeWorkId = `${pageUrl}#project`;
+  const proofSections = project.proofSections.map((section) => ({
+    '@type': 'CreativeWork',
+    headline: section.title,
+    description: section.summary,
+  }));
+  const about = project.relevanceCues.map((cue) => ({
+    '@type': 'Thing',
+    name: cue,
+  }));
 
   return [
     {
@@ -27,6 +37,9 @@ export const getProjectStructuredData = (
         '@type': 'WebSite',
         name: 'Chris Fahey',
         url: homeUrl,
+      },
+      mainEntity: {
+        '@id': creativeWorkId,
       },
       breadcrumb: {
         '@type': 'BreadcrumbList',
@@ -51,6 +64,21 @@ export const getProjectStructuredData = (
           },
         ],
       },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      '@id': creativeWorkId,
+      name: project.title,
+      headline: project.title,
+      description: project.discoverability.seoDescription,
+      url: pageUrl,
+      author: {
+        '@type': 'Person',
+        name: 'Chris Fahey',
+      },
+      about,
+      hasPart: proofSections,
     },
     {
       '@context': 'https://schema.org',

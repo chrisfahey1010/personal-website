@@ -96,7 +96,7 @@ test('story 2.3 task 3: discoverability stays centralized in shared site and lay
 
   assert.match(astroConfig, /site:\s*'https:\/\/www\.fahey\.vip'/, 'Astro config should define the canonical production site');
   assert.match(layoutSource, /new URL\(canonicalPath, Astro\.site\)\.toString\(\)/, 'shared layout should generate canonical URLs from Astro.site');
-  assert.match(detailRoute, /canonicalPath=\{project\.discoverability\.canonicalPath\}/, 'detail route should consume canonical paths from the normalized discoverability contract');
+  assert.match(detailRoute, /createMetadataFromDiscoverability\(project\.discoverability\)/, 'detail route should consume canonical paths from the normalized discoverability contract through the shared metadata helper');
   assert.match(detailRoute, /StructuredData/, 'detail route should delegate structured data rendering to a shared component');
 });
 
