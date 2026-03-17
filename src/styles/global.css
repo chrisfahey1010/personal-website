@@ -667,9 +667,34 @@ h2 {
 }
 
 .contact-direct-line {
+  display: grid;
+  gap: 0.35rem;
   color: var(--color-ink);
   font-size: 1rem;
   font-weight: 700;
+}
+
+.contact-direct-address {
+  overflow-wrap: anywhere;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.contact-direct-label {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .contact-guidance-list {
@@ -697,9 +722,21 @@ h2 {
   font-size: clamp(1.35rem, 2.8vw, 1.7rem);
 }
 
+.contact-guidance-card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  line-height: 1.15;
+}
+
 .contact-guidance-card p {
   color: var(--color-muted);
   line-height: 1.7;
+}
+
+.contact-recovery-box,
+.contact-direct-box {
+  width: min(100%, var(--content-measure));
 }
 
 .contact-direct-link {

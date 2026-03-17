@@ -22,8 +22,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </p>
       <ul class="route-meta" aria-label="Contact page context">
         <li>Use one direct email path for outreach instead of guessing between multiple channels</li>
-        <li>Share role, team, project, or timing context so the outreach starts from the right frame</li>
-        <li>Keeps the handoff from profile, proof, and resume review into conversation calm and trustworthy</li>
+        <li>Know what should happen when the email action works and what to do when it does not</li>
+        <li>Keep the handoff from profile, proof, and resume review into conversation calm and trustworthy</li>
       </ul>
       <div class="resume-action-grid" aria-label="Contact actions">
         <a class="project-card-link" href={primaryContactHref}>Email Chris</a>
@@ -33,6 +33,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         The simplest next step is a direct email. Send the role, team, project, or consulting context you have in mind, plus any timing that
         matters, so the conversation can begin with the right scope and next step.
       </p>
+
+      <section class="resume-fallback-box contact-recovery-box" aria-labelledby="contact-recovery-heading">
+        <h2 class="resume-fallback-title" id="contact-recovery-heading">Contact recovery guidance</h2>
+        <p class="resume-fallback-copy">
+          This page stays intentionally lightweight. It uses your mail app's normal handoff instead of a heavier form workflow, so the next step
+          should stay familiar and easy to trust.
+        </p>
+        <ul class="contact-guidance-list" aria-label="Contact recovery guidance">
+          <li class="contact-guidance-card">
+            <h3>What should happen</h3>
+            <p>
+              Selecting <strong>Email Chris</strong> should open your default mail app with a new message addressed to Chris. Add the role,
+              project, or consulting context there and send when ready.
+            </p>
+          </li>
+          <li class="contact-guidance-card">
+            <h3>If your mail app does not open</h3>
+            <p>
+              Nothing is wrong with your outreach. Use the email address shown here, copy the address into any mail app you prefer, and include
+              the same context there.
+            </p>
+          </li>
+          <li class="contact-guidance-card">
+            <h3>Keep moving without losing orientation</h3>
+            <p>
+              If email is not the next step yet, you can review the resume again or continue through projects before reaching out. The contact
+              path stays available when you are ready.
+            </p>
+          </li>
+        </ul>
+      </section>
+
       <ul class="contact-guidance-list" aria-label="How to reach out clearly">
         <li class="contact-guidance-card">
           <h2>What to send</h2>
@@ -43,9 +75,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <p>Mention timing, team shape, or the decision you are trying to make if you want the reply to be sharper and faster.</p>
         </li>
       </ul>
-      <p class="contact-direct-line">
-        <a class="contact-direct-link" href={primaryContactHref}>{primaryContactEmail}</a>
-      </p>
+
+      <section class="resume-fallback-box contact-direct-box" aria-label="Direct contact details">
+        <p class="resume-fallback-title">Use the email address shown here if the handoff does not open automatically</p>
+        <p class="resume-fallback-copy">
+          This keeps one clear recovery path available at all times without relying on hidden state, color-only cues, or a third-party widget.
+          You can select and copy the plain-text address below into any mail app you prefer.
+        </p>
+        <p class="contact-direct-line">
+          <span class="contact-direct-label">Direct email</span>
+          <code class="contact-direct-address">{primaryContactEmail}</code>
+        </p>
+      </section>
+
+      <nav class="project-detail-actions" aria-label="Contact page next steps">
+        <a class="project-card-link project-card-link-secondary" href={launchRoutes.projects}>Back to projects</a>
+        <a class="project-card-link project-card-link-secondary" href={launchRoutes.resume}>Review the resume again</a>
+      </nav>
     </section>
   </main>
 </BaseLayout>
