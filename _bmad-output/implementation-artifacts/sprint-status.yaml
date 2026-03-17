@@ -40,7 +40,7 @@ tracking_system: file-system
 story_location: /home/chris/repos/personal-website/_bmad-output/implementation-artifacts
 
 development_status:
-  epic-1: in-progress
+  epic-1: done
   1-1-set-up-initial-project-from-starter-template: done
   1-2-establish-ci-cd-and-deployment-baseline: done
   1-3-home-page-hero-and-identity-introduction: done
@@ -50,14 +50,14 @@ development_status:
   1-7-distinct-visual-system-and-trust-signals: done
   epic-1-retrospective: optional
 
-  epic-2: in-progress
+  epic-2: done
   2-1-projects-index-and-evaluation-oriented-browsing: done
   2-2-project-detail-pages-with-substantive-proof: done
   2-3-structured-project-presentation-for-credibility-and-discoverability: done
   2-4-extensible-project-storytelling-foundation: done
   epic-2-retrospective: optional
 
-  epic-3: in-progress
+  epic-3: done
   3-1-resume-access-from-the-evaluation-journey: done
   3-2-guided-evaluation-path-from-profile-to-proof-to-resume: done
   3-3-clear-contact-pathways-for-professional-outreach: done
