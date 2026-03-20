@@ -15,23 +15,27 @@ const exists = (target) => fs.existsSync(path.join(root, target));
 test('story 3.1 task 1: resume access is centralized around a real public asset path', () => {
   assert.equal(exists('src/lib/content/get-resume.ts'), true, 'resume helper should centralize the canonical asset path');
   assert.equal(exists('public/resume/chris-resume.pdf'), true, 'resume PDF should live in the public asset boundary');
+  assert.equal(exists('src/content/resume/overview.md'), true, 'resume copy should live in a source-controlled content entry');
 
   const helperSource = read('src/lib/content/get-resume.ts');
   const routeSource = read('src/pages/resume.astro');
 
   assert.match(helperSource, /resumeAssetPath\s*=\s*'\/resume\/chris-resume\.pdf'/, 'helper should expose the canonical public resume path');
   assert.match(helperSource, /fs\.existsSync/, 'helper should guard against shipping a missing canonical resume asset');
-  assert.match(helperSource, /getResumeStatus\s*=\s*\(\)\s*:\s*ResumeStatus\s*=>/, 'helper should expose the current resume availability status');
+  assert.match(helperSource, /getResumeFreshnessState/, 'helper should model missing, stale, and available resume states explicitly');
   assert.match(helperSource, /state:\s*ResumeAssetState/, 'helper should model missing, stale, and available resume states explicitly');
-  assert.match(helperSource, /resumeFreshnessUpdatedAt/, 'helper should track when the canonical resume was last refreshed');
-  assert.match(helperSource, /hasResumeAsset\s*=\s*\(\)\s*=>\s*getResumeStatus\(\)\.isAvailable/, 'helper should derive availability from current state instead of caching it at module load');
-  assert.match(helperSource, /getResumeAssetPath\s*=\s*\(\)\s*=>/, 'helper should defer the hard failure to the direct asset accessor');
-  assert.match(helperSource, /getResumeHighlights\s*=\s*\(\)\s*:\s*ResumeHighlight\[\]\s*=>/, 'helper should expose state-aware resume summary content');
+  assert.match(helperSource, /loadResumeEntry/, 'helper should load owner-authored resume content through a shared seam');
+  assert.match(helperSource, /getResumePageContent\s*=\s*async/, 'helper should expose a normalized resume page contract');
+  assert.match(helperSource, /title:\s*content\.seoTitle/, 'helper should let owner-authored resume content drive the metadata title');
+  assert.match(helperSource, /eyebrow:\s*content\.eyebrow/, 'helper should let owner-authored resume content drive the visible eyebrow');
+  assert.match(helperSource, /content\.updatedAt/, 'helper should track when the canonical resume was last refreshed from content');
+  assert.match(helperSource, /content\.highlights\.map/, 'helper should expose state-aware resume summary content');
   assert.match(routeSource, /from '\.\.\/lib\/content\/get-resume'/, 'resume route should stay thin and use the canonical helper');
-  assert.match(routeSource, /View resume/, 'resume route should offer a clear view action');
-  assert.match(routeSource, /Download PDF/, 'resume route should offer a clear download action');
-  assert.match(routeSource, /Resume PDF unavailable right now/, 'resume route should include an inline fallback path when the PDF cannot be trusted');
-  assert.match(routeSource, /pageDescription = hasResumeAsset/, 'resume route metadata should stay truthful across asset states');
+  assert.match(routeSource, /getResumePageContent/, 'resume route should request normalized resume page data from the helper');
+  assert.match(routeSource, /resumePage\.actions\.viewLabel/, 'resume route should offer a clear view action');
+  assert.match(routeSource, /resumePage\.actions\.downloadLabel/, 'resume route should offer a clear download action');
+  assert.match(routeSource, /resumePage\.fallback\?\.title/, 'resume route should include an inline fallback path when the PDF cannot be trusted');
+  assert.doesNotMatch(routeSource, /const pageDescription = hasResumeAsset/, 'resume route metadata should be delegated to the helper');
   assert.doesNotMatch(routeSource, /target="_blank"|target=_blank/, 'resume route should preserve normal same-tab navigation for the primary resume view action');
   assert.doesNotMatch(routeSource, /docs\/Resume_ChrisFahey\.pdf/, 'resume route must not link into the repo-only docs path');
   assert.doesNotMatch(routeSource, /client:load|client:idle|client:visible|client:only/, 'resume access should remain hydration-free');
@@ -50,6 +54,7 @@ test('story 3.1 task 2 and 3: built resume page keeps evaluators oriented and li
   assert.equal(h1Matches.length, 1, 'resume route should keep exactly one h1');
   assert.equal(currentMatches.length, 1, 'resume route should keep exactly one current nav item');
   assert.match(html, /href="\/resume\/chris-resume\.pdf"/, 'resume page should link to the built public PDF path');
+  assert.match(html, /<title>Resume \| Chris Fahey<\/title>/, 'resume route should emit the owner-authored metadata title');
   assert.match(html, /View resume/, 'resume page should expose a clear inline-view action');
   assert.match(html, /Download PDF/, 'resume page should expose a clear download action');
   assert.match(html, /projects/i, 'resume page should preserve a visible path back to proof');

@@ -35,19 +35,24 @@ test('story 4.1 task 1 and 2: shared layout emits consistent metadata for launch
 test('story 4.1 task 1 and 4: launch-page content and routes define truthful metadata inputs', () => {
   const homeContent = read('src/content/pages/home.md');
   const homeRoute = read('src/pages/index.astro');
+  const homeHelper = read('src/lib/content/get-home-page.ts');
   const projectsRoute = read('src/pages/projects/index.astro');
   const resumeRoute = read('src/pages/resume.astro');
+  const resumeHelper = read('src/lib/content/get-resume.ts');
   const contactRoute = read('src/pages/contact.astro');
   const sharedMetadata = read('src/lib/seo/site-metadata.ts');
 
   assert.match(homeContent, /^---[\s\S]*seoTitle:/m, 'home page content should define an explicit SEO title');
   assert.match(homeContent, /^---[\s\S]*seoDescription:/m, 'home page content should define an explicit SEO description');
-  assert.match(homeRoute, /canonicalPath:\s*'\/'/, 'home page should define the homepage canonical path');
+  assert.match(homeRoute, /getHomePage/, 'home page should stay thin and delegate metadata shaping to a helper');
+  assert.match(homeHelper, /canonicalPath:\s*'\/'/, 'home page helper should define the homepage canonical path');
   assert.match(sharedMetadata, /projects:\s*createPageMetadata\([\s\S]*canonicalPath:\s*'\/projects\/'/, 'shared metadata should define the projects canonical path');
   assert.match(sharedMetadata, /resume:\s*createPageMetadata\([\s\S]*canonicalPath:\s*'\/resume\/'/, 'shared metadata should define the resume canonical path');
   assert.match(sharedMetadata, /contact:\s*createPageMetadata\([\s\S]*canonicalPath:\s*'\/contact\/'/, 'shared metadata should define the contact canonical path');
   assert.match(projectsRoute, /launchPageMetadata\.projects/, 'projects index should use the shared metadata seam');
-  assert.match(resumeRoute, /launchPageMetadata\.resume/, 'resume page should reuse the shared metadata seam');
+  assert.match(resumeRoute, /getResumePageContent/, 'resume page should reuse the shared metadata seam through the helper');
+  assert.match(resumeHelper, /title:\s*content\.seoTitle/, 'resume helper should derive the resume metadata title from owner-authored content');
+  assert.match(resumeHelper, /canonicalPath:\s*launchPageMetadata\.resume\.canonicalPath/, 'resume helper should reuse the shared canonical seam');
   assert.match(contactRoute, /launchPageMetadata\.contact/, 'contact page should use the shared metadata seam');
 });
 

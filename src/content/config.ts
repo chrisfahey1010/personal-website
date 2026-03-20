@@ -22,6 +22,17 @@ const externalArtifactSchema = z.object({
   note: nonEmptyString.optional(),
 });
 
+const statefulCopySchema = z.object({
+  available: nonEmptyString,
+  unavailable: nonEmptyString,
+});
+
+const resumeHighlightsSchema = z.object({
+  title: nonEmptyString,
+  availableDescription: nonEmptyString,
+  unavailableDescription: nonEmptyString,
+});
+
 const storyModuleId = nonEmptyString.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Story module ids must be kebab-case');
 const projectAssetRoot = path.join(process.cwd(), 'public');
 
@@ -64,12 +75,21 @@ const pages = defineCollection({
       heroName: nonEmptyString,
       heroRole: nonEmptyString,
       heroIntro: nonEmptyString,
+      heroEyebrow: nonEmptyString,
+      heroKicker: nonEmptyString,
+      heroCredibilityBullets: z.array(nonEmptyString).min(1).max(4),
+      heroNextStepCopy: nonEmptyString,
       trustTags: z.array(nonEmptyString).min(1).max(4),
+      heroSignalKicker: nonEmptyString,
+      heroSignalLabel: nonEmptyString,
+      heroSignalCopy: nonEmptyString,
       primaryCtaLabel: nonEmptyString,
       primaryCtaHref: nonEmptyString.refine(
         (value) => value.startsWith('#') || isBuiltPageRoute(value),
         'CTA href must be a same-page anchor or an existing built route',
       ),
+      journeyTitle: nonEmptyString,
+      journeyIntro: nonEmptyString,
       portraitSrc: nonEmptyString.optional(),
       portraitAlt: nonEmptyString.optional(),
     })
@@ -85,6 +105,37 @@ const pages = defineCollection({
         });
       }
     }),
+});
+
+const resume = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: nonEmptyString,
+    seoTitle: nonEmptyString,
+    eyebrow: nonEmptyString,
+    kicker: nonEmptyString,
+    heading: nonEmptyString,
+    updatedAt: nonEmptyString.regex(/^\d{4}-\d{2}-\d{2}$/, 'updatedAt must use YYYY-MM-DD format'),
+    maxAgeDays: z.number().int().positive(),
+    downloadName: nonEmptyString,
+    viewActionLabel: nonEmptyString,
+    downloadActionLabel: nonEmptyString,
+    pageDescription: statefulCopySchema,
+    primaryIntro: statefulCopySchema,
+    secondaryIntro: statefulCopySchema,
+    metaItems: z.object({
+      available: z.array(nonEmptyString).min(1),
+      unavailable: z.array(nonEmptyString).min(1),
+    }),
+    fallbackTitle: nonEmptyString,
+    fallbackCopy: nonEmptyString,
+    summaryEyebrow: nonEmptyString,
+    summaryHeading: nonEmptyString,
+    summaryIntro: statefulCopySchema,
+    highlights: z.array(resumeHighlightsSchema).min(1),
+    recoveryCopy: nonEmptyString,
+    nextStepCopy: nonEmptyString,
+  }),
 });
 
 const posts = defineCollection({
@@ -149,4 +200,5 @@ export const collections = {
   pages,
   posts,
   projects,
+  resume,
 };

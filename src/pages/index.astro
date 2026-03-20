@@ -1,5 +1,5 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { render } from 'astro:content';
 
 import JourneyNextStep from '../components/journey/JourneyNextStep.astro';
 import StructuredData from '../components/seo/StructuredData.astro';
@@ -7,57 +7,25 @@ import { launchRoutes } from '../config/navigation';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/sections/HeroSection.astro';
 import SocialProofSection from '../components/sections/SocialProofSection.astro';
-import { createPageMetadata } from '../lib/seo/get-page-metadata';
+import { getHomePage } from '../lib/content/get-home-page';
 import { getSiteStructuredData } from '../lib/seo/get-site-structured-data';
 
-const homePage = await getEntry('pages', 'home');
-
-if (!homePage) {
-  throw new Error('Missing home page content entry.');
-}
-
-const { Content } = await render(homePage);
-
-const {
-  seoTitle,
-  seoDescription,
-  heroName,
-  heroRole,
-  heroIntro,
-  trustTags,
-  primaryCtaLabel,
-  primaryCtaHref,
-  portraitSrc,
-  portraitAlt,
-} = homePage.data;
-const metadata = createPageMetadata({
-  title: seoTitle!,
-  description: seoDescription!,
-  canonicalPath: '/',
-});
+const homePage = await getHomePage();
+const { Content } = await render(homePage.entry);
 const structuredData = Astro.site ? getSiteStructuredData(Astro.site) : undefined;
 ---
 
-<BaseLayout metadata={metadata}>
+<BaseLayout metadata={homePage.metadata}>
   {structuredData && <StructuredData slot="head" data={structuredData} />}
   <main id="main-content" class="home-page">
-    <HeroSection
-      heroName={heroName}
-      heroRole={heroRole}
-      heroIntro={heroIntro}
-      trustTags={trustTags}
-      primaryCtaLabel={primaryCtaLabel}
-      primaryCtaHref={primaryCtaHref}
-      portraitSrc={portraitSrc}
-      portraitAlt={portraitAlt}
-    />
+    <HeroSection {...homePage.hero} />
     <SocialProofSection sectionId="proof" title="Selected proof points">
       <Content />
     </SocialProofSection>
     <JourneyNextStep
       ariaLabel="Homepage next steps"
-      title="Continue from first impression into proof, resume, or direct outreach."
-      intro="Use the same evaluation handoff pattern across the site: move into project proof for delivery detail, open the resume for formal experience, or go straight to contact when you already have enough signal to start a conversation."
+      title={homePage.journeyNextStep.title}
+      intro={homePage.journeyNextStep.intro}
       actions={[
         { href: launchRoutes.projects, label: 'Review project proof' },
         { href: launchRoutes.resume, label: 'Open the resume', variant: 'secondary' },

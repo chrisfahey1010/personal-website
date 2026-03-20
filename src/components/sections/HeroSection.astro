@@ -3,7 +3,14 @@ interface Props {
   heroName: string;
   heroRole: string;
   heroIntro: string;
+  heroEyebrow: string;
+  heroKicker: string;
+  heroCredibilityBullets: string[];
+  heroNextStepCopy: string;
   trustTags: string[];
+  heroSignalKicker: string;
+  heroSignalLabel: string;
+  heroSignalCopy: string;
   primaryCtaLabel: string;
   primaryCtaHref: string;
   portraitSrc?: string;
@@ -14,7 +21,14 @@ const {
   heroName,
   heroRole,
   heroIntro,
+  heroEyebrow,
+  heroKicker,
+  heroCredibilityBullets,
+  heroNextStepCopy,
   trustTags,
+  heroSignalKicker,
+  heroSignalLabel,
+  heroSignalCopy,
   primaryCtaLabel,
   primaryCtaHref,
   portraitSrc,
@@ -25,24 +39,20 @@ const {
 <section class="hero-section editorial-reveal" aria-labelledby="hero-title">
   <div class="hero-copy">
     <div class="hero-context">
-      <p class="hero-eyebrow">Warm editorial portfolio</p>
-      <p class="hero-kicker">Designed to help evaluators form trust quickly, without template noise.</p>
+      <p class="hero-eyebrow">{heroEyebrow}</p>
+      <p class="hero-kicker">{heroKicker}</p>
     </div>
     <h1 id="hero-title">{heroName}</h1>
     <p class="hero-role">{heroRole}</p>
     <p class="hero-intro">{heroIntro}</p>
 
     <ul class="hero-credibility-list" aria-label="Professional context">
-      <li>Product engineering shaped for senior IC and staff-level evaluation</li>
-      <li>Content, UX, and implementation decisions carried through one authored system</li>
-      <li>Calm delivery signals that stay legible under skim-heavy review</li>
+      {heroCredibilityBullets.map((bullet) => <li>{bullet}</li>)}
     </ul>
 
     <div class="hero-actions">
       <a class="hero-cta" href={primaryCtaHref}>{primaryCtaLabel}</a>
-      <p class="hero-next-step">
-        Continue into project proof to review the delivery choices, tradeoffs, and outcomes behind the profile overview.
-      </p>
+      <p class="hero-next-step">{heroNextStepCopy}</p>
 
       <ul class="trust-tags" aria-label="Trust signals">
         {trustTags.map((tag) => <li>{tag}</li>)}
@@ -61,10 +71,8 @@ const {
       }
     </div>
 
-    <p class="hero-signal-kicker">First impression</p>
-    <p class="hero-signal-label">Professional signal</p>
-    <p class="hero-signal-copy">
-      Product judgment, hands-on delivery, and content clarity shaped into one visible first impression that feels deliberate instead of generic.
-    </p>
+    <p class="hero-signal-kicker">{heroSignalKicker}</p>
+    <p class="hero-signal-label">{heroSignalLabel}</p>
+    <p class="hero-signal-copy">{heroSignalCopy}</p>
   </aside>
 </section>

@@ -13,13 +13,15 @@ test('story 3.2: journey handoff sources use canonical routes and expose a real 
   const projectsIndexSource = read('src/pages/projects/index.astro');
   const projectDetailSource = read('src/components/projects/ProjectDetailPage.astro');
   const resumeSource = read('src/pages/resume.astro');
+  const resumeHelperSource = read('src/lib/content/get-resume.ts');
   const contactSource = read('src/pages/contact.astro');
   const contactConfig = read('src/config/contact.ts');
 
   assert.match(navigationConfig, /export const launchRoutes = /, 'canonical launch routes should be available for cross-route handoffs');
   assert.match(projectsIndexSource, /from '\.\.\/\.\.\/config\/navigation'/, 'projects index should import canonical routes');
   assert.match(projectDetailSource, /from '\.\.\/\.\.\/config\/navigation'/, 'project detail should import canonical routes');
-  assert.match(resumeSource, /from '\.\.\/config\/navigation'/, 'resume page should import canonical routes');
+  assert.match(resumeSource, /from '\.\.\/lib\/content\/get-resume'/, 'resume page should stay thin and delegate to the canonical helper');
+  assert.match(resumeHelperSource, /from '\.\.\/\.\.\/config\/navigation'/, 'resume helper should import canonical routes for cross-route handoffs');
   assert.match(contactSource, /from '\.\.\/config\/navigation'/, 'contact page should import canonical routes');
   assert.match(contactConfig, /mailto:|primaryContactHref/, 'contact config should expose a real lightweight contact action');
   assert.match(contactSource, /Email Chris/, 'contact page should expose a clear outreach action');
