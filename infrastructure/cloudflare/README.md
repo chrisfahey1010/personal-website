@@ -15,22 +15,25 @@
 
 - Create or confirm the `Cloudflare Pages` project is connected to this repository.
 - Set the production branch to `main`.
+- Run `npm run check` before pushing meaningful deployment changes.
+- Run `npm test` before pushing meaningful deployment changes.
 - Confirm the build command matches the repo standard: `npm run build`.
 - Confirm the build output directory is `dist`.
 - Verify `fahey.vip` is attached to the Pages project and resolving through Cloudflare.
 - Keep any future deploy token or platform credentials out of `.env.example` and application runtime env files.
-- Run `npm test` and `npm run build` before pushing meaningful deployment changes.
+- Keep the launch routes static-first; do not add Workers, Functions, auth, database, or public API dependencies unless a later story explicitly needs them.
 
 ## Deployment baseline
 
 - Prefer Cloudflare's native Git integration for the MVP because it is the lowest-friction path.
 - Keep GitHub Actions focused on validation unless a later need justifies a custom deploy workflow.
 - If a custom deploy workflow is introduced later, keep it minimal and separate its credentials from application env files.
+- Treat the committed `wrangler.jsonc` as a fallback for publishing the same static `dist/` output rather than as a reason to introduce runtime coupling.
 
-## Wrangler fallback for Workers deploys
+## Wrangler fallback for static publishing
 
 - This repo now includes a committed `wrangler.jsonc` so non-interactive `wrangler deploy` runs do not attempt `astro add cloudflare` during deployment.
-- Use `npm run deploy` to rebuild the static site before publishing, or `npm run deploy:dry-run` to validate the Worker static-assets config without releasing.
+- Use `npm run deploy` to rebuild the static site before publishing, or `npm run deploy:dry-run` to validate the Wrangler static-assets configuration without releasing.
 - Authenticate Wrangler with `wrangler login` for local use or provide the usual Cloudflare deploy token/account configuration in CI.
 - Keep this path aligned with the current static Astro output in `dist/`; the checked-in compatibility date was validated with the current deploy setup on `2026-03-15`.
 
