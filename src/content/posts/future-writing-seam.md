@@ -7,3 +7,5 @@ draft: true
 ---
 
 This draft exists only to keep the future posts collection validated and ready for later published writing.
+
+It stays out of the launch trust path so Home, Projects, Resume, and Contact remain the first-minute evaluation journey.

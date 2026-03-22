@@ -26,6 +26,23 @@ test('story 1.4 task 1: launch navigation config centralizes primary destination
   assert.doesNotMatch(navigationConfig, /Writing|Blog|Posts/, 'future writing routes should stay out of launch navigation');
 });
 
+test('story 4.5 task 1: launch navigation stays canonical while future seams remain explicitly out of scope', () => {
+  assert.equal(exists('src/config/future-seams.ts'), true, 'future seam policy should be codified in source control');
+
+  const navigationConfig = read('src/config/navigation.ts');
+  const futureSeamsConfig = read('src/config/future-seams.ts');
+
+  assert.match(futureSeamsConfig, /from '\.\/navigation'/, 'future seam policy should derive launch navigation from the canonical navigation config');
+  assert.match(futureSeamsConfig, /launchNavigationItems\.map\(\(item\) => item\.label\)/, 'future seam policy should reuse the canonical launch navigation items instead of duplicating labels');
+  assert.match(futureSeamsConfig, /isLaunchNavigationLabel/, 'future seam policy should expose a reusable launch-label guard');
+  assert.match(futureSeamsConfig, /reservedFutureContentAreas/, 'future seam policy should document reserved post-launch surfaces');
+  assert.match(futureSeamsConfig, /Posts/, 'future seam policy should keep posts as a reserved future surface');
+  assert.match(futureSeamsConfig, /isReservedFutureContentArea/, 'future seam policy should expose a reusable future-surface guard');
+  assert.match(futureSeamsConfig, /launchScopeAreas/, 'future seam policy should codify the MVP scope boundary');
+  assert.match(futureSeamsConfig, /deployment-ready foundations/i, 'future seam policy should keep deployment-ready foundations inside launch scope');
+  assert.doesNotMatch(navigationConfig, /Writing|Blog|Posts/, 'reserved future surfaces must stay out of launch navigation');
+});
+
 test('story 1.4 task 1: homepage CTA route validation shares the navigation-aware route contract', () => {
   const contentConfig = read('src/content/config.ts');
 

@@ -78,3 +78,31 @@ test('story 4.4 task 4: built launch routes stay crawlable without optional thir
     assert.doesNotMatch(html, /client:load|client:idle|client:visible|client:only/, `${page} should not rely on hydration directives in the shipped HTML`);
   }
 });
+
+test('story 4.5 task 3 and 4: launch routes stay thin while future integration seams remain optional to the static build', () => {
+  execFileSync('npm', ['run', 'build'], { cwd: root, stdio: 'pipe', env: buildEnv });
+
+  const futureSeamsSource = read('src/config/future-seams.ts');
+  const baseLayoutSource = read('src/layouts/BaseLayout.astro');
+  const routeSources = [
+    read('src/pages/index.astro'),
+    read('src/pages/projects/index.astro'),
+    read('src/pages/projects/[slug].astro'),
+    read('src/pages/resume.astro'),
+    read('src/pages/contact.astro'),
+  ].join('\n');
+  const builtLaunchHtml = launchPages.map((page) => read(page)).join('\n');
+
+  assert.match(futureSeamsSource, /futureIntegrationAdapterDirectory/, 'future seam policy should reserve a dedicated adapter directory for optional integrations');
+  assert.match(futureSeamsSource, /futureApiDirectory/, 'future seam policy should reserve a dedicated API directory for optional dynamic endpoints');
+  assert.match(futureSeamsSource, /from '\.\/navigation'/, 'future seam policy should stay anchored to the canonical launch navigation config');
+  assert.match(futureSeamsSource, /Launch pages compose shaped content and must not own integration fetch logic\./, 'future seam policy should protect route-thin launch pages');
+  assert.match(futureSeamsSource, /Global shell metadata and navigation must stay independent from optional integrations\./, 'future seam policy should protect the shared shell from optional dependencies');
+  assert.doesNotMatch(routeSources, /fetch\(|XMLHttpRequest|client:load|client:idle|client:visible|client:only/, 'launch routes must remain composition-only and avoid runtime integration logic');
+  assert.doesNotMatch(baseLayoutSource, /<script\s+[^>]*src=|googletagmanager|google-analytics|plausible|segment|mixpanel|calendly|typeform|formspree/i, 'shared shell must stay independent from optional integrations');
+  assert.equal(exists('src/data'), false, 'shadow content systems must not be introduced');
+  assert.doesNotMatch(builtLaunchHtml, /Posts<\/a>|Writing<\/a>|Blog<\/a>/, 'future writing surfaces must not leak into the shipped launch journey');
+  assert.equal(exists('dist/posts/index.html'), true, 'future seams may exist as reserved routes without becoming part of launch navigation');
+  const postsIndexHtml = read('dist/posts/index.html');
+  assert.match(postsIndexHtml, /Launch navigation remains focused on Home, Projects, Resume, Contact\./, 'future seam output should describe the canonical launch journey derived from navigation config');
+});

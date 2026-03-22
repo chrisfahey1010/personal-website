@@ -79,8 +79,28 @@ test('story 4.2 task 3 and 5: future publishing stays extension-ready without be
   assert.equal(exists('src/lib/content/get-posts.ts'), true, 'the repository should reserve a normalized future posts helper');
   assert.equal(exists('src/pages/posts/index.astro'), true, 'the repository should reserve a posts archive route seam');
   assert.equal(exists('src/pages/posts/[slug].astro'), true, 'the repository should reserve a post detail route seam');
-  assert.match(postsIndexSource, /No published posts are live yet/, 'the posts archive should stay explicit about being dormant until real publishing begins');
+  assert.match(postsIndexSource, /futureSeamStatus\.map\(\(item\) => <li>{item}<\/li>\)/, 'the posts archive should render the shared dormant seam policy when no posts are published');
   assert.doesNotMatch(navigationSource, /Posts|Writing|Blog/, 'launch navigation should stay limited to the MVP routes');
   assert.equal(exists('dist/posts/index.html'), true, 'future publishing may reserve a direct route seam without becoming launch navigation');
   assert.equal(exists('dist/posts/future-writing-seam/index.html'), false, 'draft placeholder content should not publish a post detail page');
+});
+
+test('story 4.5 task 2: future content seams stay schema-first and map external systems into the existing domain model', () => {
+  const futureSeamsSource = read('src/config/future-seams.ts');
+  const contentConfigSource = read('src/content/config.ts');
+  const postsHelperSource = read('src/lib/content/get-posts.ts');
+  const postsIndexSource = read('src/pages/posts/index.astro');
+  const placeholderPost = read('src/content/posts/future-writing-seam.md');
+
+  assert.match(futureSeamsSource, /canonicalAuthoredContentRoot/, 'future seam policy should keep authored content rooted in src/content');
+  assert.match(futureSeamsSource, /contentSchemaBoundary/, 'future seam policy should codify the schema boundary');
+  assert.match(futureSeamsSource, /contentNormalizationLayer/, 'future seam policy should codify the normalization layer');
+  assert.match(futureSeamsSource, /futureIntegrationAdapterDirectory/, 'future seam policy should point future integrations at an explicit adapter seam');
+  assert.match(futureSeamsSource, /futureApiDirectory/, 'future seam policy should point future dynamic endpoints at an explicit API seam');
+  assert.match(futureSeamsSource, /cmsMappingRequirement/, 'future seam policy should require CMS mapping into the existing domain model');
+  assert.match(futureSeamsSource, /isReservedFutureContentArea/, 'future seam policy should expose a reusable guard for reserved content surfaces');
+  assert.match(contentConfigSource, /const posts = defineCollection\(/, 'content schemas should remain the canonical source boundary');
+  assert.match(postsHelperSource, /getCollection\('posts'/, 'future posts should continue to flow through the shared normalization layer');
+  assert.match(postsIndexSource, /futureSeamStatus\.map\(\(item\) => <li>{item}<\/li>\)/, 'posts route should render the shared future seam policy without route-local copy drift');
+  assert.match(placeholderPost, /launch trust path/i, 'placeholder post should explain why the seam stays outside launch navigation');
 });

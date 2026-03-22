@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { futureSeamStatus } from '../../config/future-seams';
 import { getPosts } from '../../lib/content/get-posts';
 import { createPageMetadata } from '../../lib/seo/get-page-metadata';
 
@@ -34,9 +35,7 @@ const metadata = createPageMetadata({
           </ul>
         ) : (
           <ul class="route-meta" aria-label="Posts seam status">
-            <li>No published posts are live yet, so this surface stays intentionally quiet.</li>
-            <li>Launch navigation remains focused on Home, Projects, Resume, and Contact.</li>
-            <li>Future published entries can plug into this route without redefining the site's discoverability model.</li>
+            {futureSeamStatus.map((item) => <li>{item}</li>)}
           </ul>
         )
       }
