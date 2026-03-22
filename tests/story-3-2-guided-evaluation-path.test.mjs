@@ -37,8 +37,8 @@ test('story 3.2: built routes expose a cohesive profile to proof to resume to co
   const resumeHtml = read('dist/resume/index.html');
   const contactHtml = read('dist/contact/index.html');
 
-  assert.match(homeHtml, /href="\/projects\/"[^>]*>Review project proof</, 'homepage should hand evaluators into the projects route');
-  assert.match(homeHtml, /Continue into project proof/, 'homepage should explain why projects are the next stop');
+  assert.match(homeHtml, /href="\/projects\/"[^>]*>Review projects</, 'homepage should hand evaluators into the projects route');
+  assert.match(homeHtml, /Continue to projects to review the delivery choices, tradeoffs, and outcomes\./, 'homepage should explain why projects are the next stop');
 
   assert.match(projectsHtml, /href="\/resume\/"[^>]*>Continue to the resume</, 'projects index should offer an explicit onward resume handoff');
   assert.match(projectsHtml, /formal experience|resume review/i, 'projects index should explain the value of the resume stage');

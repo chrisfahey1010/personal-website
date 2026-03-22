@@ -71,7 +71,7 @@ test('story 4.3 task 3 and 4: homepage and resume routes stay thin and render ow
   assert.match(indexHtml, /Warm editorial portfolio/, 'homepage should still render the authored eyebrow copy');
   assert.match(indexHtml, /Product engineering shaped for senior IC and staff-level evaluation/, 'homepage should render authored credibility bullets');
   assert.match(indexHtml, /Product judgment, hands-on delivery, and content clarity shaped into one visible first impression/, 'homepage should render authored signal copy');
-  assert.match(indexHtml, /Continue from first impression into proof, resume, or direct outreach\./, 'homepage should render owner-authored next-step framing');
+  assert.match(indexHtml, /Continue from first impression into projects, resume, or direct outreach\./, 'homepage should render owner-authored next-step framing');
   assert.match(resumeHtml, /Review the resume and choose the next step\./, 'resume page should render the authored title');
   assert.match(resumeHtml, /<title>Resume \| Chris Fahey<\/title>/, 'resume page should render the authored metadata title');
   assert.match(resumeHtml, /<p class="route-eyebrow">Resume<\/p>/, 'resume page should render the authored eyebrow copy');

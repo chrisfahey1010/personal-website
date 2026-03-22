@@ -193,7 +193,7 @@ test('story 1.2 task 6: production build output preserves the homepage contract'
   assert.match(builtIndex, /<title>Chris Fahey \| Product-minded software engineer<\/title>/, 'homepage title should survive the production build');
   assert.match(builtIndex, /<h1[^>]*>Chris Fahey<\/h1>/, 'homepage heading should survive the production build');
   assert.match(builtIndex, /Product-minded software engineer/, 'homepage role or focus copy should survive the production build');
-  assert.match(builtIndex, /Review project proof/, 'homepage CTA should survive the production build');
+  assert.match(builtIndex, /Review projects/, 'homepage CTA should survive the production build');
   assert.doesNotMatch(builtIndex, /Welcome to Astro/i, 'starter demo copy should not reappear in production output');
   assert.doesNotMatch(builtIndex, /Baseline Astro foundation for upcoming story implementation\./, 'baseline placeholder copy should not reappear in production output');
 });
