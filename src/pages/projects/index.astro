@@ -15,27 +15,26 @@ const metadata = launchPageMetadata.projects;
     <section class="route-shell editorial-reveal">
       <div class="route-shell-accent">
         <p class="route-eyebrow">Projects</p>
-        <p class="route-kicker">Proof path</p>
+        <p class="route-kicker">Selected work</p>
       </div>
-      <h1>Proof of execution, organized for quick evaluation.</h1>
+      <h1>Selected projects, written for quick review.</h1>
       <p class="route-intro route-lede">
-        Scan the work by delivery context, product judgment, and implementation relevance. Each summary is designed to help evaluators decide
-        quickly which proof to open next.
+        Scan the work by context, role, and outcome. Each summary helps hiring teams see why it matters and open the most relevant project next.
       </p>
       <ul class="route-meta" aria-label="Projects page context">
         <li>Consistent summary structure supports side-by-side comparison under time pressure</li>
-        <li>Each project points to a normal detail page without relying on client-side routing</li>
-        <li>The surrounding navigation keeps resume and contact pathways visible throughout the evaluation journey</li>
+        <li>Each project opens on a normal detail page with standard browser navigation</li>
+        <li>The surrounding navigation keeps resume and contact pathways visible throughout the review</li>
       </ul>
     </section>
 
     <section class="projects-comparison-shell editorial-reveal" aria-labelledby="projects-comparison-heading">
       <div class="projects-section-heading">
         <p class="route-eyebrow">Comparison</p>
-        <h2 id="projects-comparison-heading">Choose the proof trail that best matches the conversation.</h2>
+        <h2 id="projects-comparison-heading">Choose the project that best matches the conversation.</h2>
         <p class="route-intro">
-          Start with the project that feels most relevant, then use the page-level handoff below to continue into resume review without relying
-          on global navigation alone.
+          Start with the project that feels most relevant, then continue to the resume from the next step below if you want the formal
+          experience behind the work.
         </p>
       </div>
 
@@ -44,8 +43,8 @@ const metadata = launchPageMetadata.projects;
 
     <JourneyNextStep
       ariaLabel="Projects index next steps"
-      title="Continue to the resume when you want the formal experience behind the proof."
-      intro="If the index already gives you enough confidence, the resume is the next clean handoff for role history, scope, and the concise professional record behind these projects."
+      title="Continue to the resume when you want the formal experience."
+       intro="If the index already gives you enough confidence, the resume is the next clear stop for role history, scope, and the concise professional record behind these projects."
       actions={[
         { href: launchRoutes.resume, label: 'Continue to the resume' },
         { href: launchRoutes.contact, label: 'Start a conversation', variant: 'secondary' },

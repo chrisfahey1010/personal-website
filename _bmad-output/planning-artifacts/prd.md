@@ -44,7 +44,7 @@ classification:
 
 This project is a greenfield personal website implemented as a custom web application and intended to serve as Chris's owned, long-term professional platform. Its primary audience is hiring managers and recruiters who need to quickly assess whether Chris is credible, qualified, and relevant for software roles. Its secondary audience includes peer developers, collaborators, and general visitors who need a clear understanding of who Chris is, what he builds, and how he works.
 
-The product solves a deeper problem than simple online presence. It must turn a short visit into trust by making Chris's professionalism, technical ability, and design judgment legible through both content and execution. The site serves two functions at once: it presents projects, experience, and personal context, and it demonstrates the ability to independently design and build a polished digital product. The product succeeds if visitors quickly orient themselves, understand Chris's strengths, and leave with greater confidence in his capabilities than they would get from a resume, social profile, or template-based portfolio alone.
+The product solves a deeper problem than simple online presence. It must turn a short visit into trust by making Chris's professionalism, technical ability, and design judgment legible through both content and execution. The site serves two functions at once: it presents projects, experience, and personal context, and it demonstrates the ability to independently design and build a polished digital product. The product succeeds if visitors quickly orient themselves, understand Chris's strengths, and leave with greater confidence in his capabilities than they would get from a resume, social profile, or template-based portfolio alone. Public-facing launch copy should stay concise, confident, and recruiter-friendly, with language that foregrounds visitor value and professional relevance instead of explaining the site's internal structure.
 
 ### What Makes This Special
 
@@ -63,9 +63,15 @@ The core product insight is that this kind of personal site creates the most val
 
 ### User Success
 
-The product succeeds for users if hiring managers and recruiters can understand who Chris is, assess his professionalism and capability, and identify the right next step within the first minute of visiting the site. A successful first-time visit lets them scan projects, access the resume, find contact information, and recognize that the site itself reflects Chris's technical and design ability.
+The product succeeds for users if hiring managers and recruiters can understand who Chris is, assess his professionalism and capability, and identify the right next step within the first minute of visiting the site. A successful first-time visit lets them scan projects, access the resume, find contact information, and recognize that the site itself reflects Chris's technical and design ability. The highest-visibility pages should support this with minimal, confident copy that is easy to skim under time pressure.
 
 The product also succeeds for secondary users if peer developers, collaborators, and general visitors can easily understand Chris's background, interests, and work without confusion or friction. The experience should feel approachable, responsive, and clearly intentional on both mobile and desktop.
+
+### Public Copy Guardrails
+
+- Keep public-facing copy concise, confident, recruiter-friendly, and user-value-first.
+- Treat homepage, projects, resume, and contact as explicit editorial-review surfaces.
+- Avoid internal-process narration such as evaluation logic, handoff mechanics, design rationale, or implementation intent unless recovery or error handling requires it.
 
 ### Business Success
 
@@ -98,12 +104,12 @@ Content must be structured clearly enough that visitors can quickly understand C
 The MVP must establish trust quickly and prove the core concept. It includes:
 - a polished landing page
 - clear bio and identity information
-- a profile picture
+- a professional portrait on the homepage
 - an easily accessible resume link
 - clear contact information
 - a Projects page with a simple collection of projects
 
-This scope is sufficient if it lets hiring audiences understand who Chris is, see proof of work, and know the next step.
+This scope is sufficient if it lets hiring audiences understand who Chris is, see proof of work, and know the next step. Homepage, project, resume, and contact content should foreground visitor value and professional relevance rather than explain internal navigation or evaluation mechanics.
 
 ### Growth Features (Post-MVP)
 
@@ -356,7 +362,7 @@ Phase 3 should only expand after the core trust-building product is proven and s
 - FR1: Visitors can understand who Chris is from the site.
 - FR2: Visitors can understand Chris's professional role and focus from the site.
 - FR3: Visitors can access a professional introduction that presents Chris clearly and credibly.
-- FR4: Visitors can access a professional introduction that presents Chris's background, role, and relevance.
+- FR4: Visitors can access a professional introduction that presents Chris's background, role, and relevance in concise public-facing language.
 - FR5: Visitors can view profile information that presents Chris as an identifiable individual rather than an anonymous profile.
 - FR6: Hiring audiences can identify Chris's professional relevance without relying only on project content.
 - FR7: Non-technical visitors can understand Chris's background and work without requiring insider knowledge.

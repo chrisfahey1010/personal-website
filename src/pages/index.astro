@@ -19,7 +19,7 @@ const structuredData = Astro.site ? getSiteStructuredData(Astro.site) : undefine
   {structuredData && <StructuredData slot="head" data={structuredData} />}
   <main id="main-content" class="home-page">
     <HeroSection {...homePage.hero} />
-    <SocialProofSection sectionId="proof" title="Selected proof points">
+    <SocialProofSection sectionId="proof" title="Selected highlights">
       <Content />
     </SocialProofSection>
     <JourneyNextStep
@@ -27,7 +27,7 @@ const structuredData = Astro.site ? getSiteStructuredData(Astro.site) : undefine
       title={homePage.journeyNextStep.title}
       intro={homePage.journeyNextStep.intro}
       actions={[
-        { href: launchRoutes.projects, label: 'Review project proof' },
+        { href: launchRoutes.projects, label: 'Review projects' },
         { href: launchRoutes.resume, label: 'Open the resume', variant: 'secondary' },
         { href: launchRoutes.contact, label: 'Start a conversation', variant: 'secondary' },
       ]}

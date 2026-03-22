@@ -59,7 +59,7 @@ test('story 3.1 task 2 and 3: built resume page keeps evaluators oriented and li
   assert.match(html, /Download PDF/, 'resume page should expose a clear download action');
   assert.match(html, /projects/i, 'resume page should preserve a visible path back to proof');
   assert.match(html, /contact/i, 'resume page should preserve a visible onward path to outreach');
-  assert.match(html, /If the PDF is unavailable or needs an update/i, 'resume page should include a fallback-safe recovery message');
+  assert.match(html, /If you need the latest resume copy, use contact and I will send it directly/i, 'resume page should include a fallback-safe recovery message');
   assert.doesNotMatch(html, /docs\/Resume_ChrisFahey\.pdf/, 'built output must not expose the repo-only docs path');
 });
 
@@ -75,11 +75,11 @@ test('story 3.1 task 2 and 3: missing PDF still leaves /resume/ useful without b
     const html = read('dist/resume/index.html');
 
     assert.match(html, /Resume PDF unavailable right now/, 'resume route should explain that the PDF is unavailable');
-    assert.match(html, /summary here and clear paths back to projects or forward to contact/i, 'resume route should keep evaluation flow intact when the PDF is missing');
-    assert.match(html, /requesting the latest copy/i, 'resume route should preserve a recovery path for the latest resume copy');
-    assert.match(html, /resume entry point that keeps evaluators oriented with a summary and recovery path while the canonical PDF is unavailable/i, 'resume metadata should stay truthful when the PDF is missing');
-    assert.match(html, /Use this summary when you need the core professional context right now/i, 'resume summary intro should stay truthful in fallback mode');
-    assert.match(html, /A resume summary that captures the core experience/i, 'resume highlights should avoid claiming a current PDF when the asset is missing');
+    assert.match(html, /review the summary here and use contact to request the latest copy/i, 'resume route should stay useful when the PDF is missing');
+    assert.match(html, /request the latest copy/i, 'resume route should preserve a recovery path for the latest resume copy');
+    assert.match(html, /review a concise experience summary here and use contact to request the latest resume copy/i, 'resume metadata should stay truthful when the PDF is missing');
+    assert.match(html, /Use this summary for the essential experience now/i, 'resume summary intro should stay truthful in fallback mode');
+    assert.match(html, /A concise resume summary with formal experience/i, 'resume highlights should avoid claiming a current PDF when the asset is missing');
     assert.doesNotMatch(html, /The PDF is framed as current professional material before you open it/i, 'fallback mode should remove contradictory current-PDF framing');
     assert.doesNotMatch(html, /Use the PDF when you want the complete professional record/i, 'fallback mode should not promise a PDF action that is unavailable');
     assert.doesNotMatch(html, />View resume</, 'resume route should remove the view action when the PDF is missing');

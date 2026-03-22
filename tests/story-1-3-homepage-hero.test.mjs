@@ -68,10 +68,9 @@ test('story 1.3 task 1: homepage schema rejects CTA routes that are not actually
 });
 
 test('story 1.3 task 1: homepage schema rejects drifting portrait metadata', () => {
-  const invalidHomeContent = read('src/content/pages/home.md').replace(
-      'primaryCtaHref: "/projects/"',
-      'primaryCtaHref: "/projects/"\nportraitSrc: /images/chris-portrait.jpg',
-  );
+  const invalidHomeContent = read('src/content/pages/home.md')
+    .replace(/^portraitAlt:\s+.+$/m, '')
+    .replace(/^portraitSrc:\s+.+$/m, 'portraitSrc: /images/chris-portrait.jpg');
 
   withTemporaryHomeContent(invalidHomeContent, () => {
     const failureOutput = runCheckFailure();

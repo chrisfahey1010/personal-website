@@ -8,7 +8,7 @@ import {
 export const launchPageMetadata = {
   projects: createPageMetadata({
     title: 'Projects | Chris Fahey',
-    description: 'A scannable project index that helps evaluators compare context, relevance, and where to go next for deeper proof.',
+    description: 'A scannable project index that helps hiring teams compare context, role, outcomes, and the next relevant page.',
     canonicalPath: '/projects/',
     imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
     imageAlt: DEFAULT_SOCIAL_IMAGE_ALT,
@@ -16,7 +16,7 @@ export const launchPageMetadata = {
   resume: createPageMetadata({
     title: 'Resume | Chris Fahey',
     description:
-      'A resume entry point that lets evaluators open or download a current PDF without losing orientation across projects and contact.',
+      'A resume entry point that lets visitors open or download a current PDF without losing orientation across projects and contact.',
     canonicalPath: '/resume/',
     imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
     imageAlt: DEFAULT_SOCIAL_IMAGE_ALT,

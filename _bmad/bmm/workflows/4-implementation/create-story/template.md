@@ -24,6 +24,7 @@ so that {{benefit}}.
 ## Dev Notes
 
 - Relevant architecture patterns and constraints
+- Public Copy Guardrails: if the story changes homepage, projects, resume, and contact copy, cite the planning-artifact baseline and keep language concise, confident, recruiter-friendly, and user-value-first; allow internal-process narration only for recovery or error handling.
 - Source tree components to touch
 - Testing standards summary
 

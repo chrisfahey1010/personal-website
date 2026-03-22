@@ -52,7 +52,7 @@ test('story 2.3 task 1: normalized helper keeps recurring project structure expl
   assert.doesNotMatch(helperSource, /entry\.data\.slug \?\? entry\.slug/, 'project helper should not fall back to generated slugs');
   assert.match(helperSource, /href: `\/projects\/\$\{slug\}\/`/, 'preview contract should expose the canonical detail href');
   assert.match(helperSource, /canonicalPath: `\/projects\/\$\{slug\}\/`/, 'discoverability contract should expose the canonical path');
-  assert.match(helperSource, /ctaLabel: `Review \$\{entry\.data\.title\} proof`/, 'preview contract should expose a stable evaluator-facing CTA label');
+  assert.match(helperSource, /ctaLabel: `Review \$\{entry\.data\.title\} details`/, 'preview contract should expose a stable evaluator-facing CTA label');
 });
 
 test('story 2.3 task 2: shared project components use the same information hierarchy', () => {
@@ -67,7 +67,7 @@ test('story 2.3 task 2: shared project components use the same information hiera
   assert.match(detailComponentSource, /variant="detail"/, 'project detail should render the detail hierarchy variant');
 });
 
-test('story 2.3 task 2: build output preserves recurring summary, context, proof framing, and next steps', () => {
+test('story 2.3 task 2: build output preserves recurring summary, context, highlights, and next steps', () => {
   execFileSync('npm', ['run', 'build'], { cwd: root, stdio: 'pipe' });
 
   assert.equal(exists('dist/projects/index.html'), true, 'projects index should exist in the build output');
@@ -79,13 +79,13 @@ test('story 2.3 task 2: build output preserves recurring summary, context, proof
   assert.match(indexHtml, /Summary/i, 'projects index should label the summary section explicitly');
   assert.match(indexHtml, /Context/i, 'projects index should label the context section explicitly');
   assert.match(indexHtml, /Why it matters/i, 'projects index should label relevance cues explicitly');
-  assert.match(indexHtml, /Proof focus/i, 'projects index should expose proof framing explicitly');
+  assert.match(indexHtml, /Highlights/i, 'projects index should expose recurring highlights explicitly');
   assert.match(indexHtml, /Next step/i, 'projects index should expose a dependable next step explicitly');
 
   assert.match(detailHtml, /Summary/i, 'project detail should preserve the same summary label');
   assert.match(detailHtml, /Context/i, 'project detail should preserve the same context label');
   assert.match(detailHtml, /Why it matters/i, 'project detail should preserve the same relevance label');
-  assert.match(detailHtml, /Proof focus/i, 'project detail should preserve the same proof framing label');
+  assert.match(detailHtml, /Highlights/i, 'project detail should preserve the same highlights label');
   assert.match(detailHtml, /Next step/i, 'project detail should preserve the same next-step label');
 });
 
@@ -112,7 +112,7 @@ test('story 2.3 task 3: build output emits absolute canonicals and truthful stru
   assert.match(detailHtml, /"@type":"WebPage"/, 'project detail structured data should describe the page as a WebPage');
   assert.match(detailHtml, /"@type":"BreadcrumbList"/, 'project detail structured data should include breadcrumbs');
   assert.match(detailHtml, /"name":"Personal Website Refresh"/, 'project detail structured data should use the real project title');
-  assert.match(detailHtml, /"description":"A portfolio rebuild focused on evaluator clarity, static delivery, and credible proof navigation\."/, 'project detail structured data should use the real project description');
+  assert.match(detailHtml, /"description":"A portfolio rebuild focused on recruiter clarity, static delivery, and credible project presentation\."/, 'project detail structured data should use the real project description');
   assert.doesNotMatch(detailHtml, /<\/script><script/i, 'project detail structured data should escape script-closing sequences safely');
 });
 

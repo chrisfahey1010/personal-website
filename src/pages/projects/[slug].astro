@@ -38,15 +38,15 @@ const structuredData = Astro.site ? getProjectStructuredData(project, Astro.site
   <main id="main-content" class="route-page projects-page">
     <section class="route-shell editorial-reveal">
       <div class="route-shell-accent">
-        <p class="route-eyebrow">Project proof</p>
-        <p class="route-kicker">Evaluation handoff</p>
+        <p class="route-eyebrow">Project</p>
+        <p class="route-kicker">Project details</p>
       </div>
       <h1>{project.title}</h1>
       <p class="route-intro route-lede">{project.summary}</p>
-      <ul class="route-meta" aria-label={`${project.title} evaluation context`}>
+      <ul class="route-meta" aria-label={`${project.title} project context`}>
         <li>{project.context}</li>
         <li>Built as a static, crawlable page so browser navigation remains dependable.</li>
-        <li>Structured to move from explanation to proof without requiring outside context first.</li>
+        <li>Structured to move from explanation to supporting detail without requiring outside context first.</li>
       </ul>
     </section>
 

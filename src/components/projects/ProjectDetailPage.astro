@@ -29,7 +29,7 @@ const mediaStoryModules: ProjectMediaStoryModule[] = project.detail.storyModules
 <section class="project-detail-shell editorial-reveal" aria-labelledby="project-detail-heading">
   <div class="projects-section-heading">
     <p class="route-eyebrow">Why review this</p>
-    <h2 id="project-detail-heading">Proof that explains the work, the pressure, and the judgment behind it.</h2>
+    <h2 id="project-detail-heading">A clear view of the work, the constraints, and the decisions behind it.</h2>
   </div>
 
   <ProjectStructureSummary project={project} variant="detail" />
@@ -52,7 +52,7 @@ const mediaStoryModules: ProjectMediaStoryModule[] = project.detail.storyModules
 
   <section class="project-proof-stack" aria-labelledby="project-proof-sections-heading">
     <div class="projects-section-heading">
-      <p class="route-eyebrow">Proof in practice</p>
+      <p class="route-eyebrow">Work in practice</p>
       <h3 id="project-proof-sections-heading">Concrete evidence, decisions, and outcomes.</h3>
     </div>
 
@@ -75,7 +75,7 @@ const mediaStoryModules: ProjectMediaStoryModule[] = project.detail.storyModules
 
   {
     mediaStoryModules.length > 0 && (
-      <section class="project-story-module-stack" aria-label={`${project.title} additional storytelling modules`}>
+      <section class="project-story-module-stack" aria-label={`${project.title} additional project modules`}>
         {mediaStoryModules.map((module: ProjectMediaStoryModule) => (
           <section class="proof-shell project-detail-proof" aria-labelledby={`project-${module.id}-heading`}>
             <div class="project-detail-section-heading">
@@ -111,7 +111,7 @@ const mediaStoryModules: ProjectMediaStoryModule[] = project.detail.storyModules
       <section class="proof-shell project-detail-proof" aria-labelledby="project-notes-heading">
         <div class="project-detail-section-heading">
           <p class="project-detail-section-label">Implementation evidence</p>
-          <h3 id="project-notes-heading">Additional notes that deepen the proof trail.</h3>
+          <h3 id="project-notes-heading">Additional notes that add implementation detail.</h3>
         </div>
         <div class="proof-copy project-detail-prose">
           <Content />
@@ -125,7 +125,7 @@ const mediaStoryModules: ProjectMediaStoryModule[] = project.detail.storyModules
       <section class="proof-shell project-detail-proof" aria-labelledby="project-references-heading">
         <div class="project-detail-section-heading">
           <p class="project-detail-section-label">Optional references</p>
-          <h3 id="project-references-heading">External artifacts for deeper evaluation, not for basic understanding.</h3>
+          <h3 id="project-references-heading">External artifacts for a deeper review, not for basic understanding.</h3>
         </div>
         <ul class="project-reference-list" aria-label={`${project.title} optional references`}>
           {optionalReferences.map((artifact) => (
@@ -143,7 +143,7 @@ const mediaStoryModules: ProjectMediaStoryModule[] = project.detail.storyModules
 
   <JourneyNextStep
     ariaLabel="Project detail next steps"
-    title="Continue the evaluation path once this proof matches the conversation."
+    title="Continue once this project matches the conversation."
     intro="When this project feels relevant, continue to the latest resume for the formal experience behind the work, or move straight into contact if you already have enough signal to talk."
     actions={[
       { href: launchRoutes.resume, label: 'Continue to resume' },

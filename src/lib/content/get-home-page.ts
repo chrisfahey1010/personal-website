@@ -1,6 +1,25 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 import { getEntry, type CollectionEntry } from 'astro:content';
 
 import { createPageMetadata } from '../seo/get-page-metadata';
+
+const publicAssetRoot = path.join(process.cwd(), 'public');
+
+const resolvePortrait = (portraitSrc?: string, portraitAlt?: string) => {
+  if (!portraitSrc || !portraitAlt) {
+    return { portraitSrc: undefined, portraitAlt: undefined };
+  }
+
+  const portraitFilePath = path.join(publicAssetRoot, portraitSrc.slice(1));
+
+  if (!fs.existsSync(portraitFilePath)) {
+    return { portraitSrc: undefined, portraitAlt: undefined };
+  }
+
+  return { portraitSrc, portraitAlt };
+};
 
 export interface HomePageHero {
   heroName: string;
@@ -37,6 +56,8 @@ export const getHomePage = async (): Promise<HomePageRecord> => {
     throw new Error('Missing home page content entry.');
   }
 
+  const portrait = resolvePortrait(entry.data.portraitSrc, entry.data.portraitAlt);
+
   return {
     entry,
     hero: {
@@ -53,8 +74,8 @@ export const getHomePage = async (): Promise<HomePageRecord> => {
       heroSignalCopy: entry.data.heroSignalCopy,
       primaryCtaLabel: entry.data.primaryCtaLabel,
       primaryCtaHref: entry.data.primaryCtaHref,
-      portraitSrc: entry.data.portraitSrc,
-      portraitAlt: entry.data.portraitAlt,
+      portraitSrc: portrait.portraitSrc,
+      portraitAlt: portrait.portraitAlt,
     },
     journeyNextStep: {
       title: entry.data.journeyTitle,

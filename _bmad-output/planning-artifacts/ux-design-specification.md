@@ -196,7 +196,7 @@ The key insight from exploration is that the final direction should not be an ev
 
 ### Chosen Direction
 
-The chosen direction is `Editorial Hero` as the primary design foundation, refined by selective influences from `Warm Magazine` and `Narrative Scroll`. The hero should remain the defining first-screen moment: strong typography, immediate professional framing, and visible tags for skills and consulting availability. To make the opening feel more personal and visually complete, the hero should include a profile picture in the upper-right area of the layout. This portrait element should act as a humanizing counterweight to the strong textual structure, helping the site feel like a personal home rather than a generic professional profile.
+The chosen direction is `Editorial Hero` as the primary design foundation, refined by selective influences from `Warm Magazine` and `Narrative Scroll`. The hero should remain the defining first-screen moment: strong typography, immediate professional framing, and visible tags for skills and consulting availability. To make the opening feel more personal and visually complete, the hero should include an approved professional portrait in the upper-right area of the layout as a required launch trust signal, not an optional enhancement. This portrait element should act as a humanizing counterweight to the strong textual structure, helping the site feel like a personal home rather than a generic professional profile. The supporting copy around that hero should stay minimal, confident, and immediately legible to recruiters and hiring managers.
 
 Below the hero, the site should adopt a warmer editorial organization based on three launch priorities: `Projects`, `Resume`, and `Contact`. These should feel like clear, meaningful pathways for trust-building evaluation rather than generic homepage sections. Future writing or blog content should be accounted for in the long-term information architecture, but it should remain explicitly outside launch scope and outside launch navigation. `Photos` should be treated as a future-facing content area and accounted for in the long-term information architecture, but it should remain out of launch scope so the initial product stays focused.
 
@@ -210,9 +210,15 @@ The motion strategy strengthens the experience only because it is constrained. `
 
 ### Implementation Approach
 
-Implementation should begin with the hero composition as the primary design anchor. The first screen should combine a strong serif-led headline, concise supporting copy, visible skill and availability tags, and an upper-right portrait treatment that feels integrated rather than decorative. The homepage should then flow into three clearly organized launch sections or pathways: `Projects`, `Resume`, and `Contact`, with future writing positioned as a later expansion rather than a launch destination. These should be structured with enough warmth and editorial rhythm to feel inviting, but with enough hierarchy and discipline to preserve fast scanning.
+Implementation should begin with the hero composition as the primary design anchor. The first screen should combine a strong serif-led headline, concise supporting copy, visible skill and availability tags, and an upper-right professional portrait treatment that feels integrated rather than decorative. Public-facing copy should explain visitor value, role relevance, and next steps directly; it should not narrate internal information architecture, evaluation logic, or interaction intent. The homepage should then flow into three clearly organized launch sections or pathways: `Projects`, `Resume`, and `Contact`, with future writing positioned as a later expansion rather than a launch destination. These should be structured with enough warmth and editorial rhythm to feel inviting, but with enough hierarchy and discipline to preserve fast scanning.
 
 Motion should be implemented progressively and conservatively. Scroll-linked effects should emphasize content transition, reveal, or focus without displacing interactive targets or reducing legibility. The safest implementation model is to animate supporting layers, imagery emphasis, opacity, or positional nuance within non-interactive content zones while keeping controls physically stable in the layout. All motion should respect reduced-motion settings, remain lightweight in performance terms, and be treated as enhancement rather than dependency. If the motion is removed, the design should still feel complete, polished, and easy to use.
+
+### Public Copy Guardrails
+
+- Keep public-facing copy concise, confident, recruiter-friendly, and user-value-first.
+- Treat homepage, projects, resume, and contact as explicit editorial-review surfaces.
+- Avoid internal-process narration such as evaluation logic, handoff mechanics, design rationale, or implementation intent unless recovery or error handling requires it.
 
 ## User Journey Flows
 
@@ -320,7 +326,7 @@ This means the component strategy should begin with a bias toward composition ra
 **States:** Default, responsive rearrangement, reduced-motion mode.  
 **Variants:** Desktop hero and mobile-compressed hero.  
 **Accessibility:** Semantic heading structure, descriptive alt text for portrait, logical reading and tab order, no motion-dependent comprehension, strong contrast for all text and tags.  
-**Content Guidelines:** Keep messaging concise, role-defining, and high-signal. Tags should remain sparse and meaningful.  
+**Content Guidelines:** Keep messaging concise, role-defining, and high-signal. Tags should remain sparse and meaningful. Avoid meta language about the site itself, internal evaluation models, or design rationale unless that context materially helps the visitor act.  
 **Interaction Behavior:** Supporting visual layers may respond subtly to scroll, but text, tags, and controls remain stable and easy to target.
 
 ### Trust Tag Pattern
@@ -342,7 +348,7 @@ This means the component strategy should begin with a bias toward composition ra
 **States:** Default, hover/focus, responsive stacked layout.  
 **Variants:** Standard pathway block and more prominent featured pathway block.  
 **Accessibility:** Clear destination labels, large touch areas, readable supporting text, consistent heading hierarchy.  
-**Content Guidelines:** Explain why each destination matters, not just where it goes.  
+**Content Guidelines:** Explain why each destination matters to the visitor, not how the site's internal flow is structured. Labels such as handoff, proof flow, recovery guidance, or evaluation path should be replaced with plain user-facing language unless a recovery state genuinely requires them.  
 **Interaction Behavior:** May use subtle reveal-on-scroll emphasis, but structure and targets remain fixed.
 
 ### Project Proof Card
@@ -364,7 +370,7 @@ This means the component strategy should begin with a bias toward composition ra
 **States:** Default, responsive condensed layout, hover/focus on links.  
 **Variants:** Homepage snapshot and fuller resume entry panel.  
 **Accessibility:** Strong heading structure, obvious link labeling, keyboard accessibility, clean mobile presentation.  
-**Content Guidelines:** Put the most decision-relevant information first; avoid dense walls of text.  
+**Content Guidelines:** Put the most decision-relevant information first; avoid dense walls of text. Supporting copy should describe why the destination matters to the visitor, not how the site's internal flow is structured. Labels such as handoff, proof flow, recovery guidance, or evaluation path should be replaced with plain user-facing language unless a recovery state genuinely requires them.  
 **Interaction Behavior:** Straightforward and highly stable, with no decorative animation dependency.
 
 ### Contact Confidence Block
@@ -375,7 +381,7 @@ This means the component strategy should begin with a bias toward composition ra
 **States:** Default, hover/focus, future success/error states if richer contact interactions are added later.  
 **Variants:** Launch-simple link-based version, future expanded contact module.  
 **Accessibility:** Clear labels, distinct interaction states, no hidden actions or ambiguous affordances.  
-**Content Guidelines:** Keep tone direct, warm, and confident rather than promotional.  
+**Content Guidelines:** Keep tone direct, warm, and confident rather than promotional. Supporting copy should describe why the destination matters to the visitor, not how the site's internal flow is structured. Labels such as handoff, proof flow, recovery guidance, or evaluation path should be replaced with plain user-facing language unless a recovery state genuinely requires them.  
 **Interaction Behavior:** No flourish needed; this component should feel especially dependable.
 
 ### Component Implementation Strategy

@@ -8,11 +8,11 @@ interface Props {
 
 const { project, variant } = Astro.props as Props;
 
-const proofFocus = project.detail.proofSections.map((section) => section.title);
+const highlights = project.detail.proofSections.map((section) => section.title);
 const nextStepCopy =
   variant === 'preview'
-    ? 'Open the full project page for the complete proof trail and onward evaluation paths.'
-    : 'Use the next-step links after reviewing the proof to continue to projects, resume, or contact.';
+    ? 'Open the full project page for the full context, decisions, and next steps.'
+    : 'Use the links below to continue to projects, resume, or contact.';
 ---
 
 <dl class:list={['project-structure-list', variant === 'detail' && 'project-structure-list-detail']}>
@@ -33,10 +33,10 @@ const nextStepCopy =
     </dd>
   </div>
   <div>
-    <dt>Proof focus</dt>
+    <dt>Highlights</dt>
     <dd>
-      <ul class="project-structure-proof-list" aria-label={`${project.title} proof focus`}>
-        {proofFocus.map((item) => <li>{item}</li>)}
+      <ul class="project-structure-proof-list" aria-label={`${project.title} highlights`}>
+        {highlights.map((item) => <li>{item}</li>)}
       </ul>
     </dd>
   </div>

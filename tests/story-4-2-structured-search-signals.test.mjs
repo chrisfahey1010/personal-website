@@ -42,7 +42,7 @@ test('story 4.2 task 2: project structured data stays server-rendered, truthful,
     [
       'dist/projects/portfolio-refresh/index.html',
       'Personal Website Refresh',
-      'A portfolio rebuild focused on evaluator clarity, static delivery, and credible proof navigation.',
+      'A portfolio rebuild focused on recruiter clarity, static delivery, and credible project presentation.',
     ],
     [
       'dist/projects/team-dashboard-modernization/index.html',

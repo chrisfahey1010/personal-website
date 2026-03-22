@@ -53,13 +53,13 @@ test('story 2.4 task 3 and 4: build output supports richer optional storytelling
   const dashboardHtml = read('dist/projects/team-dashboard-modernization/index.html');
 
   assert.match(portfolioHtml, /Implementation timeline/i, 'portfolio page should render optional narrative extensions when authored');
-  assert.match(portfolioHtml, /Proof map snapshot/i, 'portfolio page should render optional media modules when authored');
+  assert.match(portfolioHtml, /Project structure snapshot/i, 'portfolio page should render optional media modules when authored');
   assert.match(
     portfolioHtml,
-    /<img[^>]+src="\/images\/projects\/portfolio-refresh-proof-map\.svg"[^>]+alt="Annotated proof map showing how the portfolio routes connect summary, proof, and next steps\."[^>]+width="960"[^>]+height="640"/i,
+    /<img[^>]+src="\/images\/projects\/portfolio-refresh-proof-map\.svg"[^>]+alt="Annotated project map showing how the portfolio routes connect summary, supporting detail, and next steps\."[^>]+width="960"[^>]+height="640"/i,
     'portfolio page should render static project media from the reserved asset boundary',
   );
   assert.doesNotMatch(dashboardHtml, /Implementation timeline/i, 'projects without optional modules should not render narrative placeholders');
-  assert.doesNotMatch(dashboardHtml, /Proof map snapshot/i, 'projects without optional modules should not render media placeholders');
+  assert.doesNotMatch(dashboardHtml, /Project structure snapshot/i, 'projects without optional modules should not render media placeholders');
   assert.doesNotMatch(portfolioHtml, /coming soon/i, 'optional storytelling seams should not introduce placeholder copy');
 });

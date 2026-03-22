@@ -35,6 +35,10 @@ const resumeHighlightsSchema = z.object({
 
 const storyModuleId = nonEmptyString.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Story module ids must be kebab-case');
 const projectAssetRoot = path.join(process.cwd(), 'public');
+const portraitAssetSchema = nonEmptyString.refine(
+  (value) => value.startsWith('/images/'),
+  'Portrait media must stay inside the /images/ static asset boundary',
+);
 
 const projectMediaItemSchema = z.object({
   src: nonEmptyString.refine(
@@ -90,7 +94,7 @@ const pages = defineCollection({
       ),
       journeyTitle: nonEmptyString,
       journeyIntro: nonEmptyString,
-      portraitSrc: nonEmptyString.optional(),
+      portraitSrc: portraitAssetSchema.optional(),
       portraitAlt: nonEmptyString.optional(),
     })
     .superRefine((value, ctx) => {

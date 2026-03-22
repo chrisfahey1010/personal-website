@@ -257,13 +257,18 @@ So that I can quickly decide whether this site is relevant to my evaluation.
 
 **Given** a visitor lands on the home page on a supported desktop or mobile browser
 **When** the first viewport renders
-**Then** the page presents Chris's name, professional role or focus, and a concise introduction above the fold
+**Then** the page presents Chris's name, professional role or focus, and concise homepage copy that can be scanned in seconds by a recruiter or hiring manager
 **And** the content is scannable without requiring technical insider knowledge
 
 **Given** a visitor lands on the home page
 **When** they scan the hero and introduction content
 **Then** they can identify Chris as a real individual with a clear professional context
-**And** the page includes at least one visible trust-oriented cue such as portrait, credibility tag, or professional signal
+**And** the above-the-fold content avoids internal process language, evaluation-framework labels, or explanatory text about the site's own intent
+
+**Given** a visitor lands on the home page
+**When** they scan the hero and introduction content
+**Then** the hero includes an approved professional portrait as a primary trust signal
+**And** the portrait uses meaningful alt text and responsive rendering
 
 **Given** a visitor is evaluating the site quickly
 **When** they view the hero section
@@ -396,8 +401,8 @@ So that I trust the quality of Chris's work and remember the experience as disti
 
 **Given** the site displays identity and evaluative content
 **When** visitors scan the experience
-**Then** trust-oriented signals such as portrait treatment, credibility cues, or professional context are visible and cohesive
-**And** these signals support understanding without overwhelming the content
+**Then** trust-oriented signals are visible and cohesive, led by the homepage portrait, clear role framing, and concise credibility cues
+**And** trust signals describe visitor value and professional relevance rather than internal design intent
 
 **Given** headings, body text, navigation text, and supporting UI text are rendered
 **When** typography is applied
@@ -413,6 +418,31 @@ So that I trust the quality of Chris's work and remember the experience as disti
 **When** they move through the primary experience
 **Then** the site presents a distinct professional identity and crafted feel
 **And** the design does not rely on intrusive patterns or ornamental effects that weaken trust
+
+### Story 1.8: Integrate Approved Professional Portrait
+
+As a first-time visitor,
+I want to see a professional portrait of Chris on the home page,
+So that the site feels personal, credible, and immediately trustworthy.
+
+**FRs implemented:** FR5, FR6, FR21, FR22, FR31, FR33, FR42, FR46
+
+**Acceptance Criteria:**
+
+**Given** an approved portrait asset is available
+**When** the home page hero renders
+**Then** the portrait appears in the intended hero position on supported desktop and mobile layouts
+**And** it loads as part of the static-first experience without requiring client-side enhancement
+
+**Given** the portrait is rendered in the hero
+**When** accessibility and responsive behavior are reviewed
+**Then** the image uses meaningful alt text, appropriate dimensions, and responsive presentation
+**And** the experience retains a clear fallback only when the canonical portrait asset is unavailable
+
+**Given** a visitor lands on the home page under normal launch conditions
+**When** they form a first impression
+**Then** the portrait strengthens professional trust without crowding the core identity copy
+**And** it feels integrated with the site's visual system rather than decorative
 
 ## Epic 2: Project Proof and Technical Credibility
 
@@ -436,7 +466,7 @@ So that I can quickly identify which work is most relevant to review in more det
 **Given** a visitor is reviewing projects under time pressure
 **When** they scan the project collection
 **Then** they can distinguish projects by title, context, and relevance cues
-**And** the page supports quick comparison without requiring deep reading of every item
+**And** project summaries use direct, outcome-oriented language instead of meta commentary about proof, evaluation flow, or storytelling structure
 
 **Given** the projects index is viewed on supported desktop or mobile browsers
 **When** the collection renders
@@ -533,6 +563,31 @@ So that I can deepen proof of work over time without rebuilding the site's core 
 **Then** the experience remains coherent and complete without placeholder content
 **And** future extensibility does not create clutter or confusion in the launch experience
 
+### Story 2.5: Rewrite Project Copy for Recruiter-Friendly Clarity
+
+As a hiring evaluator,
+I want project summaries and details written in direct, outcome-oriented language,
+So that I can understand Chris's role, impact, and relevance without decoding meta commentary.
+
+**FRs implemented:** FR9, FR10, FR11, FR16, FR23, FR34
+
+**Acceptance Criteria:**
+
+**Given** a visitor scans the projects index
+**When** they compare project entries
+**Then** each summary communicates the project's value, Chris's role, and the reason it matters
+**And** the copy avoids internal language about proof frameworks, evaluation flows, or storytelling structure
+
+**Given** a visitor opens a project detail page
+**When** they read the overview, problem, role, and supporting sections
+**Then** the language stays concise, confident, and recruiter-friendly
+**And** section labels and supporting text describe user value rather than internal intent
+
+**Given** project content is updated for launch
+**When** it is reviewed across multiple entries
+**Then** the tone remains consistent across index and detail surfaces
+**And** the revised copy preserves substantive credibility without sounding self-conscious or over-explained
+
 ## Epic 3: Resume Access and Contact Conversion
 
 Hiring audiences can complete the core evaluation path, access the resume, and take the next step to contact Chris without friction.
@@ -555,7 +610,7 @@ So that I can review formal experience and qualifications without breaking my ev
 **Given** a visitor opens the resume destination or download
 **When** the content loads successfully
 **Then** the resume asset is reachable and presented as current professional material
-**And** the transition preserves orientation within the evaluation flow
+**And** the page uses concise, direct language that helps a visitor open the resume or choose the next step without explaining the underlying evaluation model
 
 **Given** the resume asset is unavailable, outdated, or misconfigured
 **When** a visitor reaches a resume access point
@@ -605,7 +660,12 @@ So that I can follow up after evaluation without confusion.
 **Given** a visitor wants to contact Chris
 **When** they look for outreach options on primary public pages
 **Then** they can find at least one clear contact pathway without extensive searching
-**And** the contact option is presented in a professional and trustworthy way
+**And** the page removes labels or helper text that describe internal handoff mechanics when a simpler visitor-facing instruction will do
+
+**Given** a visitor wants to contact Chris
+**When** they look for outreach options on primary public pages
+**Then** the contact option is presented with direct, confidence-building language focused on how to reach Chris
+**And** the outreach path feels professional and trustworthy
 
 **Given** a visitor uses the contact destination or contact action
 **When** they review the available outreach information
@@ -646,6 +706,31 @@ So that I know what happened and what to do next without stress.
 **When** it is rendered
 **Then** color is not the only signal used to convey meaning
 **And** the feedback remains understandable for assistive technology and keyboard users
+
+### Story 3.5: Simplify Resume and Contact Copy
+
+As a hiring audience member,
+I want resume and contact pages to use simple, direct language,
+So that I can take the next step without wading through explanations of the site's internal flow.
+
+**FRs implemented:** FR13, FR14, FR17, FR18, FR19, FR20, FR34
+
+**Acceptance Criteria:**
+
+**Given** a visitor opens the resume page
+**When** they scan the introduction, actions, and supporting text
+**Then** the page explains what is available and what to do next in concise recruiter-friendly language
+**And** it avoids labels or descriptions centered on evaluation mechanics, handoffs, or system intent
+
+**Given** a visitor opens the contact page
+**When** they look for outreach guidance
+**Then** the page prioritizes the direct action, fallback path, and useful context to include
+**And** helper text stays focused on user value instead of narrating internal routing or recovery concepts unless recovery is actually needed
+
+**Given** the resume and contact routes are reviewed together
+**When** their public-facing copy is compared with the homepage and projects pages
+**Then** the tone is consistent, confident, and easy to skim
+**And** the core evaluation path remains clear without being explicitly explained to the visitor
 
 ## Epic 4: Discoverability and Sustainable Ownership
 
@@ -780,5 +865,37 @@ So that the product can evolve cleanly while preserving performance, clarity, an
 **When** stories are selected for sprint planning
 **Then** reserved future-writing routes, content types, and UI sections are treated as post-launch seams rather than required deliverables
 **And** sprint scope remains limited to homepage, projects, resume, contact, accessibility, SEO, and deployment-ready foundations
+
+### Story 4.6: Establish Public Copy Guardrails
+
+As Chris,
+I want lightweight editorial rules for public-facing copy,
+So that future updates stay concise, confident, and aligned with visitor value.
+
+**FRs implemented:** FR36, FR38, FR39, FR41, FR43
+
+**Acceptance Criteria:**
+
+**Given** homepage, project, resume, and contact content is updated over time
+**When** Chris reviews or edits public-facing copy
+**Then** a lightweight set of editorial guardrails defines the expected tone and structure
+**And** those guardrails favor concise, recruiter-friendly, user-value-first language
+
+**Given** a future content update introduces labels, helper text, or section framing
+**When** the change is reviewed against the guardrails
+**Then** internal-process narration such as handoff mechanics, evaluation logic, or design rationale is avoided unless it materially helps recovery or comprehension
+**And** public copy remains focused on relevance, clarity, and next steps
+
+**Given** the editorial guardrails are documented
+**When** planning artifacts and future story work are created
+**Then** the guidance is easy to reference from the backlog and implementation context
+**And** it helps prevent tone drift across the site's highest-visibility pages
+
+### Public Copy Guardrails
+
+- Keep public-facing copy concise, confident, recruiter-friendly, and user-value-first.
+- Treat homepage, projects, resume, and contact as explicit editorial-review surfaces.
+- Avoid internal-process narration such as evaluation logic, handoff mechanics, design rationale, or implementation intent unless recovery or error handling requires it.
+- Future story drafts that change those surfaces should cite this baseline in Dev Notes.
 
 <!-- End story repeat -->

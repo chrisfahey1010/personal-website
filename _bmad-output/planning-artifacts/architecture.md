@@ -474,6 +474,10 @@ Use a layered structure that separates concerns clearly:
 - `public/` for static passthrough assets
 - tests co-located with the file they validate whenever practical
 
+Portrait/content rules:
+- homepage portrait assets should live in the `public/` static asset boundary with an explicit canonical path referenced from the homepage content source
+- portrait handling should preserve static-first delivery, responsive rendering, descriptive alt text, and graceful fallback behavior
+
 Rules:
 - route files should compose content and components, not contain large reusable UI blocks
 - reusable primitives should not depend on route-specific assumptions
@@ -521,6 +525,9 @@ Preferred future pattern:
 - optional fields should be omitted when absent unless `null` has explicit semantic meaning
 - metadata objects should use stable field names across all page types
 - canonical content concepts should keep the same field names everywhere unless a schema difference is intentional and documented
+- public-facing route copy must describe user value, professional relevance, and next actions directly
+- avoid internal-process narration such as explaining evaluation flows, storytelling structures, handoff mechanics, or architectural intent in end-user copy unless required for recovery or error handling
+- treat concise, recruiter-friendly phrasing as a definition-of-done quality attribute for homepage, project, resume, and contact content
 
 Examples:
 - good: `publishDate: 2026-03-09`
@@ -601,6 +608,12 @@ These are not optional review items. Every page and reusable section should be i
 - stable metadata conventions
 - performance-aware media and typography decisions
 - motion treated as additive, not required for comprehension
+- explicit editorial review for brevity, confidence, and user-value-first language on high-visibility public pages
+
+**Public Copy Guardrails:**
+- keep public-facing copy concise, confident, recruiter-friendly, and user-value-first
+- treat homepage, projects, resume, and contact as explicit editorial-review surfaces
+- avoid internal-process narration such as evaluation logic, handoff mechanics, design rationale, or implementation intent unless recovery or error handling requires it
 
 Agents should treat these as definition-of-done constraints, not enhancement backlog items.
 

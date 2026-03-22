@@ -75,7 +75,7 @@ const createNarrativeSections = (entry: CollectionEntry<'projects'>): ProjectDet
   {
     id: 'overview',
     label: 'What this project is',
-    heading: 'Evaluator-ready context before you inspect the proof.',
+    heading: 'Clear context before you review the details.',
     paragraphs: [entry.data.overview],
   },
   {
@@ -182,7 +182,7 @@ export const getProjects = async (): Promise<ProjectRecord[]> => {
           context: entry.data.context,
           relevanceCues: entry.data.relevanceCues,
           href: `/projects/${slug}/`,
-          ctaLabel: `Review ${entry.data.title} proof`,
+          ctaLabel: `Review ${entry.data.title} details`,
         },
         detail: {
           overview: entry.data.overview,

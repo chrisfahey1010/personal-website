@@ -2,48 +2,48 @@
 title: Resume
 seoTitle: Resume | Chris Fahey
 eyebrow: Resume
-kicker: Evaluation handoff
-heading: Review the resume without losing the thread of evaluation.
+kicker: Current resume
+heading: Review the resume and choose the next step.
 updatedAt: "2026-03-15"
 maxAgeDays: 548
 downloadName: Chris-Fahey-Resume.pdf
 viewActionLabel: View resume
 downloadActionLabel: Download PDF
 pageDescription:
-  available: A resume entry point that lets evaluators open or download a current PDF without losing orientation across projects and contact.
-  unavailable: A resume entry point that keeps evaluators oriented with a summary and recovery path while the canonical PDF is unavailable.
+  available: Open or download the current resume, then continue to projects or contact when you are ready.
+  unavailable: Review a concise experience summary here and use contact to request the latest resume copy.
 primaryIntro:
-  available: Open the current resume PDF or download a copy with normal link behavior. This page frames what you will get first, then keeps visible paths back to project proof and forward to contact.
-  unavailable: The canonical resume PDF is unavailable right now, but this page still keeps the evaluation flow intact with a summary here and clear paths back to projects or forward to contact.
+  available: Open the current resume in your browser or download the PDF. Projects and contact stay close by if you want more proof or a direct follow-up.
+  unavailable: The current PDF is unavailable right now, but you can still review the summary here and use contact to request the latest copy.
 secondaryIntro:
-  available: The PDF reflects current experience, recent product-engineering work, and the formal timeline behind the proof already shown on the site.
-  unavailable: While the PDF is unavailable, this summary still gives evaluators the key context and a clear recovery path for requesting the latest copy.
+  available: The resume covers recent product engineering work, earlier roles, and the experience behind the projects on this site.
+  unavailable: This summary covers the same core experience and gives you a clear way to request the latest PDF.
 metaItems:
   available:
-    - Clear resume actions live in the static asset boundary and do not rely on hidden interaction
-    - The PDF is framed as current professional material before you open it
-    - Projects and contact stay visible so resume review feels like a continuation, not a dead end
+    - Open the current resume or download a PDF copy in one click
+    - Review a current snapshot of product engineering experience and delivery work
+    - Move back to projects or forward to contact without hunting for the next step
   unavailable:
-    - This route keeps the evaluation path alive when the canonical PDF is missing, stale, or being replaced
-    - The summary and contact recovery path stay visible instead of sending evaluators into a broken asset dead end
-    - Projects and contact remain close at hand so orientation is preserved across the handoff
+    - Review the key experience summary while the PDF is unavailable
+    - Request the latest resume copy directly through contact
+    - Keep projects and contact within easy reach while you decide what to do next
 fallbackTitle: Resume PDF unavailable right now
-fallbackCopy: The direct PDF link is unavailable because the canonical asset is missing, stale, or being replaced. You can still review the summary below and use the contact path to request the latest copy or a guided walkthrough.
+fallbackCopy: The direct PDF link is unavailable because the canonical asset is missing, stale, or being replaced. You can still review the summary below and use contact to request the latest copy.
 summaryEyebrow: Resume summary
-summaryHeading: A calm handoff from proof to formal experience.
+summaryHeading: What you can review in a few minutes.
 summaryIntro:
-  available: Use the PDF when you want the complete professional record. Use the surrounding links when you want deeper examples or a direct follow-up instead of guessing what comes next.
-  unavailable: Use this summary when you need the core professional context right now. Use the surrounding links when you want deeper examples or the latest resume copy without guessing what comes next.
+  available: Use the PDF for the full record, or scan this page first if you want the quick version before deciding what to open next.
+  unavailable: Use this summary for the essential experience now, then use contact if you want the latest PDF sent directly.
 highlights:
   - title: What you can review
-    availableDescription: A current PDF resume that captures formal experience, delivery context, and the scope behind recent product engineering work.
-    unavailableDescription: A resume summary that captures the core experience, delivery context, and the scope behind recent product engineering work while the canonical PDF is unavailable.
-  - title: Why this page exists
-    availableDescription: Resume review stays connected to the same evaluation flow as projects, so the handoff feels deliberate instead of abrupt.
-    unavailableDescription: Resume review stays connected to the same evaluation flow as projects, so the handoff feels deliberate instead of abrupt.
+    availableDescription: A current PDF resume with formal experience, delivery context, and recent product engineering work.
+    unavailableDescription: A concise resume summary with formal experience, delivery context, and recent product engineering work.
+  - title: Why it helps
+    availableDescription: You can confirm the essentials quickly, then move to projects for proof or contact for a conversation.
+    unavailableDescription: You can confirm the essentials quickly, then move to projects for proof or contact to request the latest copy.
   - title: What to do next
-    availableDescription: Use the projects route for more proof or the contact route if you want the latest context, a tailored walkthrough, or a direct conversation.
-    unavailableDescription: Use the projects route for more proof or the contact route if you want the latest copy, a tailored walkthrough, or a direct conversation.
-recoveryCopy: If the PDF is unavailable or needs an update, use the contact path and I will send the latest copy directly with any context that helps your review.
-nextStepCopy: When you are ready to turn project proof and formal experience into an actual conversation, continue to contact for the cleanest final handoff.
+    availableDescription: Go to projects for deeper examples, or use contact when you want to talk through a role, team, or project.
+    unavailableDescription: Go to projects for deeper examples, or use contact when you want the latest copy or a direct conversation.
+recoveryCopy: If you need the latest resume copy, use contact and I will send it directly.
+nextStepCopy: When you are ready to talk about a role, team, or project, continue to contact.
 ---

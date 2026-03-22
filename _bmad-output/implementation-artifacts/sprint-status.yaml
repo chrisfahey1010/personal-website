@@ -48,6 +48,7 @@ development_status:
   1-5-responsive-layout-and-mobile-first-behavior: done
   1-6-accessibility-baseline-for-core-browsing: done
   1-7-distinct-visual-system-and-trust-signals: done
+  1-8-integrate-approved-professional-portrait: done
   epic-1-retrospective: optional
 
   epic-2: done
@@ -55,6 +56,7 @@ development_status:
   2-2-project-detail-pages-with-substantive-proof: done
   2-3-structured-project-presentation-for-credibility-and-discoverability: done
   2-4-extensible-project-storytelling-foundation: done
+  2-5-rewrite-project-copy-for-recruiter-friendly-clarity: done
   epic-2-retrospective: optional
 
   epic-3: done
@@ -62,6 +64,7 @@ development_status:
   3-2-guided-evaluation-path-from-profile-to-proof-to-resume: done
   3-3-clear-contact-pathways-for-professional-outreach: done
   3-4-calm-contact-feedback-and-action-clarity: done
+  3-5-simplify-resume-and-contact-copy: done
   epic-3-retrospective: optional
 
   epic-4: done
@@ -70,4 +73,5 @@ development_status:
   4-3-owner-controlled-content-updates-for-profile-resume-and-projects: done
   4-4-sustainable-site-architecture-with-minimal-third-party-dependence: done
   4-5-future-ready-content-and-integration-boundaries: done
+  4-6-establish-public-copy-guardrails: done
   epic-4-retrospective: optional

@@ -17,9 +17,9 @@ const readDistCss = () => {
 test('story 3.4: contact source stays static-first and recovery-oriented', () => {
   const contactSource = read('src/pages/contact.astro');
 
-  assert.match(contactSource, /What should happen/i, 'contact page should explain the intended mail handoff in plain language');
+  assert.match(contactSource, /What happens next/i, 'contact page should explain the intended mail handoff in plain language');
   assert.match(contactSource, /If your mail app does not open/i, 'contact page should explain the fallback state in plain language');
-  assert.match(contactSource, /copy the plain-text address below into any mail app you prefer/i, 'contact page should offer a non-mailto recovery instruction');
+  assert.match(contactSource, /copy the plain-text address below into any mail app you\s+prefer/i, 'contact page should offer a non-mailto recovery instruction');
   assert.match(contactSource, /<code class="contact-direct-address">\{primaryContactEmail\}<\/code>/, 'contact page should expose a plain-text email fallback instead of only another mailto link');
   assert.match(contactSource, /Review the resume again|Back to projects|Continue through projects/i, 'contact page should preserve a trustworthy next step');
   assert.doesNotMatch(contactSource, /<form\b|fetch\(|XMLHttpRequest|client:load|client:idle|client:visible|client:only/, 'contact page should remain static-first and not add a heavier workflow');
@@ -35,11 +35,11 @@ test('story 3.4: built contact page explains handoff, fallback, and accessible r
 
   assert.equal(h1Matches.length, 1, 'contact page should keep exactly one h1');
   assert.equal(mainMatches.length, 1, 'contact page should keep exactly one main landmark');
-  assert.match(contactHtml, /What should happen/i, 'built contact page should explain the intended handoff');
+  assert.match(contactHtml, /What happens next/i, 'built contact page should explain the intended handoff');
   assert.match(contactHtml, /If your mail app does not open/i, 'built contact page should include plain-language fallback guidance');
-  assert.match(contactHtml, /copy the plain-text address below into any mail app you prefer/i, 'built contact page should keep a trustworthy non-mailto recovery path visible in text');
+  assert.match(contactHtml, /copy the plain-text address below into any mail app you\s+prefer/i, 'built contact page should keep a trustworthy non-mailto recovery path visible in text');
   assert.match(contactHtml, /<code class="contact-direct-address">[^<]+<\/code>/, 'built contact page should render a plain-text email fallback');
-  assert.match(contactHtml, /aria-label="Contact recovery guidance"|aria-labelledby="contact-recovery-heading"/, 'recovery guidance should expose an accessible text-based grouping');
+  assert.match(contactHtml, /aria-label="Email fallback guidance"|aria-labelledby="contact-recovery-heading"/, 'recovery guidance should expose an accessible text-based grouping');
   const mailtoMatches = contactHtml.match(/href="mailto:[^"]+"/g) ?? [];
   assert.equal(mailtoMatches.length, 1, 'contact page should keep one primary mailto action and avoid making the fallback depend on the same handoff');
   assert.match(contactHtml, /href="\/resume\/"|href="\/projects\/"/, 'contact page should preserve at least one onward route when email handoff fails');
