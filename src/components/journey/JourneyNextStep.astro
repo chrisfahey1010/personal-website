@@ -9,16 +9,14 @@ interface Props {
   ariaLabel: string;
   title: string;
   intro: string;
-  eyebrow?: string;
   actions: JourneyAction[];
 }
 
-const { ariaLabel, title, intro, eyebrow = 'Next step', actions } = Astro.props as Props;
+const { ariaLabel, title, intro, actions } = Astro.props as Props;
 ---
 
 <section class="proof-shell journey-next-step editorial-reveal" aria-label={ariaLabel}>
   <div class="projects-section-heading">
-    <p class="route-eyebrow">{eyebrow}</p>
     <h2>{title}</h2>
     <p class="route-intro">{intro}</p>
   </div>

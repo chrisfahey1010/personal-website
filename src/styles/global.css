@@ -127,15 +127,6 @@ a {
   width: min(100%, 56rem);
 }
 
-.route-eyebrow {
-  margin: 0;
-  color: var(--color-accent);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .route-kicker,
 .route-intro,
 .route-lede,
