@@ -1,25 +1,38 @@
 ---
 import type { ProjectRecord } from '../../lib/content/get-projects';
-import ProjectStructureSummary from './ProjectStructureSummary.astro';
 
 interface Props {
   projects: ProjectRecord[];
 }
 
 const { projects } = Astro.props;
+const statusClass = (status: ProjectRecord['status']) => `project-status-${status.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 ---
 
-<ol class="projects-list" aria-label="Project comparison list">
+<ol class="projects-list" aria-label="Selected projects">
   {
     projects.map((project) => (
       <li>
-        <article class="project-card">
-          <div class="project-card-heading">
-            <p class="project-card-label">Project</p>
-            <h2>{project.title}</h2>
+        <article class="project-card project-card-horizontal">
+          <div class="project-card-main">
+            <div class="project-card-heading-row">
+              <h2>{project.title}</h2>
+              <span class:list={['project-status-badge', statusClass(project.status)]}>{project.status}</span>
+            </div>
+            <p class="project-card-summary">{project.summary}</p>
           </div>
-          <ProjectStructureSummary project={project} variant="preview" />
-          <a class="project-card-link" href={project.preview.href}>{project.preview.ctaLabel}</a>
+          <div class="project-card-actions" aria-label={`${project.title} links`}>
+            <a class="project-card-link project-card-link-secondary" href={project.repositoryUrl} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            {
+              project.liveUrl && (
+                <a class="project-card-link" href={project.liveUrl} target="_blank" rel="noreferrer">
+                  Live site
+                </a>
+              )
+            }
+          </div>
         </article>
       </li>
     ))

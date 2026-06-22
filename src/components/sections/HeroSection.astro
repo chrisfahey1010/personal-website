@@ -3,16 +3,10 @@ interface Props {
   heroName: string;
   heroRole: string;
   heroIntro: string;
-  heroEyebrow: string;
-  heroKicker: string;
-  heroCredibilityBullets: string[];
-  heroNextStepCopy: string;
-  trustTags: string[];
-  heroSignalKicker: string;
-  heroSignalLabel: string;
-  heroSignalCopy: string;
   primaryCtaLabel: string;
   primaryCtaHref: string;
+  secondaryCtaLabel: string;
+  secondaryCtaHref: string;
   portraitSrc?: string;
   portraitAlt?: string;
 }
@@ -21,16 +15,10 @@ const {
   heroName,
   heroRole,
   heroIntro,
-  heroEyebrow,
-  heroKicker,
-  heroCredibilityBullets,
-  heroNextStepCopy,
-  trustTags,
-  heroSignalKicker,
-  heroSignalLabel,
-  heroSignalCopy,
   primaryCtaLabel,
   primaryCtaHref,
+  secondaryCtaLabel,
+  secondaryCtaHref,
   portraitSrc,
   portraitAlt,
 } = Astro.props;
@@ -38,41 +26,23 @@ const {
 
 <section class="hero-section editorial-reveal" aria-labelledby="hero-title">
   <div class="hero-copy">
-    <div class="hero-context">
-      <p class="hero-eyebrow">{heroEyebrow}</p>
-      <p class="hero-kicker">{heroKicker}</p>
-    </div>
     <h1 id="hero-title">{heroName}</h1>
     <p class="hero-role">{heroRole}</p>
     <p class="hero-intro">{heroIntro}</p>
 
-    <ul class="hero-credibility-list" aria-label="Professional context">
-      {heroCredibilityBullets.map((bullet) => <li>{bullet}</li>)}
-    </ul>
-
-    <div class="hero-actions">
+    <div class="hero-cta-row" aria-label="Primary actions">
       <a class="hero-cta" href={primaryCtaHref}>{primaryCtaLabel}</a>
-      <p class="hero-next-step">{heroNextStepCopy}</p>
-
-      <ul class="trust-tags" aria-label="Trust signals">
-        {trustTags.map((tag) => <li>{tag}</li>)}
-      </ul>
+      <a class="hero-cta hero-cta-secondary" href={secondaryCtaHref}>{secondaryCtaLabel}</a>
     </div>
   </div>
 
-  <aside class="hero-signal" aria-label="Professional signal">
-    <div class="hero-signal-media">
-      {
-        portraitSrc && portraitAlt ? (
-          <img class="hero-portrait" src={portraitSrc} alt={portraitAlt} width="320" height="400" loading="eager" />
-        ) : (
-          <div class="hero-monogram" aria-hidden="true">CF</div>
-        )
-      }
-    </div>
-
-    <p class="hero-signal-kicker">{heroSignalKicker}</p>
-    <p class="hero-signal-label">{heroSignalLabel}</p>
-    <p class="hero-signal-copy">{heroSignalCopy}</p>
+  <aside class="hero-portrait-shell" aria-label="Chris Fahey portrait">
+    {
+      portraitSrc && portraitAlt ? (
+        <img class="hero-portrait" src={portraitSrc} alt={portraitAlt} width="320" height="400" loading="eager" />
+      ) : (
+        <div class="hero-monogram" aria-hidden="true">CF</div>
+      )
+    }
   </aside>
 </section>

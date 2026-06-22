@@ -1,17 +1,11 @@
 ---
-import { render } from 'astro:content';
-
-import JourneyNextStep from '../components/journey/JourneyNextStep.astro';
 import StructuredData from '../components/seo/StructuredData.astro';
-import { launchRoutes } from '../config/navigation';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/sections/HeroSection.astro';
-import SocialProofSection from '../components/sections/SocialProofSection.astro';
 import { getHomePage } from '../lib/content/get-home-page';
 import { getSiteStructuredData } from '../lib/seo/get-site-structured-data';
 
 const homePage = await getHomePage();
-const { Content } = await render(homePage.entry);
 const structuredData = Astro.site ? getSiteStructuredData(Astro.site) : undefined;
 ---
 
@@ -19,18 +13,5 @@ const structuredData = Astro.site ? getSiteStructuredData(Astro.site) : undefine
   {structuredData && <StructuredData slot="head" data={structuredData} />}
   <main id="main-content" class="home-page">
     <HeroSection {...homePage.hero} />
-    <SocialProofSection sectionId="proof" title="Selected highlights">
-      <Content />
-    </SocialProofSection>
-    <JourneyNextStep
-      ariaLabel="Homepage next steps"
-      title={homePage.journeyNextStep.title}
-      intro={homePage.journeyNextStep.intro}
-      actions={[
-        { href: launchRoutes.projects, label: 'Review projects' },
-        { href: launchRoutes.resume, label: 'Open the resume', variant: 'secondary' },
-        { href: launchRoutes.contact, label: 'Start a conversation', variant: 'secondary' },
-      ]}
-    />
   </main>
 </BaseLayout>

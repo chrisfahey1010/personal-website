@@ -1,4 +1,5 @@
 ---
+import { launchRoutes } from '../config/navigation';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getResumePageContent } from '../lib/content/get-resume';
 
@@ -8,69 +9,25 @@ const resumePage = await getResumePageContent();
 <BaseLayout metadata={resumePage.metadata}>
   <main id="main-content" class="route-page resume-page">
     <section class="route-shell editorial-reveal">
-      <div class="route-shell-accent">
-        <p class="route-eyebrow">{resumePage.header.eyebrow}</p>
-        <p class="route-kicker">{resumePage.header.kicker}</p>
-      </div>
-      <h1>{resumePage.header.heading}</h1>
-      <p class="route-intro route-lede">{resumePage.header.primaryIntro}</p>
-      <ul class="route-meta" aria-label="Resume page context">
-        {resumePage.header.metaItems.map((item) => <li>{item}</li>)}
-      </ul>
+      <p class="route-eyebrow">Resume</p>
+      <h1>{resumePage.heading}</h1>
+      <p class="route-intro route-lede">{resumePage.intro}</p>
 
       {
         resumePage.actions.assetPath ? (
           <div class="resume-action-grid" aria-label="Resume actions">
-            <a class="project-card-link" href={resumePage.actions.assetPath}>
-              {resumePage.actions.viewLabel}
-            </a>
-            <a
-              class="project-card-link project-card-link-secondary"
-              download={resumePage.actions.downloadName}
-              href={resumePage.actions.assetPath}
-            >
+            <a class="project-card-link" href={resumePage.actions.assetPath}>{resumePage.actions.viewLabel}</a>
+            <a class="project-card-link project-card-link-secondary" download={resumePage.actions.downloadName} href={resumePage.actions.assetPath}>
               {resumePage.actions.downloadLabel}
             </a>
           </div>
         ) : (
           <div class="resume-fallback-box" aria-label="Resume fallback guidance">
-            <p class="resume-fallback-title">{resumePage.fallback?.title}</p>
-            <p class="resume-fallback-copy">{resumePage.fallback?.copy}</p>
+            <p class="resume-fallback-copy">{resumePage.fallbackCopy}</p>
+            <a class="project-card-link project-card-link-secondary" href={launchRoutes.contact}>Contact me</a>
           </div>
         )
       }
-
-      <p class="route-intro">{resumePage.header.secondaryIntro}</p>
-    </section>
-
-    <section class="proof-shell editorial-reveal resume-summary-shell" aria-labelledby="resume-summary-heading">
-      <div class="projects-section-heading">
-        <p class="route-eyebrow">{resumePage.summary.eyebrow}</p>
-        <h2 id="resume-summary-heading">{resumePage.summary.heading}</h2>
-        <p class="route-intro">
-          {resumePage.summary.intro}
-        </p>
-      </div>
-
-      <ul class="resume-summary-list" aria-label="Resume review guidance">
-        {
-          resumePage.summary.highlights.map((highlight) => (
-            <li class="resume-summary-item">
-              <h3>{highlight.title}</h3>
-              <p>{highlight.description}</p>
-            </li>
-          ))
-        }
-      </ul>
-
-      <p class="resume-fallback">{resumePage.summary.recoveryCopy}</p>
-
-      <p class="resume-next-step-copy">{resumePage.summary.nextStepCopy}</p>
-
-      <nav class="project-detail-actions" aria-label="Resume page next steps">
-        <a class="project-card-link project-card-link-secondary" href={resumePage.summary.backToProjectsHref}>Back to projects</a>
-        <a class="project-card-link project-card-link-secondary" href={resumePage.summary.continueToContactHref}>Continue to contact</a>
-      </nav>
     </section>
   </main>
 </BaseLayout>

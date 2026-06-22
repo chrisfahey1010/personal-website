@@ -8,23 +8,21 @@ import {
 export const launchPageMetadata = {
   projects: createPageMetadata({
     title: 'Projects | Chris Fahey',
-    description: 'A scannable project index that helps hiring teams compare context, role, outcomes, and the next relevant page.',
+    description: 'Selected software projects by Chris Fahey, including deployed web apps, game projects, AI tooling, and data pipelines.',
     canonicalPath: '/projects/',
     imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
     imageAlt: DEFAULT_SOCIAL_IMAGE_ALT,
   }),
   resume: createPageMetadata({
     title: 'Resume | Chris Fahey',
-    description:
-      'A resume entry point that lets visitors open or download a current PDF without losing orientation across projects and contact.',
+    description: "Open or download Chris Fahey's current software engineering resume.",
     canonicalPath: '/resume/',
     imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
     imageAlt: DEFAULT_SOCIAL_IMAGE_ALT,
   }),
   contact: createPageMetadata({
     title: 'Contact | Chris Fahey',
-    description:
-      'A calm, low-friction contact page that tells visitors exactly how to reach out and what context makes the follow-up useful.',
+    description: 'Contact Chris Fahey about software engineering roles, projects, or consulting work.',
     canonicalPath: '/contact/',
     imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
     imageAlt: DEFAULT_SOCIAL_IMAGE_ALT,
