@@ -457,6 +457,39 @@ h2 {
   box-shadow: var(--shadow-card);
 }
 
+.resume-preview-stack {
+  display: grid;
+  width: min(100%, 38rem);
+  margin: clamp(0.35rem, 1.8vw, 1rem) 0 clamp(0.75rem, 2.2vw, 1.35rem);
+  border: 1px solid rgba(36, 24, 22, 0.18);
+  background: #fff;
+  box-shadow: 0 28px 70px rgba(77, 47, 34, 0.18);
+}
+
+.resume-preview-page {
+  overflow: hidden;
+  background: #fff;
+}
+
+.resume-preview-page-first,
+.resume-preview-page-second {
+  aspect-ratio: 8.5 / 10.56;
+}
+
+.resume-preview-page-second {
+  margin-top: -1px;
+}
+
+.resume-preview-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.resume-preview-page-second .resume-preview-image {
+  transform: translateY(-5.0%);
+}
+
 .contact-field {
   display: grid;
   gap: 0.45rem;
@@ -482,6 +515,19 @@ h2 {
 
 .contact-fallback {
   overflow-wrap: anywhere;
+}
+
+@media (min-width: 48rem) {
+  .route-shell,
+  .projects-page .route-shell {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .resume-preview-stack {
+    justify-self: center;
+    width: min(100%, 56rem);
+  }
 }
 
 @media (max-width: 47.999rem) {
@@ -519,6 +565,10 @@ h2 {
 
   .project-card-heading-row {
     grid-template-columns: 1fr;
+  }
+
+  .resume-preview-stack {
+    width: 100%;
   }
 }
 

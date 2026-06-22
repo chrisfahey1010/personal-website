@@ -11,6 +11,36 @@ const resumePage = await getResumePageContent();
     <section class="route-shell editorial-reveal">
       <p class="route-eyebrow">Resume</p>
       <h1>{resumePage.heading}</h1>
+
+      {
+        resumePage.actions.assetPath ? (
+          <figure class="resume-preview-stack" aria-label="Resume preview">
+            <div class="resume-preview-page resume-preview-page-first">
+              <img
+                class="resume-preview-image"
+                src="/resume/chris-resume-page-1.png"
+                alt="Resume page 1"
+                width="1224"
+                height="1584"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="resume-preview-page resume-preview-page-second">
+              <img
+                class="resume-preview-image"
+                src="/resume/chris-resume-page-2.png"
+                alt="Resume page 2"
+                width="1224"
+                height="1584"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </figure>
+        ) : null
+      }
+
       <p class="route-intro route-lede">{resumePage.intro}</p>
 
       {
