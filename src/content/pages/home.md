@@ -4,8 +4,8 @@ description: Software engineer with full-stack, backend, cloud, and AI-assisted 
 seoTitle: Chris Fahey | Software Engineer
 seoDescription: Software engineer with full-stack, backend, cloud, and AI-assisted development experience. View selected projects, resume, and contact details.
 heroName: Chris Fahey
-heroRole: Software engineer — full-stack, backend, cloud, and AI-assisted development
-heroIntro: I build practical software across web apps, backend systems, cloud deployments, and developer/productivity tooling.
+heroRole: Full-stack, Backend, Cloud, and AI automation
+heroIntro: I build practical software across web apps, backend systems, cloud deployments, and developer tooling.
 primaryCtaLabel: Review projects
 primaryCtaHref: "/projects/"
 secondaryCtaLabel: View resume
