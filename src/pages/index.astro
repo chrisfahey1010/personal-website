@@ -1,11 +1,18 @@
 ---
 import StructuredData from '../components/seo/StructuredData.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectIndexList from '../components/projects/ProjectIndexList.astro';
 import HeroSection from '../components/sections/HeroSection.astro';
+import { primaryContactEmail, primaryContactHref } from '../config/contact';
+import { launchRoutes } from '../config/navigation';
 import { getHomePage } from '../lib/content/get-home-page';
+import { getProjects } from '../lib/content/get-projects';
+import { getResumePageContent } from '../lib/content/get-resume';
 import { getSiteStructuredData } from '../lib/seo/get-site-structured-data';
 
 const homePage = await getHomePage();
+const projects = await getProjects();
+const resumePage = await getResumePageContent();
 const structuredData = Astro.site ? getSiteStructuredData(Astro.site) : undefined;
 ---
 
@@ -13,5 +20,114 @@ const structuredData = Astro.site ? getSiteStructuredData(Astro.site) : undefine
   {structuredData && <StructuredData slot="head" data={structuredData} />}
   <main id="main-content" class="home-page">
     <HeroSection {...homePage.hero} />
+
+    <section id="projects" class="route-shell home-section projects-section editorial-reveal" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <p class="route-intro route-lede">
+        Selected work across games, web apps, AI tooling, geospatial data, and portfolio infrastructure.
+      </p>
+
+      <ProjectIndexList projects={projects} />
+    </section>
+
+    <section id="resume" class="route-shell home-section editorial-reveal" aria-labelledby="resume-title">
+      <h2 id="resume-title">{resumePage.heading}</h2>
+
+      {
+        resumePage.actions.assetPath ? (
+          <figure class="resume-preview-stack" aria-label="Resume preview">
+            <div class="resume-preview-page resume-preview-page-first">
+              <img
+                class="resume-preview-image"
+                src="/resume/chris-resume-page-1.png"
+                alt="Resume page 1"
+                width="1224"
+                height="1584"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="resume-preview-page resume-preview-page-second">
+              <img
+                class="resume-preview-image"
+                src="/resume/chris-resume-page-2.png"
+                alt="Resume page 2"
+                width="1224"
+                height="1584"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </figure>
+        ) : null
+      }
+
+      <p class="route-intro route-lede">{resumePage.intro}</p>
+
+      {
+        resumePage.actions.assetPath ? (
+          <div class="resume-action-grid" aria-label="Resume actions">
+            <a class="project-card-link" href={resumePage.actions.assetPath}>{resumePage.actions.viewLabel}</a>
+            <a class="project-card-link project-card-link-secondary" download={resumePage.actions.downloadName} href={resumePage.actions.assetPath}>
+              {resumePage.actions.downloadLabel}
+            </a>
+          </div>
+        ) : (
+          <div class="resume-fallback-box" aria-label="Resume fallback guidance">
+            <p class="resume-fallback-copy">{resumePage.fallbackCopy}</p>
+            <a class="project-card-link project-card-link-secondary" href={launchRoutes.contact}>Contact me</a>
+          </div>
+        )
+      }
+    </section>
+
+    <section id="contact" class="route-shell home-section editorial-reveal" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <p class="route-intro route-lede">Send me a note about a role, project, or consulting opportunity.</p>
+
+      <form class="contact-form" id="contact-form">
+        <label class="contact-field">
+          <span>Your email <span class="optional-label">optional</span></span>
+          <input class="contact-input" id="contact-email" name="email" type="email" autocomplete="email" />
+        </label>
+        <label class="contact-field">
+          <span>Subject</span>
+          <input class="contact-input" id="contact-subject" name="subject" required type="text" />
+        </label>
+        <label class="contact-field">
+          <span>Message</span>
+          <textarea class="contact-textarea" id="contact-message" name="message" required rows="8"></textarea>
+        </label>
+        <button class="project-card-link" type="submit">Open email draft</button>
+      </form>
+
+      <p class="contact-fallback">
+        Email fallback: <a href={primaryContactHref}>{primaryContactEmail}</a>
+      </p>
+
+      <noscript>
+        <p class="contact-fallback">JavaScript is disabled. Use the fallback email address above, or open a <a href={primaryContactHref}>direct email link</a>.</p>
+      </noscript>
+    </section>
   </main>
+
+  <script define:vars={{ primaryContactEmail }}>
+    const form = document.getElementById('contact-form');
+
+    form?.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const email = document.getElementById('contact-email')?.value.trim();
+      const subject = document.getElementById('contact-subject')?.value.trim();
+      const message = document.getElementById('contact-message')?.value.trim();
+
+      if (!subject || !message) {
+        form.reportValidity();
+        return;
+      }
+
+      const body = email ? `${message}\n\nSender email: ${email}` : message;
+      window.location.href = `mailto:${primaryContactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
 </BaseLayout>

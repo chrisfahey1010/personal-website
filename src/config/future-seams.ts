@@ -22,7 +22,7 @@ export const launchScopeAreas = [
 export const reservedFutureContentAreas = [...reservedFutureContentAreaSet] as const;
 
 export const canonicalAuthoredContentRoot = 'src/content';
-export const contentSchemaBoundary = 'src/content/config.ts';
+export const contentSchemaBoundary = 'src/content.config.ts';
 export const contentNormalizationLayer = 'src/lib/content';
 export const futureIntegrationAdapterDirectory = 'src/lib/integrations';
 export const futureApiDirectory = 'src/pages/api';

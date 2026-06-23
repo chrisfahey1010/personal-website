@@ -1,13 +1,13 @@
 export interface NavigationItem {
   label: 'Home' | 'Projects' | 'Resume' | 'Contact';
-  href: '/' | '/projects/' | '/resume/' | '/contact/';
+  href: '/' | '/#projects' | '/#resume' | '/#contact';
 }
 
 export const launchNavigationItems: NavigationItem[] = [
   { label: 'Home', href: '/' },
-  { label: 'Projects', href: '/projects/' },
-  { label: 'Resume', href: '/resume/' },
-  { label: 'Contact', href: '/contact/' },
+  { label: 'Projects', href: '/#projects' },
+  { label: 'Resume', href: '/#resume' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export const launchRoutes = {
@@ -17,9 +17,13 @@ export const launchRoutes = {
   contact: launchNavigationItems[3].href,
 } as const;
 
-export const builtPageRoutes = new Set(launchNavigationItems.map((item) => item.href));
+export const launchNavigationTargets = new Set(launchNavigationItems.map((item) => item.href));
 
 export const normalizePathname = (pathname: string) => {
+  if (pathname.startsWith('/#')) {
+    return pathname;
+  }
+
   if (pathname === '/') {
     return '/';
   }
@@ -27,5 +31,5 @@ export const normalizePathname = (pathname: string) => {
   return pathname.endsWith('/') ? pathname : `${pathname}/`;
 };
 
-export const isBuiltPageRoute = (pathname: string): pathname is NavigationItem['href'] =>
-  builtPageRoutes.has(normalizePathname(pathname) as NavigationItem['href']);
+export const isLaunchNavigationTarget = (pathname: string): pathname is NavigationItem['href'] =>
+  launchNavigationTargets.has(normalizePathname(pathname) as NavigationItem['href']);

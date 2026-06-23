@@ -6,7 +6,7 @@ interface StructuredDataNode {
 
 export const getSiteStructuredData = (site: URL | string): StructuredDataNode[] => {
   const siteUrl = new URL('/', site).toString();
-  const contactUrl = new URL('/contact/', site).toString();
+  const contactUrl = new URL('/#contact', site).toString();
 
   return [
     {

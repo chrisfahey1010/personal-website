@@ -12,7 +12,7 @@ const currentPathname = normalizePathname(pathname);
 <ul class="site-nav-list">
   {
     launchNavigationItems.map((item) => {
-      const isCurrent = currentPathname === item.href;
+      const isCurrent = item.href === '/' && currentPathname === item.href;
 
       return (
         <li class="site-nav-item">

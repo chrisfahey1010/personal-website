@@ -103,6 +103,10 @@ a {
   scroll-margin-top: var(--scroll-target-offset);
 }
 
+.home-section {
+  scroll-margin-top: var(--scroll-target-offset);
+}
+
 .home-page,
 .route-page {
   display: grid;
@@ -123,7 +127,8 @@ a {
   box-shadow: var(--shadow-soft);
 }
 
-.projects-page .route-shell {
+.projects-page .route-shell,
+.projects-section.route-shell {
   width: min(100%, 56rem);
 }
 
@@ -238,6 +243,7 @@ a {
 
 h1,
 h2,
+h3,
 p,
 ul,
 ol {
@@ -245,7 +251,8 @@ ol {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   font-family: var(--font-display);
   line-height: 1.02;
 }
@@ -256,6 +263,10 @@ h1 {
 
 h2 {
   font-size: clamp(1.55rem, 3vw, 2.25rem);
+}
+
+.project-card-title {
+  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
 }
 
 .editorial-reveal {
@@ -510,7 +521,8 @@ h2 {
 
 @media (min-width: 48rem) {
   .route-shell,
-  .projects-page .route-shell {
+  .projects-page .route-shell,
+  .projects-section.route-shell {
     box-sizing: border-box;
     width: 100%;
   }

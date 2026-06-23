@@ -3,9 +3,6 @@ import path from 'node:path';
 
 import { getEntry } from 'astro:content';
 
-import { createPageMetadata } from '../seo/get-page-metadata';
-import { launchPageMetadata } from '../seo/site-metadata';
-
 export const resumeAssetPath = '/resume/chris-resume.pdf';
 
 export type ResumeAssetState = 'available' | 'missing' | 'stale';
@@ -20,7 +17,6 @@ export type ResumeStatus = {
 };
 
 export type ResumePageContent = {
-  metadata: ReturnType<typeof createPageMetadata>;
   status: ResumeStatus;
   heading: string;
   intro: string;
@@ -74,13 +70,6 @@ export const getResumePageContent = async (): Promise<ResumePageContent> => {
   };
 
   return {
-    metadata: createPageMetadata({
-      title: content.seoTitle,
-      description: content.description,
-      canonicalPath: launchPageMetadata.resume.canonicalPath,
-      imagePath: launchPageMetadata.resume.imagePath,
-      imageAlt: launchPageMetadata.resume.imageAlt,
-    }),
     status,
     heading: content.heading,
     intro: content.intro,
