@@ -569,9 +569,17 @@ h2 {
     font-size: 0.70rem;
   }
 
+  .hero-section {
+    padding: 0;
+  }
+
   .hero-section,
   .project-card-horizontal {
     grid-template-columns: 1fr;
+  }
+
+  .hero-cta-row {
+    display: none;
   }
 
   .hero-cta,
