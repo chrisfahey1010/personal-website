@@ -16,7 +16,7 @@
 - Create or confirm the `Cloudflare Pages` project is connected to this repository.
 - Set the production branch to `main`.
 - Run `npm run check` before pushing meaningful deployment changes.
-- Run `npm test` before pushing meaningful deployment changes.
+- Run `npm run build` before pushing meaningful deployment changes.
 - Confirm the build command matches the repo standard: `npm run build`.
 - Confirm the build output directory is `dist`.
 - Verify `fahey.vip` is attached to the Pages project and resolving through Cloudflare.
