@@ -12,13 +12,15 @@ const currentPathname = normalizePathname(pathname);
 <ul class="site-nav-list">
   {
     launchNavigationItems.map((item) => {
-      const isCurrent = item.href === '/' && currentPathname === item.href;
+      const sectionId = item.href.replace('/#', '');
+      const isCurrent = sectionId === 'home' && currentPathname === '/';
 
       return (
         <li class="site-nav-item">
           <a
             href={item.href}
-            aria-current={isCurrent ? 'page' : undefined}
+            data-nav-section={sectionId}
+            aria-current={isCurrent ? 'location' : undefined}
             class:list={['site-nav-link', { 'is-current': isCurrent }]}
           >
             <span>{item.label}</span>
@@ -28,3 +30,83 @@ const currentPathname = normalizePathname(pathname);
     })
   }
 </ul>
+
+<script>
+  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-nav-section]'));
+  const sectionTargets = navLinks
+    .map((link) => {
+      const id = link.dataset.navSection;
+      const element = id ? document.getElementById(id) : null;
+
+      return id && element ? { id, element } : null;
+    })
+    .filter((target): target is { id: string; element: HTMLElement } => Boolean(target));
+
+  let clickSelectionExpiresAt = 0;
+  let scrollUpdateFrame = 0;
+
+  const setActiveNavSection = (activeId: string) => {
+    for (const link of navLinks) {
+      const isActive = link.dataset.navSection === activeId;
+      link.classList.toggle('is-current', isActive);
+
+      if (isActive) {
+        link.setAttribute('aria-current', 'location');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    }
+  };
+
+  const getVisibleSectionId = () => {
+    const lastSection = sectionTargets.at(-1);
+    const isAtPageEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+
+    if (isAtPageEnd && lastSection) {
+      return lastSection.id;
+    }
+
+    const activationLine = window.innerHeight * 0.38;
+    let activeId = sectionTargets[0]?.id ?? 'home';
+
+    for (const section of sectionTargets) {
+      if (section.element.getBoundingClientRect().top <= activationLine) {
+        activeId = section.id;
+      }
+    }
+
+    return activeId;
+  };
+
+  const updateActiveNavFromScroll = () => {
+    scrollUpdateFrame = 0;
+
+    if (performance.now() < clickSelectionExpiresAt) {
+      return;
+    }
+
+    setActiveNavSection(getVisibleSectionId());
+  };
+
+  const requestActiveNavUpdate = () => {
+    if (!scrollUpdateFrame) {
+      scrollUpdateFrame = requestAnimationFrame(updateActiveNavFromScroll);
+    }
+  };
+
+  for (const link of navLinks) {
+    link.addEventListener('click', () => {
+      const sectionId = link.dataset.navSection;
+
+      if (sectionId) {
+        clickSelectionExpiresAt = performance.now() + 900;
+        setActiveNavSection(sectionId);
+      }
+    });
+  }
+
+  window.addEventListener('scroll', requestActiveNavUpdate, { passive: true });
+  window.addEventListener('resize', requestActiveNavUpdate);
+  window.addEventListener('hashchange', requestActiveNavUpdate);
+  requestActiveNavUpdate();
+</script>

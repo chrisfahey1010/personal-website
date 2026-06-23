@@ -103,6 +103,7 @@ a {
   scroll-margin-top: var(--scroll-target-offset);
 }
 
+.hero-section,
 .home-section {
   scroll-margin-top: var(--scroll-target-offset);
 }

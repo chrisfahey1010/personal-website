@@ -1,10 +1,10 @@
 export interface NavigationItem {
   label: 'Home' | 'Projects' | 'Resume' | 'Contact';
-  href: '/' | '/#projects' | '/#resume' | '/#contact';
+  href: '/#home' | '/#projects' | '/#resume' | '/#contact';
 }
 
 export const launchNavigationItems: NavigationItem[] = [
-  { label: 'Home', href: '/' },
+  { label: 'Home', href: '/#home' },
   { label: 'Projects', href: '/#projects' },
   { label: 'Resume', href: '/#resume' },
   { label: 'Contact', href: '/#contact' },
