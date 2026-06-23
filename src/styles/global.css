@@ -540,6 +540,17 @@ h2 {
     --scroll-target-offset: 11rem;
   }
 
+  .site-header {
+    position: fixed;
+    inset: auto 0 0;
+    padding: 0 0 1rem;
+  }
+
+  .home-page,
+  .route-page {
+    padding-bottom: calc(var(--section-space) + 8rem);
+  }
+
   .site-header-inner {
     flex-direction: column;
     align-items: stretch;
