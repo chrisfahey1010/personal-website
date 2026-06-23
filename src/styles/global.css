@@ -540,10 +540,6 @@ h2 {
     --scroll-target-offset: 11rem;
   }
 
-  .site-identity {
-    visibility: false;
-  }
-
   .site-header-inner {
     flex-direction: column;
     align-items: stretch;
