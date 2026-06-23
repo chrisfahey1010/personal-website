@@ -203,7 +203,7 @@ a {
 
 .site-nav-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.4rem;
   margin: 0;
   padding: 0;
@@ -558,10 +558,8 @@ h2 {
     justify-content: flex-start;
   }
 
-  .site-nav-list {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .site-nav-link {
+    font-size: 0.70rem;
   }
 
   .hero-section,
