@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "check": "astro sync && tsc --noEmit",
     "build": "astro build",
+    "verify:buddha": "node scripts/verify-buddha-build.mjs",
     "deploy": "npm run build && npx wrangler deploy",
     "deploy:dry-run": "npm run build && npx wrangler deploy --dry-run",
     "preview": "astro preview",
@@ -20,6 +23,7 @@
   },
   "devDependencies": {
     "typescript": "^5.9.3",
+    "vitest": "^4.1.10",
     "wrangler": "^4.73.0"
   }
 }

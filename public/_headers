@@ -1,0 +1,8 @@
+/buddha
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/buddha/
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/buddha/*
+  X-Robots-Tag: noindex, nofollow, noarchive

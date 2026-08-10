@@ -1,0 +1,21 @@
+---
+import type { ProvenanceKind } from '../../lib/buddha/types';
+import { provenanceLabels } from '../../lib/buddha/presentation';
+
+interface Props {
+  kind: ProvenanceKind;
+}
+
+const { kind } = Astro.props;
+const label = provenanceLabels[kind];
+---
+
+<span
+  class:list={['buddha-provenance-badge', `buddha-provenance-badge--${kind}`]}
+  data-provenance-badge
+  data-provenance={kind}
+  data-provenance-kind={kind}
+>
+  <span class="buddha-provenance-badge__marker" aria-hidden="true"></span>
+  <span data-provenance-label>{label}</span>
+</span>

@@ -1,0 +1,693 @@
+---
+import ProvenanceBadge from '../components/buddha/ProvenanceBadge.astro';
+import DemandPanel from '../components/buddha/DemandPanel.astro';
+import {
+  publicCatalogFixture,
+  publicMarketSignals,
+  productExtractionReplay,
+  syntheticGemstoneOutlook,
+  syntheticMetalDemand,
+  syntheticOperationalScenarios,
+  syntheticQueueSignals,
+  syntheticSalesPace,
+  syntheticStudioScenarios,
+} from '../data/buddha-demo';
+import BuddhaConceptLayout from '../layouts/BuddhaConceptLayout.astro';
+import {
+  buildAvailabilityDiscrepancyDecision,
+  buildReplenishmentDecision,
+  calculateDaysOfCover,
+} from '../lib/buddha/decision-engine';
+import { decisionConfidenceLabels, decisionPriorityLabels, formatMissingField } from '../lib/buddha/presentation';
+import type { DecisionResult } from '../lib/buddha/types';
+
+const product = publicCatalogFixture[0];
+const baselineScenario = syntheticOperationalScenarios.find(({ id }) => id === 'baseline');
+
+if (!product || !baselineScenario) {
+  throw new Error('The Buddha dashboard requires a public product and baseline scenario.');
+}
+
+const formatObservedDate = (observedAt: string) =>
+  new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeZone: 'UTC' }).format(
+    new Date(observedAt),
+  );
+const preparedDate = formatObservedDate(product.source.observedAt);
+
+const replenishmentDecision = buildReplenishmentDecision(baselineScenario.input);
+const availabilityDecision = buildAvailabilityDiscrepancyDecision({
+  productHandle: syntheticQueueSignals.availabilityReview.productHandle,
+  storefrontAvailable: product.storefrontAvailable,
+  scenarioAvailableForAllocation:
+    syntheticQueueSignals.availabilityReview.scenarioAvailableForAllocation,
+  source: product.source,
+});
+const blockedDecision = buildReplenishmentDecision(syntheticQueueSignals.blockedReview.input);
+
+interface DashboardDecisionView {
+  id: string;
+  kind: 'replenishment' | 'availability' | 'blocked';
+  rank: number;
+  shortTitle: string;
+  productName: string;
+  priority: DecisionResult['priority'];
+  priorityLabel: string;
+  confidenceLabel: string;
+  signal: string;
+  metricLabel: string;
+  metricValue: string;
+  metricContext: string;
+  recommendation: string;
+  reason: string;
+  owner: string;
+  nextAction: string;
+  actionLabel: string;
+  missingFields: string[];
+  scenarioLabel?: string;
+  coverageDays?: number;
+  thresholdDays?: number;
+  coveragePercent?: number;
+  coverageGapDays?: number;
+}
+
+const scenarioViews = syntheticOperationalScenarios.map(({ id, label, input }) => {
+  const decision = buildReplenishmentDecision(input);
+  const coverageDays =
+    input.availableUnits === undefined
+      ? null
+      : calculateDaysOfCover(input.availableUnits, input.averageDailyUnits);
+  const thresholdDays =
+    input.supplierLeadTimeDays === undefined
+      ? null
+      : input.supplierLeadTimeDays + (input.safetyStockDays ?? 0);
+  const gapDays =
+    coverageDays === null || thresholdDays === null ? null : thresholdDays - coverageDays;
+
+  return {
+    id,
+    label,
+    view: {
+      id: decision.id,
+      kind: 'replenishment',
+      rank: 1,
+      shortTitle: 'Replenishment review',
+      productName: product.name,
+      priority: decision.priority,
+      priorityLabel: decisionPriorityLabels[decision.priority],
+      confidenceLabel: decisionConfidenceLabels[decision.confidence],
+      signal:
+        coverageDays === null || thresholdDays === null
+          ? 'Coverage unavailable'
+          : `${coverageDays.toFixed(0)}d cover / ${thresholdDays.toFixed(0)}d target`,
+      metricLabel: 'Coverage gap',
+      metricValue:
+        gapDays === null
+          ? 'Not available'
+          : gapDays > 0
+            ? `${gapDays.toFixed(0)} day${gapDays === 1 ? '' : 's'} short`
+            : 'Target covered',
+      metricContext:
+        coverageDays === null || thresholdDays === null
+          ? 'A verified demand and lead-time record is required.'
+          : `${coverageDays.toFixed(1)} days cover against a ${thresholdDays.toFixed(1)}-day lead-time and safety-stock threshold.`,
+      recommendation: decision.recommendation,
+      reason: decision.reason,
+      owner: decision.owner,
+      nextAction: decision.nextAction,
+      actionLabel: 'Start review',
+      missingFields: decision.missingFields.map(formatMissingField),
+      scenarioLabel: label,
+      coverageDays: coverageDays ?? undefined,
+      thresholdDays: thresholdDays ?? undefined,
+      coveragePercent:
+        coverageDays === null || thresholdDays === null || thresholdDays === 0
+          ? undefined
+          : Math.min(100, (coverageDays / thresholdDays) * 100),
+      coverageGapDays: gapDays === null ? undefined : Math.max(0, gapDays),
+    } satisfies DashboardDecisionView,
+  };
+});
+
+const baselineView = scenarioViews.find(({ id }) => id === 'baseline')?.view;
+if (!baselineView) {
+  throw new Error('The Buddha dashboard requires a baseline scenario view.');
+}
+
+const queueViews: DashboardDecisionView[] = [
+  baselineView,
+  {
+    id: availabilityDecision.id,
+    kind: 'availability',
+    rank: 2,
+    shortTitle: 'Availability mismatch',
+    productName: product.name,
+    priority: availabilityDecision.priority,
+    priorityLabel: decisionPriorityLabels[availabilityDecision.priority],
+    confidenceLabel: decisionConfidenceLabels[availabilityDecision.confidence],
+    signal: 'Storefront available / allocation unavailable',
+    metricLabel: 'Signal conflict',
+    metricValue: '2 states disagree',
+    metricContext: 'The public purchase signal and generated allocation scenario need reconciliation.',
+    recommendation: availabilityDecision.recommendation,
+    reason: availabilityDecision.reason,
+    owner: availabilityDecision.owner,
+    nextAction: 'Confirm location availability and allocation rules with the human owner.',
+    actionLabel: 'Reconcile now',
+    missingFields: availabilityDecision.missingFields.map(formatMissingField),
+  },
+  {
+    id: blockedDecision.id,
+    kind: 'blocked',
+    rank: 3,
+    shortTitle: 'Missing supplier input',
+    productName: product.name,
+    priority: blockedDecision.priority,
+    priorityLabel: decisionPriorityLabels[blockedDecision.priority],
+    confidenceLabel: decisionConfidenceLabels[blockedDecision.confidence],
+    signal: 'Lead time not supplied',
+    metricLabel: 'Required input',
+    metricValue: 'Lead time missing',
+    metricContext: 'Coverage cannot be compared with replenishment timing until the input is verified.',
+    recommendation: blockedDecision.recommendation,
+    reason: blockedDecision.reason,
+    owner: blockedDecision.owner,
+    nextAction: blockedDecision.nextAction,
+    actionLabel: 'Request input',
+    missingFields: blockedDecision.missingFields.map(formatMissingField),
+  },
+];
+
+const blockedCount = queueViews.filter(({ priority }) => priority === 'blocked').length;
+const salesPacePercent =
+  (syntheticSalesPace.actualUnits / syntheticSalesPace.targetUnits) * 100;
+const baselineGap =
+  baselineView.coverageDays === undefined || baselineView.thresholdDays === undefined
+    ? null
+    : Math.max(0, baselineView.thresholdDays - baselineView.coverageDays);
+const queuePayload = JSON.stringify(queueViews);
+const scenarioPayload = JSON.stringify(Object.fromEntries(scenarioViews.map(({ id, view }) => [id, view])));
+const featuredMarketSignals = ['app-about', 'agent-commerce-instructions'].map((id) => {
+  const signal = publicMarketSignals.find((candidate) => candidate.id === id);
+  if (!signal) throw new Error(`Missing featured market signal: ${id}`);
+  return signal;
+});
+
+---
+
+<BuddhaConceptLayout>
+  <main
+    id="main-content"
+    class="buddha-dashboard"
+    data-dashboard-shell
+    data-queue-payload={queuePayload}
+    data-scenario-payload={scenarioPayload}
+  >
+    <header class="dashboard-topbar" data-dashboard-header>
+      <div class="dashboard-title-group">
+        <span class="dashboard-mark" aria-hidden="true"></span>
+        <div>
+          <h1>Buddha Decision Desk</h1>
+          <p>Executive decision workspace</p>
+        </div>
+      </div>
+
+      <nav class="dashboard-nav" aria-label="Dashboard views">
+        <span class="dashboard-nav__item is-active" aria-current="page">Overview</span>
+        <button type="button" class="dashboard-nav__item" data-open-about>Data &amp; method</button>
+      </nav>
+
+      <div class="dashboard-meta">
+        <span class="dashboard-demo-chip">Demo data</span>
+        <span>As of {preparedDate}</span>
+      </div>
+    </header>
+
+    <aside class="dashboard-disclosure" data-demo-disclosure aria-label="Demo data disclosure">
+      <strong>Demo workspace</strong>
+      <span>Public catalog facts and clearly labeled synthetic operating data. No Buddha internal data.</span>
+      <button type="button" data-open-about>What is real?</button>
+    </aside>
+
+    <section class="dashboard-summary" data-summary-strip aria-label="Decision summary">
+      <article class="summary-metric" data-summary-metric>
+        <span class="summary-metric__label">Needs review</span>
+        <strong>{queueViews.length}</strong>
+        <span>decision items</span>
+      </article>
+      <article class="summary-metric" data-summary-metric>
+        <span class="summary-metric__label">Sales pace</span>
+        <strong>{salesPacePercent.toFixed(0)}%</strong>
+        <span>vs synthetic MTD plan</span>
+      </article>
+      <article class="summary-metric" data-summary-metric>
+        <span class="summary-metric__label">Data blocker</span>
+        <strong>{blockedCount}</strong>
+        <span>input required</span>
+      </article>
+      <article class="summary-metric summary-metric--accent" data-summary-metric>
+        <span class="summary-metric__label">Coverage gap</span>
+        <strong data-summary-coverage-gap>{baselineGap === null ? '—' : `${baselineGap.toFixed(0)}d`}</strong>
+        <span data-summary-coverage-note>Baseline scenario</span>
+      </article>
+    </section>
+
+    <div class="dashboard-workspace">
+      <section class="dashboard-panel action-queue" data-action-queue aria-labelledby="action-queue-title">
+        <header class="panel-header">
+          <div>
+            <h2 id="action-queue-title">Action queue</h2>
+          </div>
+          <span class="panel-count">{queueViews.length} items</span>
+        </header>
+
+        <div class="action-table" role="group" aria-label="Priority decision queue">
+          <div class="action-table__header" aria-hidden="true">
+            <span>Priority</span>
+            <span>Issue</span>
+            <span>Signal</span>
+            <span>Owner</span>
+            <span>Next</span>
+          </div>
+          <div class="action-table__body">
+            {
+              queueViews.map((item, index) => (
+                <button
+                  type="button"
+                  class="action-row"
+                  data-decision-row
+                  data-decision-id={item.id}
+                  aria-pressed={index === 0 ? 'true' : 'false'}
+                >
+                  <span>
+                    <span class={`status-pill status-pill--${item.priority}`}>{item.priorityLabel}</span>
+                  </span>
+                  <span class="action-row__issue">
+                    <strong>{item.shortTitle}</strong>
+                    <small>{item.productName}</small>
+                  </span>
+                  <span class="action-row__signal" data-row-signal={item.kind === 'replenishment' ? 'replenishment' : undefined}>
+                    {item.signal}
+                  </span>
+                  <span class="action-row__owner">{item.owner.split(' and ')[0]}</span>
+                  <span class="action-row__next">Review →</span>
+                </button>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <aside class="dashboard-panel selected-decision" data-selected-decision aria-labelledby="selected-title">
+        <header class="panel-header panel-header--selected">
+          <div>
+            <h2 id="selected-title" data-selected-title>{baselineView.shortTitle}</h2>
+          </div>
+          <div class="selected-header-controls">
+            <span class={`status-pill status-pill--${baselineView.priority}`} data-selected-status data-tone={baselineView.priority}>
+              {baselineView.priorityLabel}
+            </span>
+            <button
+              type="button"
+              class="selected-action"
+              data-selected-action
+              title="Demo only — no operational writeback"
+            >
+              {baselineView.actionLabel}
+            </button>
+          </div>
+        </header>
+
+        <p class="action-feedback" data-action-feedback role="status" aria-live="polite" aria-atomic="true" hidden></p>
+        <p class="visually-hidden" data-decision-announcement role="status" aria-live="polite" aria-atomic="true"></p>
+
+        <div class="selected-product-row">
+          <div>
+            <span>Product</span>
+            <strong data-selected-product>{baselineView.productName}</strong>
+          </div>
+          <span data-selected-confidence>{baselineView.confidenceLabel}</span>
+        </div>
+
+        <div class="selected-metric">
+          <span data-selected-metric-label>{baselineView.metricLabel} · {baselineView.scenarioLabel}</span>
+          <strong data-selected-metric-value>{baselineView.metricValue}</strong>
+          <p data-selected-metric-context>{baselineView.metricContext}</p>
+          <div class="coverage-track" data-coverage-track hidden={baselineView.coveragePercent === undefined}>
+            <span style={`--coverage: ${baselineView.coveragePercent ?? 0}%`} data-coverage-bar></span>
+          </div>
+        </div>
+
+        <div class="selected-recommendation">
+          <span>Recommended action</span>
+          <p data-selected-recommendation>{baselineView.recommendation}</p>
+        </div>
+
+        <dl class="selected-facts">
+          <div><dt>Owner</dt><dd data-selected-owner>{baselineView.owner}</dd></div>
+          <div><dt>Next step</dt><dd data-selected-next-action>{baselineView.nextAction}</dd></div>
+        </dl>
+
+        <div class="scenario-switcher" data-scenario-panel>
+          <span>Test scenario</span>
+          <div class="scenario-buttons" data-scenario-control aria-label="Replenishment scenarios">
+            {
+              syntheticOperationalScenarios.map(({ id, label }) => (
+                <button type="button" data-scenario={id} aria-pressed={id === 'baseline' ? 'true' : 'false'}>
+                  {id === 'longer-lead-time' ? 'Longer lead' : id === 'demand-increase' ? 'Demand +50%' : label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <details class="selected-evidence">
+          <summary>Evidence, caveats, and missing inputs</summary>
+          <div>
+            <p data-selected-reason>{baselineView.reason}</p>
+            <ul data-selected-missing>
+              {baselineView.missingFields.map((field) => <li>{field}</li>)}
+            </ul>
+            <a href={product.source.url} target="_blank" rel="noopener noreferrer" data-source-link>
+              Public product source
+            </a>
+          </div>
+        </details>
+      </aside>
+
+      <section class="demand-panels" data-forecast-panel aria-label="Material demand">
+        <DemandPanel
+          id="gemstone-demand-title"
+          title="Gemstone demand"
+          kind="gemstone"
+          quantityLabel="Carats"
+          unit="ct"
+          unitDescription="ct = carats."
+          axisStep={100}
+          items={syntheticGemstoneOutlook.map((item) => ({
+            label: item.gemstone,
+            last30DayAmount: item.last30DayCarats,
+            previous30DayAmount: item.previous30DayCarats,
+          }))}
+        />
+        <DemandPanel
+          id="metal-demand-title"
+          title="Metal demand"
+          kind="metal"
+          quantityLabel="Grams"
+          unit="g"
+          unitDescription="g = grams."
+          axisStep={500}
+          items={syntheticMetalDemand.map((item) => ({
+            label: item.metal,
+            last30DayAmount: item.last30DayGrams,
+            previous30DayAmount: item.previous30DayGrams,
+          }))}
+        />
+      </section>
+
+      <section class="support-panels" data-support-panel aria-label="Studio and market signals">
+        <section class="dashboard-panel support-panel" aria-labelledby="studio-title">
+          <header class="panel-header">
+            <h2 id="studio-title">Studio Opportunities</h2>
+          </header>
+
+          <div class="support-list">
+            {
+              syntheticStudioScenarios.map((opportunity) => (
+                <article class="support-view" data-studio-opportunity>
+                  <div class="support-view__title">
+                    <span class="status-dot status-dot--warning" aria-hidden="true"></span>
+                    <div>
+                      <strong>{opportunity.accountName}</strong>
+                      <span>Fictional generated account</span>
+                    </div>
+                  </div>
+                  <dl>
+                    <div><dt>Window</dt><dd>{opportunity.reorderWindow}</dd></div>
+                    <div><dt>Affinity</dt><dd>{opportunity.productFamilyAffinity}</dd></div>
+                  </dl>
+                  <p>{opportunity.proposedNextAction}</p>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="dashboard-panel support-panel" aria-labelledby="market-title">
+          <header class="panel-header">
+            <h2 id="market-title">Market Signals</h2>
+          </header>
+
+          <div class="support-list">
+            {
+              featuredMarketSignals.map((signal) => (
+                <article class="support-view" data-market-signal>
+                  <div class="support-view__title">
+                    <span class="status-dot status-dot--info" aria-hidden="true"></span>
+                    <div>
+                      <strong>{signal.title}</strong>
+                      <span>Public ecosystem signal</span>
+                    </div>
+                  </div>
+                  <p>{signal.possibleImplication}</p>
+                  <a href={signal.source.url} target="_blank" rel="noopener noreferrer" data-source-link>
+                    Review public source
+                  </a>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <dialog class="about-dialog" data-about-dialog aria-labelledby="about-dialog-title">
+      <div class="about-dialog__surface">
+        <header>
+          <div>
+            <p class="panel-kicker">Concept methodology</p>
+            <h2 id="about-dialog-title">What is real, generated, and still missing</h2>
+          </div>
+          <button type="button" class="dialog-close" data-close-about aria-label="Close methodology dialog">×</button>
+        </header>
+
+        <div class="about-dialog__content">
+          <section>
+            <h3>Data truth</h3>
+            <p>
+              Product facts come from Buddha Jewelry’s public storefront. Operating, purchasing,
+              demand, and studio records are generated examples—not Buddha sales, inventory,
+              financial performance, or customer activity.
+            </p>
+            <div class="provenance-legend" aria-label="Data provenance legend">
+              <ProvenanceBadge kind="public" />
+              <ProvenanceBadge kind="synthetic" />
+              <ProvenanceBadge kind="derived" />
+              <ProvenanceBadge kind="missing" />
+            </div>
+          </section>
+
+          <section>
+            <h3>Jewelry-specific AI opportunity</h3>
+            <p><strong>{productExtractionReplay.status}</strong></p>
+            <p>
+              A model can propose material, gemstone, cut, and variant structure from a description
+              or future CAD/spec note. A person verifies the product/BOM record before it informs a forecast.
+            </p>
+          </section>
+
+          <section>
+            <h3>Public sources</h3>
+            <ul class="source-list">
+              <li><a href={product.source.url} target="_blank" rel="noopener noreferrer" data-source-link>{product.source.label}</a></li>
+              {publicMarketSignals.map((signal) => (
+                <li><a href={signal.source.url} target="_blank" rel="noopener noreferrer" data-source-link>{signal.source.label}</a></li>
+              ))}
+            </ul>
+            <p>The APP is an industry association and ecosystem signal—not a direct competitor.</p>
+          </section>
+
+          <section>
+            <h3>Production path</h3>
+            <ol class="production-path">
+              <li>Start with read-only Shopify and confirmed ERP/inventory exports.</li>
+              <li>Normalize product, SKU, gemstone, account, and supplier records.</li>
+              <li>Calculate and backtest decisions deterministically.</li>
+              <li>Use AI for structured extraction and concise explanation with human approval.</li>
+            </ol>
+          </section>
+        </div>
+
+        <blockquote>
+          If I had access to one set of exports, which of these decisions would you want me to make reliable first?
+        </blockquote>
+      </div>
+    </dialog>
+  </main>
+
+  <script>
+    interface DashboardDecisionView {
+      id: string;
+      kind: 'replenishment' | 'availability' | 'blocked';
+      rank: number;
+      shortTitle: string;
+      productName: string;
+      priority: 'high' | 'medium' | 'low' | 'blocked';
+      priorityLabel: string;
+      confidenceLabel: string;
+      signal: string;
+      metricLabel: string;
+      metricValue: string;
+      metricContext: string;
+      recommendation: string;
+      reason: string;
+      owner: string;
+      nextAction: string;
+      actionLabel: string;
+      missingFields: string[];
+      scenarioLabel?: string;
+      coverageDays?: number;
+      thresholdDays?: number;
+      coveragePercent?: number;
+      coverageGapDays?: number;
+    }
+
+    const shell = document.querySelector<HTMLElement>('[data-dashboard-shell]');
+    const selectedPanel = document.querySelector<HTMLElement>('[data-selected-decision]');
+
+    if (shell && selectedPanel) {
+      const queue = JSON.parse(shell.dataset.queuePayload ?? '[]') as DashboardDecisionView[];
+      const scenarios = JSON.parse(shell.dataset.scenarioPayload ?? '{}') as Record<string, DashboardDecisionView>;
+      const queueById = new Map(queue.map((item) => [item.id, item]));
+      const actionRows = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-decision-row]'));
+      const scenarioButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-scenario]'));
+      const scenarioPanel = document.querySelector<HTMLElement>('[data-scenario-panel]');
+      const selectedAction = selectedPanel.querySelector<HTMLButtonElement>('[data-selected-action]');
+      const actionFeedback = selectedPanel.querySelector<HTMLElement>('[data-action-feedback]');
+      const decisionAnnouncement = selectedPanel.querySelector<HTMLElement>('[data-decision-announcement]');
+      const summaryCoverageGap = document.querySelector<HTMLElement>('[data-summary-coverage-gap]');
+      const summaryCoverageNote = document.querySelector<HTMLElement>('[data-summary-coverage-note]');
+      let activeReplenishment = scenarios.baseline;
+
+      const setText = (selector: string, value: string) => {
+        const element = selectedPanel.querySelector<HTMLElement>(selector);
+        if (element) element.textContent = value;
+      };
+
+      const renderMissing = (fields: string[]) => {
+        const list = selectedPanel.querySelector<HTMLUListElement>('[data-selected-missing]');
+        if (!list) return;
+        const items = fields.map((field) => {
+          const item = document.createElement('li');
+          item.textContent = field;
+          return item;
+        });
+        list.replaceChildren(...items);
+      };
+
+      const renderDecision = (view: DashboardDecisionView) => {
+        setText('[data-selected-title]', view.shortTitle);
+        setText('[data-selected-product]', view.productName);
+        setText('[data-selected-confidence]', view.confidenceLabel);
+        setText('[data-selected-status]', view.priorityLabel);
+        setText(
+          '[data-selected-metric-label]',
+          view.scenarioLabel ? `${view.metricLabel} · ${view.scenarioLabel}` : view.metricLabel,
+        );
+        setText('[data-selected-metric-value]', view.metricValue);
+        setText('[data-selected-metric-context]', view.metricContext);
+        setText('[data-selected-recommendation]', view.recommendation);
+        setText('[data-selected-owner]', view.owner);
+        setText('[data-selected-next-action]', view.nextAction);
+        setText('[data-selected-reason]', view.reason);
+        renderMissing(view.missingFields);
+
+        if (selectedAction) {
+          selectedAction.textContent = view.actionLabel;
+          selectedAction.disabled = false;
+        }
+        if (actionFeedback) {
+          actionFeedback.hidden = true;
+          actionFeedback.textContent = '';
+        }
+        if (decisionAnnouncement) {
+          decisionAnnouncement.textContent = `${view.shortTitle}. ${view.priorityLabel}. ${view.metricValue}. ${view.recommendation}`;
+        }
+
+        const status = selectedPanel.querySelector<HTMLElement>('[data-selected-status]');
+        if (status) status.dataset.tone = view.priority;
+
+        const coverageTrack = selectedPanel.querySelector<HTMLElement>('[data-coverage-track]');
+        const coverageBar = selectedPanel.querySelector<HTMLElement>('[data-coverage-bar]');
+        if (coverageTrack && coverageBar) {
+          coverageTrack.hidden = view.coveragePercent === undefined;
+          coverageBar.style.setProperty('--coverage', `${view.coveragePercent ?? 0}%`);
+        }
+
+        if (scenarioPanel) scenarioPanel.hidden = view.kind !== 'replenishment';
+
+        for (const row of actionRows) {
+          const isSelected =
+            view.kind === 'replenishment'
+              ? row.dataset.decisionId === queue[0]?.id
+              : row.dataset.decisionId === view.id;
+          row.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+        }
+      };
+
+      const renderCoverageSummary = (view: DashboardDecisionView) => {
+        if (!summaryCoverageGap || view.coverageGapDays === undefined) return;
+        summaryCoverageGap.textContent = `${view.coverageGapDays.toFixed(0)}d`;
+        if (summaryCoverageNote) {
+          summaryCoverageNote.textContent = `${view.scenarioLabel ?? 'Active'} scenario`;
+        }
+      };
+
+      for (const row of actionRows) {
+        row.addEventListener('click', () => {
+          const id = row.dataset.decisionId;
+          const original = id ? queueById.get(id) : undefined;
+          if (!original) return;
+          renderDecision(original.kind === 'replenishment' && activeReplenishment ? activeReplenishment : original);
+        });
+      }
+
+      for (const button of scenarioButtons) {
+        button.addEventListener('click', () => {
+          const id = button.dataset.scenario;
+          const view = id ? scenarios[id] : undefined;
+          if (!view) return;
+          activeReplenishment = view;
+          for (const candidate of scenarioButtons) {
+            candidate.setAttribute('aria-pressed', candidate === button ? 'true' : 'false');
+          }
+          const rowSignal = document.querySelector<HTMLElement>('[data-row-signal="replenishment"]');
+          if (rowSignal) rowSignal.textContent = view.signal;
+          renderCoverageSummary(view);
+          renderDecision(view);
+        });
+      }
+
+      selectedAction?.addEventListener('click', () => {
+        const action = selectedAction.textContent?.trim() || 'Review action';
+        selectedAction.textContent = 'Recorded';
+        selectedAction.disabled = true;
+        if (actionFeedback) {
+          actionFeedback.textContent = `${action} recorded in this demo only. No operational writeback occurred.`;
+          actionFeedback.hidden = false;
+        }
+      });
+
+      const aboutDialog = document.querySelector<HTMLDialogElement>('[data-about-dialog]');
+      const openButtons = document.querySelectorAll<HTMLButtonElement>('[data-open-about]');
+      const closeButton = document.querySelector<HTMLButtonElement>('[data-close-about]');
+      for (const button of openButtons) {
+        button.addEventListener('click', () => aboutDialog?.showModal());
+      }
+      closeButton?.addEventListener('click', () => aboutDialog?.close());
+      aboutDialog?.addEventListener('click', (event) => {
+        if (event.target === aboutDialog) aboutDialog.close();
+      });
+    }
+  </script>
+</BuddhaConceptLayout>

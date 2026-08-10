@@ -1,0 +1,114 @@
+---
+import ProvenanceBadge from './ProvenanceBadge.astro';
+
+interface DemandItem {
+  label: string;
+  last30DayAmount: number;
+  previous30DayAmount: number;
+}
+
+interface Props {
+  id: string;
+  title: string;
+  kind: 'gemstone' | 'metal';
+  quantityLabel: string;
+  unit: 'ct' | 'g';
+  unitDescription: string;
+  axisStep: number;
+  items: DemandItem[];
+}
+
+const {
+  id,
+  title,
+  kind,
+  quantityLabel,
+  unit,
+  unitDescription,
+  axisStep,
+  items,
+} = Astro.props;
+
+if (items.length === 0) {
+  throw new Error(`${title} requires at least one demand record.`);
+}
+
+const formatAmount = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+const rows = items.map((item) => ({
+  ...item,
+  changePercent: Math.round(
+    ((item.last30DayAmount - item.previous30DayAmount) / item.previous30DayAmount) * 100,
+  ),
+}));
+const axisMaximum =
+  Math.ceil(Math.max(...rows.map(({ last30DayAmount }) => last30DayAmount)) / axisStep) * axisStep;
+const axisTicks = Array.from({ length: 6 }, (_, index) => (axisMaximum / 5) * index);
+---
+
+<section
+  class="dashboard-panel forecast-panel"
+  data-demand-panel={kind}
+  aria-labelledby={id}
+>
+  <header class="panel-header">
+    <h2 id={id}>{title}</h2>
+    <ProvenanceBadge kind="synthetic" />
+  </header>
+
+  <div class="forecast-content">
+    <div class="forecast-chart" role="group" aria-label={`Synthetic ${kind} sales weight over the last 30 days`}>
+      <div class="forecast-chart__head">
+        <span>{quantityLabel} sold · last 30 days</span>
+        <span>Change vs 30 days ago</span>
+      </div>
+
+      <div class="forecast-axis">
+        <span aria-hidden="true"></span>
+        <div
+          class="forecast-axis__ticks"
+          data-demand-axis={kind}
+          aria-label={`${quantityLabel} axis from 0 to ${axisMaximum}`}
+        >
+          {axisTicks.map((tick) => (
+            <span style={`--tick-position: ${(tick / axisMaximum) * 100}%`}>
+              {formatAmount.format(tick)}{tick === axisMaximum ? ` ${unit}` : ''}
+            </span>
+          ))}
+        </div>
+        <span aria-hidden="true"></span>
+      </div>
+
+      <div class="forecast-list">
+        {rows.map((item) => (
+          <div class="forecast-row" data-demand-row={kind}>
+            <div class="forecast-row__label">
+              <strong>{item.label}</strong>
+              <span data-demand-volume={kind}>{formatAmount.format(item.last30DayAmount)} {unit}</span>
+            </div>
+            <div class="forecast-bar" aria-hidden="true">
+              <span
+                class="forecast-bar__fill"
+                style={`--bar-size: ${(item.last30DayAmount / axisMaximum) * 100}%`}
+              ></span>
+              <span class="forecast-bar__grid">
+                <i></i><i></i><i></i><i></i>
+              </span>
+            </div>
+            <strong
+              class:list={{ 'forecast-change': true, 'is-negative': item.changePercent < 0 }}
+              data-demand-change={kind}
+              aria-label={`${item.changePercent >= 0 ? 'Up' : 'Down'} ${Math.abs(item.changePercent)} percent compared with the previous 30 days`}
+            >
+              <span aria-hidden="true">{item.changePercent >= 0 ? '↑' : '↓'}</span>
+              {Math.abs(item.changePercent)}%
+            </strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <p class="panel-footnote">
+    Synthetic 30-day weights—not Buddha or market data. {unitDescription}
+  </p>
+</section>

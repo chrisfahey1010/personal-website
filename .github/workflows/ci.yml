@@ -26,8 +26,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run unit tests
+        run: npm test
+
       - name: Validate Astro project
         run: npm run check
 
       - name: Build site
         run: npm run build
+
+      - name: Verify Buddha demo build
+        run: npm run verify:buddha

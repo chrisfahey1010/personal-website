@@ -39,28 +39,45 @@ npm run preview
 ## Scripts
 
 - `npm run dev` starts Astro locally.
+- `npm test` runs the Vitest unit suite once.
+- `npm run test:watch` runs Vitest in watch mode.
 - `npm run check` runs `astro sync && tsc --noEmit`.
 - `npm run build` creates the production static output in `dist/`.
+- `npm run verify:buddha` validates the built Buddha Decision Desk route, trust disclosures, static behavior, and noindex controls.
 - `npm run preview` serves the built site locally.
 - `npm run deploy:dry-run` rebuilds and validates the Wrangler static-assets deploy configuration.
 - `npm run deploy` rebuilds and publishes through Wrangler.
-
-There is currently no test suite or `npm test` script.
 
 ## Project Structure
 
 ```text
 src/pages/index.astro          Single launch page
+src/pages/buddha.astro         Unlisted Buddha Decision Desk concept route
 src/layouts/BaseLayout.astro   Global shell, metadata, and navigation
+src/layouts/BuddhaConceptLayout.astro  Standalone noindex concept shell
+src/components/buddha/         Reusable provenance UI component
 src/components/                Page, navigation, project, and SEO components
 src/config/                    Navigation and contact configuration
 src/content/                   Authored page, project, resume, and future post content
+src/data/buddha-demo.ts        Validated public and synthetic demo fixtures
+src/lib/buddha/                Deterministic decision engine and contracts
 src/lib/content/               Content loading and shaping helpers
 src/lib/seo/                   Metadata and structured data helpers
+src/styles/buddha-demo.css     Route-isolated concept styling
 src/styles/global.css          Global styling
-public/                        Static images, resume PDF, resume previews, robots.txt
+tests/                         Buddha data-contract and decision-engine tests
+scripts/verify-buddha-build.mjs  Static build acceptance verifier
+public/                        Static images, headers, resume assets, robots.txt
 infrastructure/                Cloudflare and deployment notes
 ```
+
+## Buddha Decision Desk
+
+`/buddha/` is an unlisted interview concept and is intentionally absent from the portfolio navigation. The page is public—not private—but uses `noindex`, `nofollow`, and `noarchive` metadata and matching Cloudflare response headers to discourage search indexing.
+
+The concept combines timestamped facts curated from public sources with clearly labeled synthetic operational and customer scenarios. It contains no Buddha customer records, internal inventory, financial performance, authenticated data, or runtime model/source dependency. Build the site before running `npm run verify:buddha`.
+
+The presentation contract is desktop-first: at 1440×900 and 1366×768 the default dashboard is a single-screen app shell with no page-level scrolling. Decisions, selected detail, gemstone outlook, and studio/market signals remain visible together; methodology and longer context live in a modal. Narrow-screen fallback layouts may scroll but must not overflow horizontally.
 
 ## Content Editing
 
